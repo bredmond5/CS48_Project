@@ -8,4 +8,4 @@
 - 
 
 ## [LICENSE](https://github.com/bredmond5/CS48_Project/blob/master/LICENSE)
-- We choose the Apache 2.0 License. 
+- We chose the Apache 2.0 License. 
