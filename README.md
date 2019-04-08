@@ -1,4 +1,4 @@
-# CS48_Project
+# OpenSpot
 
 ## Project Summary
 - One Sentence Description: 
