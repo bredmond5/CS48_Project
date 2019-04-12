@@ -1,4 +1,4 @@
-# OpenSpot
+# Food Reader
 
 ## Project Summary
 - One Sentence Description: 
