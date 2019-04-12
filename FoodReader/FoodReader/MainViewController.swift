@@ -38,13 +38,9 @@ func loadShutterSound() -> AVAudioPlayer?
 
 class MainViewController:
     UIViewController,
-//    CroppableImageViewDelegateProtocol,
     UIImagePickerControllerDelegate,
     UINavigationControllerDelegate,
-UIPopoverControllerDelegate {
-    
-    @IBOutlet weak var whiteView: UIView!
-//    @IBOutlet weak var cropImageView: CroppableImageView!
+    UIPopoverControllerDelegate {
     
     var shutterSoundPlayer = loadShutterSound()
     
@@ -53,17 +49,6 @@ UIPopoverControllerDelegate {
     var pictureTaken: Bool = false
     
     var textFound: String?
-    
-    //    private lazy var layer: CALayer = {
-    //        let layer = CALayer()
-    //        layer.borderWidth = 2
-    //        layer.borderColor = UIColor.green.cgColor
-    //        layer.removeAllAnimations()
-    //        imageView.layer.addSublayer(layer)
-    //        return layer
-    //    }()
-    
-//    private let ocrService = OCRService()
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewWillAppear(animated);
@@ -106,12 +91,6 @@ UIPopoverControllerDelegate {
         
         
         picker.dismiss(animated: true)
-//        ocrService.delegate = self
-//        self.cropImageView.imageToCrop = image
-        //        self.cropImageView.isHidden = false;
-        //        let gestRec = UIPanGestureRecognizer(target: self, action:#selector(panGesture(_:)))
-        //        view.addGestureRecognizer(gestRec)
-        
         pictureTaken = true
     }
     
@@ -121,58 +100,11 @@ UIPopoverControllerDelegate {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.destination.children[0] is GroupAmtViewController
-//        {
-//            let grpVC = segue.destination.children[0] as! GroupAmtViewController
-//            grpVC.payments = textFound
-//
-//        }
-    }
-    
-    @IBAction func handleCropButton(_ sender: Any)
-    {
-        //    var aFloat: Float
-        //    aFloat = (sender.currentTitle! as NSString).floatValue
-        //println("Button title = \(buttonTitle)")
-        
+
     }
     
     @IBAction func donePressed(_ sender: Any) {
-        //        print("Layer frame \(layer.frame)")
-        
-        //        print("Image view frame \(imageView.frame)")
-        
-//        if let croppedImage = cropImageView.croppedImage()
-//        {
-//            self.whiteView.isHidden = false
-//            delay(0)
-//            {
-//                self.shutterSoundPlayer?.play()
-//                //                self.saveImageToCameraRoll(croppedImage)
-//                self.cropImageView.imageToCrop = croppedImage
-//                //UIImageWriteToSavedPhotosAlbum(croppedImage, nil, nil, nil);
-//
-//                delay(0.2)
-//                {
-//                    self.whiteView.isHidden = true
-//                    self.shutterSoundPlayer?.prepareToPlay()
-//                }
-//            }
-//            ocrService.handle(image: croppedImage)
-//        }
-//
-//        //        if let croppedImage = crop() {
-//        //            imageView.imageToCrop = croppedImage
-//
-//
-//
-//        self.performSegue(withIdentifier: "PictureToGroups", sender: nil)
-    }
-    
-    func haveValidCropRect(_ haveValidCropRect:Bool)
-    {
-        //println("In haveValidCropRect. Value = \(haveValidCropRect)")
-        //cropButton.isEnabled = haveValidCropRect
+
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController)
@@ -182,14 +114,6 @@ UIPopoverControllerDelegate {
     }
     
 }
-
-//extension PictureViewController: OCRServiceDelegate {
-//    func ocrService(_ service: OCRService, didDetect text: String) {
-//        textFound = text
-//        print(textFound)
-//    }
-//}
-
 
 // Helper function inserted by Swift 4.2 migrator.
 fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
