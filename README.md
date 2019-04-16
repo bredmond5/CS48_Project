@@ -1,7 +1,7 @@
 # Food Reader
 
 ## Project Summary
-- One Sentence Description: 
+- One Sentence Description: Application that reads barcodes and lists competitive prices at online retailers.
 - Project Overview: 
 
 ## Functionality and Known Issues
