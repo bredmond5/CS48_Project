@@ -4,7 +4,8 @@ language: swift
 script:
 //- xcodebuild clean build -project BarcodeScanner.xcodeproj -scheme "BarcodeScanner-iOS" -sdk iphonesimulator
 - xcodebuild -scheme SwiftExample -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone X,OS=12.1' build test
-
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 notifications:
   email: false
 
