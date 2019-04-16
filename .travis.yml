@@ -2,7 +2,8 @@ osx_image: xcode9
 language: swift
 
 script:
-- xcodebuild clean build -project BarcodeScanner.xcodeproj -scheme "BarcodeScanner-iOS" -sdk iphonesimulator
+//- xcodebuild clean build -project BarcodeScanner.xcodeproj -scheme "BarcodeScanner-iOS" -sdk iphonesimulator
+- xcodebuild -scheme SwiftExample -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone X,OS=12.1' build test
 
 notifications:
   email: false
