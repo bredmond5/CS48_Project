@@ -9,5 +9,6 @@ target 'MyPricePal' do
 
 pod 'BarcodeScanner'
 pod 'SwiftLint'
+pod 'Anchors'
 
 end
