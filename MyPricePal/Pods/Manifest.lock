@@ -1,20 +1,24 @@
 PODS:
+  - Anchors (2.4.0)
   - BarcodeScanner (4.1.3)
   - SwiftLint (0.31.0)
 
 DEPENDENCIES:
+  - Anchors
   - BarcodeScanner
   - SwiftLint
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - Anchors
     - BarcodeScanner
     - SwiftLint
 
 SPEC CHECKSUMS:
+  Anchors: 75614cac462e063b395386e31eb593a856d831a8
   BarcodeScanner: fce1ad2b3f28286b1ab5091fe0979789618bee27
   SwiftLint: 7a0227733d786395817373b2d0ca799fd0093ff3
 
-PODFILE CHECKSUM: 6328f61791eebf7b9efbaa75a1a9b9d8244c1aad
+PODFILE CHECKSUM: fe7a4ed619bb2a7244b00817e89f15c4d2f54ffc
 
 COCOAPODS: 1.5.3

@@ -8,14 +8,59 @@
 
 import UIKit
 import BarcodeScanner
+import Anchors
 
-class MainViewController: UIViewController{
+class MainViewController: UIViewController {
 
     var firstOpen = true
     
+//    lazy var stackView: UIStackView = {
+//        let stackView = UIStackView(arrangedSubviews: [scanButton, searchButton])
+//        stackView.alignment = .fill
+//        stackView.distribution = .fillEqually
+//        stackView.spacing = 15
+//        stackView.axis = .vertical
+//        stackView.translatesAutoresizingMaskIntoConstraints = false
+//        return stackView
+//    }()
+
+    var scanButton: UIButton = {
+        let scanButton = customButton(frame: .zero)
+        scanButton.setTitle("Scan", for: .normal)
+        scanButton.addTarget(self, action: #selector(scanAction), for: .touchUpInside)
+        return scanButton
+    }()
+    
+    var searchButton: UIButton = {
+        let searchButton = customButton(frame: .zero)
+        searchButton.setTitle("Search", for: .normal)
+        searchButton.addTarget(self, action: #selector(searchAction), for: .touchUpInside)
+        return searchButton
+    }()
+    
+    override func loadView() {
+        super.loadView()
+        
+        view.backgroundColor = .white
+        navigationItem.title = "MyPricePal"
+        navigationController?.navigationBar.barTintColor = .white
+    
+        view.addSubview(scanButton)
+        view.addSubview(searchButton)
+        
+        activate(
+            searchButton.anchor.top.constant(150),
+            searchButton.anchor.paddingHorizontally(100),
+            searchButton.anchor.height.equal.to(searchButton.anchor.width).multiplier(1/2),
+            scanButton.anchor.top.equal.to(searchButton.anchor.bottom).constant(15),
+            scanButton.anchor.size.equal.to(searchButton.anchor.size),
+            searchButton.anchor.left.right.equal.to(scanButton.anchor.left.right)
+            
+        )
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        setUpViewController()
         
         if firstOpen {
             setUpScanner()
@@ -31,20 +76,12 @@ class MainViewController: UIViewController{
         present(viewController, animated: true, completion: nil)
     }
     
-    func setUpViewController() {
-        view.backgroundColor = .white
-        let button = UIButton(frame: CGRect(x: 100, y: 100, width: 100, height: 50))
-        button.backgroundColor = .black
-        button.setTitle("Scan", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
-        button.center = view.center
-        
-        self.view.addSubview(button)
+    @objc func scanAction(sender: UIButton!) {
+        setUpScanner()
     }
     
-    @objc func buttonAction(sender: UIButton!) {
-        setUpScanner()
+    @objc func searchAction(sender: UIButton!) {
+        print("search requested")
     }
 }
 
