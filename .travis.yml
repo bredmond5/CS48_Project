@@ -3,5 +3,5 @@ language:
 osx_image: xcode10.1
 script:
   xcode_project: MyPricePal/MyPricaPal.xcodeproj # path to your xcodeproj folder
-  xcode_scheme: MyPricePal
+  xcode_scheme: UIKit, BarCodeScanner
 
