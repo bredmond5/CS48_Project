@@ -2,8 +2,7 @@ osx_image: xcode9
 language: swift
 
 script:
-//- xcodebuild clean build -project BarcodeScanner.xcodeproj -scheme "BarcodeScanner-iOS" -sdk iphonesimulator
-- xcodebuild -scheme MyPricePal -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 8,OS=12.1' build test
+- xcodebuild clean build -project MyPricePal.xcodeproj -scheme "BarcodeScanner-iOS" -sdk iphonesimulator
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 
