@@ -1,5 +1,10 @@
 package webscrape;
 
+// import org.apache.poi.hssf.usermodel.HSSFCell;
+// import org.apache.poi.hssf.usermodel.HSSFRow;
+// import org.apache.poi.hssf.usermodel.HSSFSheet;
+// import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
 import java.util.Scanner;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -20,20 +25,32 @@ public class priceScrape{
 		// Scanner input2 = new Scanner(System.in);
 		// String zipCode = input2.nextLine();
 
-
+		// HSSFWorkbook workbook = new HSSFWorkbook();
+		// HSSFSheet sheet = workbook.createSheet("Sales");
+		
 		try{
-			System.out.println(base+product+ending);
 			final Document document = Jsoup.connect(base+product+ending).get();
-			
+			int count = 0;
 			for (Element item : document.select("div.container-tile.deal.paged.special-tile")){
-				String originalPrice = item.select("span.pricetag").text();
+				String price = item.select("span.pricetag").text();
 				String productName = item.select("p.deal-productname").text();
 				String storeName = item.select("p.deal-storename").text();
 				String dealEnd = item.select("div.expirydate").text();
 
+				// HSSFRow row = sheet.createRow(count);
+				// HSSFCell cell1 = row.createCell(0);
+    //             HSSFCell cell2 = row.createCell(1);
+    //             HSSFCell cell3 = row.createCell(2);
+    //             HSSFCell cell4 = row.createCell(3);
+                
+    //             cell1.setCellValue(productName);
+    //             cell2.setCellValue(price);
+    //             cell3.setCellValue(dealEnd);
+    //             cell4.setCellValue(storeName);
+    //             cout++;
 
 				System.out.println("Product Name: " + productName);
-				System.out.println("Price: " + originalPrice);
+				System.out.println("Price: " + price);
 				System.out.println(dealEnd);
 				System.out.println("Store: " + storeName + "\n");
 			}
@@ -41,21 +58,8 @@ public class priceScrape{
 			e.printStackTrace();
 		}
 
-
-
-		// try{
-		// 	final Document document = Jsoup.connect(amazon).get();
-		// 	final String newPrice = document.select("span.pa-size-large").text();
-		// 	int priceLength = newPrice.length();
-		// 	//final String originalPrice = document.select("Your Price").text();
-		// 	//System.out.println("Original Price: "+ originalPrice);
-		// 	System.out.println(amazon);
-		// 	System.out.println(priceLength);
-		// 	System.out.println("New Price: " + newPrice);
-		// } catch (Exception e) {
-		// 	e.printStackTrace();
-		// }
-
+		// workbook.write(new FileOutputStream("deals.xls")); //title what you want the excel file to be called
+        // workbook.close();
 
 		/*try{
 			final Document document = Jsoup.connect(walmart).get();
