@@ -1,4 +1,11 @@
-language: swift
-xcode_project: test.xcodeproj # path to your xcodeproj folder
-xcode_scheme: MyNewProjectTests
-xcode_destination: platform=iOS Simulator,OS=10.1,name=iPad Pro (9.7-inch)
+language: objective-c
+os: osx
+osx_image: xcode8.1
+before_install:
+    - chmod a+x ./Scripts/install.sh
+    - chmod a+x ./Scripts/build.sh
+
+install:
+  - ./Scripts/install.sh
+script:
+  - ./Scripts/build.sh
