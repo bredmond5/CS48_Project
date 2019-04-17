@@ -1,4 +1,4 @@
 language: swift
-xcode_project: MyPricaPal
+xcode_project: MyPricaPal/MyPricaPal.xcodeproj
 xcode_scheme: UIKit, BarcodeScanner
 
