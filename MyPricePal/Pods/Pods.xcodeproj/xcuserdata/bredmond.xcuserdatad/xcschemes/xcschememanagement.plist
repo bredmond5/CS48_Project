@@ -6,10 +6,15 @@
 	<dict>
 		<key>Anchors.xcscheme</key>
 		<dict>
+<<<<<<< HEAD
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
 			<integer>0</integer>
+=======
+			<key>orderHint</key>
+			<integer>4</integer>
+>>>>>>> ead3931c72a2252621fb2f9d893074e77bfdd1b2
 		</dict>
 		<key>BarcodeScanner-BarcodeScanner.xcscheme</key>
 		<dict>
