@@ -1,4 +1,4 @@
 language: swift
-xcode_project: MyPricePal/MyPricaPal.xcodeproj # path to your xcodeproj folder
+xcode_project: MyPricaPal
 xcode_scheme: UIKit, BarcodeScanner
 
