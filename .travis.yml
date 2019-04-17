@@ -2,5 +2,8 @@ language:
   - swift
 osx_image: xcode10.1
 script:
-  - xcode_project MyPricePal-scheme MyPricePal -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone X,OS=12.1' build test
+  - xcode_project MyPricePal
+  -scheme MyPricePal 
+  -sdk iphonesimulator 
+  -destination 'platform=iOS Simulator,name=iPhone X,OS=12.1' build test
 
