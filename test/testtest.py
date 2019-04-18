@@ -1,7 +1,7 @@
 import os
-import sys
+#import sys
 
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),'python'))
+#sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),'python'))
 
 from test import helloworld
 
