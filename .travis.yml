@@ -1,12 +1,4 @@
-osx_image: xcode9
-language: swift
-
-script:
-- xcodebuild clean build -project MyPricePal.xcodeproj -scheme "BarcodeScanner-iOS" -sdk iphonesimulator
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
-
-
-notifications:
-  email: false
-
+matrix:
+    include:
+        - language: python
+          script: pytest
