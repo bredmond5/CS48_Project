@@ -15,7 +15,7 @@ class TestCalculator(object):
     def teardown_method(self):
         self.h = None
 
-    def test_hello():
+    def test_hello(self):
 
         res = self.h.hello()
         assert res == "Hello World"
