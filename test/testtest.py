@@ -10,12 +10,12 @@ import pytest
 class TestHelloworld(object):
 
     def setup_method(self):
-        self.h = helloworls()
+        self.h = Helloworls()
 
     def teardown_method(self):
         self.h = None
 
     def test_hello(self):
-
+        ans = "Hello World"
         res = self.h.hello()
-        assert res == "Hello World"
+        assert res == ans
