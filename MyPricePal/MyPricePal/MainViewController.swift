@@ -24,10 +24,10 @@ class MainViewController: UIViewController {
 //        return stackView
 //    }()
 
-    var scanButton: UIButton = {
+    var scanBarcodeButton: UIButton = {
         let scanButton = customButton(frame: .zero)
-        scanButton.setTitle("Scan", for: .normal)
-        scanButton.addTarget(self, action: #selector(scanAction), for: .touchUpInside)
+        scanButton.setTitle("Scan barcode", for: .normal)
+        scanButton.addTarget(self, action: #selector(scanBarcodeAction), for: .touchUpInside)
         return scanButton
     }()
     
@@ -38,6 +38,20 @@ class MainViewController: UIViewController {
         return searchButton
     }()
     
+    var qrCodeButton: UIButton = {
+        let qrCodeButton = customButton(frame : .zero)
+        qrCodeButton.setTitle("Scan QR code", for: .normal)
+        qrCodeButton.addTarget(self, action: #selector(scanQRCodeAction), for: .touchUpInside)
+        return qrCodeButton
+    }()
+    
+    var settingsButton: UIButton = {
+        let settingsButton = customButton(frame : .zero)
+        settingsButton.setTitle("Settings", for: .normal)
+        settingsButton.addTarget(self, action: #selector(settingsAction), for: .touchUpInside)
+        return settingsButton
+    }()
+    
     override func loadView() {
         super.loadView()
         
@@ -45,17 +59,27 @@ class MainViewController: UIViewController {
         navigationItem.title = "MyPricePal"
         navigationController?.navigationBar.barTintColor = .white
     
-        view.addSubview(scanButton)
+        view.addSubview(scanBarcodeButton)
         view.addSubview(searchButton)
+        view.addSubview(qrCodeButton)
+        view.addSubview(settingsButton)
         
         activate(
-            searchButton.anchor.top.constant(150),
+            searchButton.anchor.top.constant(100),
             searchButton.anchor.paddingHorizontally(100),
             searchButton.anchor.height.equal.to(searchButton.anchor.width).multiplier(1/2),
-            scanButton.anchor.top.equal.to(searchButton.anchor.bottom).constant(15),
-            scanButton.anchor.size.equal.to(searchButton.anchor.size),
-            searchButton.anchor.left.right.equal.to(scanButton.anchor.left.right)
             
+            scanBarcodeButton.anchor.top.equal.to(searchButton.anchor.bottom).constant(15),
+            scanBarcodeButton.anchor.size.equal.to(searchButton.anchor.size),
+            scanBarcodeButton.anchor.left.right.equal.to(searchButton.anchor.left.right),
+            
+            qrCodeButton.anchor.top.equal.to(scanBarcodeButton.anchor.bottom).constant(15),
+            qrCodeButton.anchor.size.equal.to(searchButton.anchor.size),
+            qrCodeButton.anchor.left.right.equal.to(searchButton.anchor.left.right),
+            
+            settingsButton.anchor.top.equal.to(qrCodeButton.anchor.bottom).constant(15),
+            settingsButton.anchor.size.equal.to(searchButton.anchor.size),
+            settingsButton.anchor.left.right.equal.to(searchButton.anchor.left.right)
         )
     }
     
@@ -76,12 +100,20 @@ class MainViewController: UIViewController {
         present(viewController, animated: true, completion: nil)
     }
     
-    @objc func scanAction(sender: UIButton!) {
+    @objc func scanBarcodeAction(sender: UIButton!) {
         setUpScanner()
     }
     
     @objc func searchAction(sender: UIButton!) {
         print("search requested")
+    }
+    
+    @objc func scanQRCodeAction(sender: UIButton!) {
+        print("scan QR code requested")
+    }
+    
+    @objc func settingsAction(sender: UIButton!) {
+        print("settings requested")
     }
 }
 
