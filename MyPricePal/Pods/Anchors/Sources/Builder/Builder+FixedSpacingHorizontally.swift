@@ -5,7 +5,7 @@
 #endif
 
 public extension Builder {
-  public class FixedSpacingHorizontally: ConstraintProducer {
+    class FixedSpacingHorizontally: ConstraintProducer {
 
     let views: [View]
     let spacing: CGFloat
