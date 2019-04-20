@@ -14,6 +14,9 @@ class MainViewController: UIViewController {
 
     var firstOpen = true
     
+    var barcodeViewController: BarcodeScannerViewController?
+    var itemViewController: ItemViewController?
+    
 //    lazy var stackView: UIStackView = {
 //        let stackView = UIStackView(arrangedSubviews: [scanButton, searchButton])
 //        stackView.alignment = .fill
@@ -63,11 +66,17 @@ class MainViewController: UIViewController {
         view.addSubview(searchButton)
         view.addSubview(qrCodeButton)
         view.addSubview(settingsButton)
+        let guide = UILayoutGuide()
+        view.addLayoutGuide(guide)
         
         activate(
-            searchButton.anchor.top.constant(100),
-            searchButton.anchor.paddingHorizontally(100),
-            searchButton.anchor.height.equal.to(searchButton.anchor.width).multiplier(1/2),
+            guide.anchor.centerX,
+            guide.anchor.centerY,
+            guide.anchor.size.equal.to(view.anchor.size).multiplier(3/4),
+            
+            searchButton.anchor.top.equal.to(guide.anchor.top),
+            searchButton.anchor.trailing.leading.equal.to(guide.anchor.trailing.leading),
+            searchButton.anchor.height.equal.to(guide.anchor.height).multiplier(1/4),
             
             scanBarcodeButton.anchor.top.equal.to(searchButton.anchor.bottom).constant(15),
             scanBarcodeButton.anchor.size.equal.to(searchButton.anchor.size),
@@ -81,38 +90,44 @@ class MainViewController: UIViewController {
             settingsButton.anchor.size.equal.to(searchButton.anchor.size),
             settingsButton.anchor.left.right.equal.to(searchButton.anchor.left.right)
         )
+        
+        barcodeViewController = BarcodeScannerViewController()
+        barcodeViewController?.codeDelegate = self as BarcodeScannerCodeDelegate
+        barcodeViewController?.errorDelegate = self as BarcodeScannerErrorDelegate
+        barcodeViewController?.dismissalDelegate = self as BarcodeScannerDismissalDelegate
+        
+        itemViewController = ItemViewController()
+        itemViewController?.dismissalDelegate = self as ItemViewDismissalDelegate
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         if firstOpen {
-            setUpScanner()
+            present(barcodeViewController ?? self, animated: true, completion: nil)
+            firstOpen = false
         }
     }
     
-    func setUpScanner() {
-        let viewController = BarcodeScannerViewController()
-        viewController.codeDelegate = self as BarcodeScannerCodeDelegate
-        viewController.errorDelegate = self as BarcodeScannerErrorDelegate
-        viewController.dismissalDelegate = self as BarcodeScannerDismissalDelegate
-        
-        present(viewController, animated: true, completion: nil)
+    @objc func scanBarcodeAction(sender: customButton!) {
+        sender.shake()
+        present(barcodeViewController ?? self, animated: true, completion: nil)
     }
     
-    @objc func scanBarcodeAction(sender: UIButton!) {
-        setUpScanner()
-    }
-    
-    @objc func searchAction(sender: UIButton!) {
+    @objc func searchAction(sender: customButton!) {
+        sender.shake()
         print("search requested")
+        
     }
     
-    @objc func scanQRCodeAction(sender: UIButton!) {
+    @objc func scanQRCodeAction(sender: customButton!) {
+        sender.shake()
         print("scan QR code requested")
     }
     
-    @objc func settingsAction(sender: UIButton!) {
+    @objc func settingsAction(sender: customButton!) {
+        sender.shake()
         print("settings requested")
     }
 }
@@ -121,6 +136,9 @@ extension MainViewController: BarcodeScannerCodeDelegate {
     func scanner(_ controller: BarcodeScannerViewController, didCaptureCode code: String, type: String) {
         print(code)
         controller.reset()
+        controller.dismiss(animated: true, completion: nil)
+        itemViewController?.barcodeString = code
+        present(itemViewController ?? self, animated: true, completion: nil)
     }
 }
 
@@ -137,3 +155,8 @@ extension MainViewController: BarcodeScannerDismissalDelegate {
     }
 }
 
+extension MainViewController: ItemViewDismissalDelegate {
+    func itemViewDidDismiss(_ controller: ItemViewController) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+}

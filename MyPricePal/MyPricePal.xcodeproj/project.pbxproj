@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3566152E226AA67B00C7DA65 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3566152D226AA67B00C7DA65 /* SearchViewController.swift */; };
+		35661530226AA98F00C7DA65 /* ItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3566152F226AA98F00C7DA65 /* ItemViewController.swift */; };
 		358AB524226590FA00E9C1E7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358AB523226590FA00E9C1E7 /* AppDelegate.swift */; };
 		358AB526226590FA00E9C1E7 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358AB525226590FA00E9C1E7 /* MainViewController.swift */; };
 		358AB529226590FA00E9C1E7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 358AB527226590FA00E9C1E7 /* Main.storyboard */; };
@@ -20,6 +22,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3566152D226AA67B00C7DA65 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		3566152F226AA98F00C7DA65 /* ItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemViewController.swift; sourceTree = "<group>"; };
 		358AB520226590FA00E9C1E7 /* MyPricePal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyPricePal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		358AB523226590FA00E9C1E7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		358AB525226590FA00E9C1E7 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -73,6 +77,8 @@
 			children = (
 				358AB523226590FA00E9C1E7 /* AppDelegate.swift */,
 				358AB525226590FA00E9C1E7 /* MainViewController.swift */,
+				3566152F226AA98F00C7DA65 /* ItemViewController.swift */,
+				3566152D226AA67B00C7DA65 /* SearchViewController.swift */,
 				35D2C4E922665D6D009EA490 /* customButton.swift */,
 				358AB527226590FA00E9C1E7 /* Main.storyboard */,
 				35D2C4ED2266783E009EA490 /* Assets.xcassets */,
@@ -227,6 +233,8 @@
 			files = (
 				35D2C4EA22665D6D009EA490 /* customButton.swift in Sources */,
 				358AB526226590FA00E9C1E7 /* MainViewController.swift in Sources */,
+				35661530226AA98F00C7DA65 /* ItemViewController.swift in Sources */,
+				3566152E226AA67B00C7DA65 /* SearchViewController.swift in Sources */,
 				358AB524226590FA00E9C1E7 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
