@@ -17,11 +17,11 @@ open class ItemViewController: UIViewController {
 
     public weak var dismissalDelegate: ItemViewDismissalDelegate?
     
-    public var barcodeString: String?
+    public var barcodeString: String? //Barcode string to send to firebase
     
-    var closeButton: UIBarButtonItem = {
+    var backButton: UIBarButtonItem = {
         let button = UIButton(frame: .zero)
-        button.setTitle("Close", for: .normal)
+        button.setTitle("Back", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 17)
         button.tintColor = .black
         button.setTitleColor(.black, for: .normal)
@@ -37,6 +37,7 @@ open class ItemViewController: UIViewController {
         label.numberOfLines = 1
         label.textAlignment = .center
         label.textColor = .black
+        label.sizeToFit()
         return label
     }()
     
@@ -54,22 +55,29 @@ open class ItemViewController: UIViewController {
     override open func loadView() {
         super.loadView()
         view.backgroundColor = .white
-        
-        titleLabel.sizeToFit()
-        
-        navigationItem.leftBarButtonItem = closeButton
+        addNavigationBar()
+        layoutViews()
+    }
+    
+    func addNavigationBar() {
+        navigationItem.leftBarButtonItem = backButton
         navigationItem.titleView = titleLabel
         
         navigationBar.items = [navigationItem]
+        view.addSubview(navigationBar)
 
+    }
+    
+    func layoutViews() {
+        
         let textView = UITextView(frame: .zero)
         textView.text = barcodeString
         textView.textColor = .black
         textView.font = UIFont.boldSystemFont(ofSize: 25)
         textView.textAlignment = .center
+        //Activates the layout between the UIs.
         
         view.addSubview(textView)
-        view.addSubview(navigationBar)
         
         activate(
             navigationBar.anchor.left.right.equal.to(view.anchor.left.right),

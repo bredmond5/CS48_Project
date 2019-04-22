@@ -11,10 +11,6 @@ import BarcodeScanner
 import Anchors
 
 class MainViewController: UIViewController {
-
-    var firstOpen = true
-    
-    var barcodeViewController: BarcodeScannerViewController?
     var itemViewController: ItemViewController?
     
 //    lazy var stackView: UIStackView = {
@@ -27,6 +23,7 @@ class MainViewController: UIViewController {
 //        return stackView
 //    }()
 
+    //Creates the scanButton
     var scanBarcodeButton: UIButton = {
         let scanButton = customButton(frame: .zero)
         scanButton.setTitle("Scan barcode", for: .normal)
@@ -34,6 +31,7 @@ class MainViewController: UIViewController {
         return scanButton
     }()
     
+    //Creates the searchButton
     var searchButton: UIButton = {
         let searchButton = customButton(frame: .zero)
         searchButton.setTitle("Search", for: .normal)
@@ -41,6 +39,7 @@ class MainViewController: UIViewController {
         return searchButton
     }()
     
+    //Creates the qrCodeButton
     var qrCodeButton: UIButton = {
         let qrCodeButton = customButton(frame : .zero)
         qrCodeButton.setTitle("Scan QR code", for: .normal)
@@ -48,6 +47,7 @@ class MainViewController: UIViewController {
         return qrCodeButton
     }()
     
+    //Creates the settingsButton
     var settingsButton: UIButton = {
         let settingsButton = customButton(frame : .zero)
         settingsButton.setTitle("Settings", for: .normal)
@@ -55,20 +55,40 @@ class MainViewController: UIViewController {
         return settingsButton
     }()
     
+    //Called when the app opens up and lays out all of the views
     override func loadView() {
         super.loadView()
+    
+        setUpViews()
         
+        itemViewController = ItemViewController()
+        itemViewController?.dismissalDelegate = self as ItemViewDismissalDelegate
+        
+    }
+    
+    //adds and lays out all the views
+    func setUpViews() {
         view.backgroundColor = .white
+
         navigationItem.title = "MyPricePal"
         navigationController?.navigationBar.barTintColor = .white
+
+        addButtons()
+        layoutButtons()
+    }
     
+    func addButtons() {
         view.addSubview(scanBarcodeButton)
         view.addSubview(searchButton)
         view.addSubview(qrCodeButton)
         view.addSubview(settingsButton)
+    }
+    
+    func layoutButtons() {
         let guide = UILayoutGuide()
         view.addLayoutGuide(guide)
         
+        //this creates the layout of the buttons, see the github for anchors for more info.
         activate(
             guide.anchor.centerX,
             guide.anchor.centerY,
@@ -90,35 +110,25 @@ class MainViewController: UIViewController {
             settingsButton.anchor.size.equal.to(searchButton.anchor.size),
             settingsButton.anchor.left.right.equal.to(searchButton.anchor.left.right)
         )
-        
-        barcodeViewController = BarcodeScannerViewController()
-        barcodeViewController?.codeDelegate = self as BarcodeScannerCodeDelegate
-        barcodeViewController?.errorDelegate = self as BarcodeScannerErrorDelegate
-        barcodeViewController?.dismissalDelegate = self as BarcodeScannerDismissalDelegate
-        
-        itemViewController = ItemViewController()
-        itemViewController?.dismissalDelegate = self as ItemViewDismissalDelegate
-        
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        if firstOpen {
-            present(barcodeViewController ?? self, animated: true, completion: nil)
-            firstOpen = false
-        }
-    }
     
+    //The following objc functions are called when the buttons are clicked.
     @objc func scanBarcodeAction(sender: customButton!) {
         sender.shake()
-        present(barcodeViewController ?? self, animated: true, completion: nil)
+        
+        let barcodeViewController = BarcodeScannerViewController()
+        barcodeViewController.codeDelegate = self as BarcodeScannerCodeDelegate
+        barcodeViewController.errorDelegate = self as BarcodeScannerErrorDelegate
+        barcodeViewController.dismissalDelegate = self as BarcodeScannerDismissalDelegate
+        barcodeViewController.isOneTimeSearch = false
+        
+        present(barcodeViewController, animated: true, completion: nil)
     }
     
     @objc func searchAction(sender: customButton!) {
         sender.shake()
         print("search requested")
-        
     }
     
     @objc func scanQRCodeAction(sender: customButton!) {
@@ -132,12 +142,15 @@ class MainViewController: UIViewController {
     }
 }
 
+//The following extensions make MainViewController a delegate to the barcodeviewcontroller
+// and the itemviewcontroller.
 extension MainViewController: BarcodeScannerCodeDelegate {
     func scanner(_ controller: BarcodeScannerViewController, didCaptureCode code: String, type: String) {
         print(code)
-        controller.reset()
-        controller.dismiss(animated: true, completion: nil)
+        controller.reset(animated: false)
         itemViewController?.barcodeString = code
+        
+        controller.dismiss(animated: false, completion: nil)
         present(itemViewController ?? self, animated: true, completion: nil)
     }
 }
@@ -151,7 +164,6 @@ extension MainViewController: BarcodeScannerErrorDelegate {
 extension MainViewController: BarcodeScannerDismissalDelegate {
     func scannerDidDismiss(_ controller: BarcodeScannerViewController) {
         controller.dismiss(animated: true, completion: nil)
-        firstOpen = false
     }
 }
 
