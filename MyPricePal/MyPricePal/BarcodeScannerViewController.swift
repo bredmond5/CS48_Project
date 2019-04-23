@@ -101,7 +101,7 @@ open class BarcodeScannerViewController: UIViewController {
     cameraViewController.metadata = metadata
     cameraViewController.delegate = self
     add(childViewController: cameraViewController)
-
+    
     view.bringSubviewToFront(messageView)
   }
 
@@ -131,6 +131,7 @@ open class BarcodeScannerViewController: UIViewController {
    - Parameter animated: Flag to show scanner with or without animation.
    */
   public func reset(animated: Bool = true) {
+    print("in here!")
     status = Status(state: .scanning, animated: animated)
   }
 

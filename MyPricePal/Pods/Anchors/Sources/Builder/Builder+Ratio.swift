@@ -5,7 +5,7 @@
 #endif
 
 public extension Builder {
-  public class Ratio: ConstraintProducer {
+  class Ratio: ConstraintProducer {
 
     let sourceAnchor: Anchor
     let ratio: CGFloat
