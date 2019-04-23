@@ -16,4 +16,5 @@ public protocol SearchViewControllerDelegate {
 
 class SearchViewController: UITableViewController {
     
+    
 }

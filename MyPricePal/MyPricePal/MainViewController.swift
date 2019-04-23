@@ -57,21 +57,13 @@ class MainViewController: UIViewController {
     override func loadView() {
         super.loadView()
     
-        setUpViews()
-        
-       
-        
-    }
-    
-    //adds and lays out all the views
-    func setUpViews() {
+        //add and lays out all the views
         view.backgroundColor = .white
-
+        
         navigationItem.title = "MyPricePal"
         navigationController?.navigationBar.barTintColor = .white
-
+        
         addButtons()
-        layoutButtons()
     }
     
     func addButtons() {
@@ -79,6 +71,7 @@ class MainViewController: UIViewController {
         view.addSubview(searchButton)
         view.addSubview(qrCodeButton)
         view.addSubview(settingsButton)
+        layoutButtons()
     }
     
     func layoutButtons() {
@@ -114,13 +107,14 @@ class MainViewController: UIViewController {
     @objc func scanBarcodeAction(sender: customButton!) {
         sender.shake()
         
-        let barcodeViewController = BarcodeScannerViewController()
-        barcodeViewController.codeDelegate = self as BarcodeScannerCodeDelegate
-        barcodeViewController.errorDelegate = self as BarcodeScannerErrorDelegate
-        barcodeViewController.dismissalDelegate = self as BarcodeScannerDismissalDelegate
-        barcodeViewController.isOneTimeSearch = false
+        let viewController = BarcodeScannerViewController()
+        viewController.codeDelegate = self
+        viewController.errorDelegate = self
+        viewController.dismissalDelegate = self
+        viewController.navigationItem.title = "Scan Barcode"
         
-        present(barcodeViewController, animated: true, completion: nil)
+        navigationController?.pushViewController(viewController, animated: true)
+//        present(viewController, animated: true)
     }
     
     @objc func searchAction(sender: customButton!) {
@@ -143,14 +137,12 @@ class MainViewController: UIViewController {
 // and the itemviewcontroller.
 extension MainViewController: BarcodeScannerCodeDelegate {
     func scanner(_ controller: BarcodeScannerViewController, didCaptureCode code: String, type: String) {
-        print(code)
-        controller.reset(animated: false)
+        
         let itemViewController = ItemViewController()
         itemViewController.dismissalDelegate = self as ItemViewDismissalDelegate
         itemViewController.barcodeString = code
         
-        controller.dismiss(animated: false, completion: nil)
-        present(itemViewController, animated: true, completion: nil)
+        navigationController?.pushViewController(itemViewController, animated: true)
     }
 }
 
@@ -162,12 +154,15 @@ extension MainViewController: BarcodeScannerErrorDelegate {
 
 extension MainViewController: BarcodeScannerDismissalDelegate {
     func scannerDidDismiss(_ controller: BarcodeScannerViewController) {
-        controller.dismiss(animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
     }
 }
 
 extension MainViewController: ItemViewDismissalDelegate {
     func itemViewDidDismiss(_ controller: ItemViewController) {
-        controller.dismiss(animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
+        let controller = navigationController?.topViewController as! BarcodeScannerViewController
+        controller.reset(animated: false)
+
     }
 }
