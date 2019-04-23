@@ -1,2 +1,6 @@
 *.xcworkspace
+<<<<<<< HEAD
 .DS_Store
+=======
+.DS_Store
+>>>>>>> e4cedd3ed29ecd32b86348b59301c0dd47886ef1
