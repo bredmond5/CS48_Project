@@ -11,8 +11,6 @@ import BarcodeScanner
 import Anchors
 
 class MainViewController: UIViewController {
-    var itemViewController: ItemViewController?
-    
 //    lazy var stackView: UIStackView = {
 //        let stackView = UIStackView(arrangedSubviews: [scanButton, searchButton])
 //        stackView.alignment = .fill
@@ -61,8 +59,7 @@ class MainViewController: UIViewController {
     
         setUpViews()
         
-        itemViewController = ItemViewController()
-        itemViewController?.dismissalDelegate = self as ItemViewDismissalDelegate
+       
         
     }
     
@@ -148,10 +145,12 @@ extension MainViewController: BarcodeScannerCodeDelegate {
     func scanner(_ controller: BarcodeScannerViewController, didCaptureCode code: String, type: String) {
         print(code)
         controller.reset(animated: false)
-        itemViewController?.barcodeString = code
+        let itemViewController = ItemViewController()
+        itemViewController.dismissalDelegate = self as ItemViewDismissalDelegate
+        itemViewController.barcodeString = code
         
         controller.dismiss(animated: false, completion: nil)
-        present(itemViewController ?? self, animated: true, completion: nil)
+        present(itemViewController, animated: true, completion: nil)
     }
 }
 
