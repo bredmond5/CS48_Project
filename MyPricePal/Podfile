@@ -9,5 +9,7 @@ target 'MyPricePal' do
 
 pod 'BarcodeScanner'
 pod 'SwiftLint'
+pod 'Firebase/Core'
+pod 'Firebase/Database'
 
 end
