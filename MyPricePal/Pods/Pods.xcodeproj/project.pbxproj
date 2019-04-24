@@ -178,6 +178,7 @@
 		35F13B76327CC5AA5FEF7F7AB9235ACB /* APLevelDB.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E39D67C40A0DB0EB97B37CE22AFC942 /* APLevelDB.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		35FC5A90C39D093A3F55B16129EB69FC /* FIRInstanceIDVersionUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = F3E5BA741E6A330A33099E187B2AAAE7 /* FIRInstanceIDVersionUtilities.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		3668A719E0A98E299BD055C513E4DD2F /* FImmutableSortedSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FC8B29602FA9FC6B65E43E6346721 /* FImmutableSortedSet.m */; };
+		36C8D76B227111450079153B /* BarcodeScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C8D76A227111450079153B /* BarcodeScannerViewController.swift */; };
 		36CFD0A617FD7331C2005CCB207B2137 /* FQuerySpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F25D1586C61EA496140A91D928DD1BC /* FQuerySpec.m */; };
 		36DDA2D70D6FFB0A6D0798CC3BC33F24 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCBE7847D4B22E832CFCEADE58B3E309 /* Foundation.framework */; };
 		36DE4DEF04F6CB621A8B39A1A46543F9 /* FIRInstanceIDTokenInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = B8E7EE268640AC2A02AF9A243DE69E7A /* FIRInstanceIDTokenInfo.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -981,6 +982,7 @@
 		3669BF53526B00B97C0113C521CF834F /* FListenComplete.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FListenComplete.m; path = Firebase/Database/FListenComplete.m; sourceTree = "<group>"; };
 		36A40DCA74B535FC976235C097E5D696 /* Localizable.strings */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		36B27681C5E8DEAAFA67F17786735CCB /* NSError+FIRInstanceID.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSError+FIRInstanceID.m"; path = "Firebase/InstanceID/NSError+FIRInstanceID.m"; sourceTree = "<group>"; };
+		36C8D76A227111450079153B /* BarcodeScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeScannerViewController.swift; sourceTree = "<group>"; };
 		3721EFE8067BC4BEF3C23194B13FA048 /* FImmutableSortedDictionary.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FImmutableSortedDictionary.h; path = Firebase/Database/third_party/FImmutableSortedDictionary/FImmutableSortedDictionary/FImmutableSortedDictionary.h; sourceTree = "<group>"; };
 		386E5B5857A7A9F52F2E2BBF6384DFD2 /* testutil.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = testutil.h; path = util/testutil.h; sourceTree = "<group>"; };
 		38CBC570511892D4DDCA08EB598D7B8A /* Pods-MyPricePal.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MyPricePal.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1755,6 +1757,7 @@
 			isa = PBXGroup;
 			children = (
 				A1588F3868AD8338BFD907DA6380EF89 /* AVMetadataObject+Extensions.swift */,
+				36C8D76A227111450079153B /* BarcodeScannerViewController.swift */,
 				4158033D2BA645F6F29CE5F82B37F047 /* CameraViewController.swift */,
 				F6A73FF648C5D6BCC8F3E1292F747977 /* FocusViewType.swift */,
 				B595D1320D5B23AED5193CF79B391674 /* Functions.swift */,
@@ -3478,6 +3481,7 @@
 				60B77C4030577F2E2131D421B443A1A3 /* Anchors.swift in Sources */,
 				CF4A2D8373C1A1E53E4DF86072BA3894 /* Builder+Apply.swift in Sources */,
 				0BC56A8318D4AE578886E5449D06F7EF /* Builder+DynamicSpacingHorizontally.swift in Sources */,
+				36C8D76B227111450079153B /* BarcodeScannerViewController.swift in Sources */,
 				11C7012919AEB3A5B654A2F6353C1AC2 /* Builder+FixedSpacingHorizontally.swift in Sources */,
 				D4C6460B42C786785A9460E3CD65AADF /* Builder+PagingHorizontally.swift in Sources */,
 				08B4BAE3A29674A11F0549D50DADFF33 /* Builder+Ratio.swift in Sources */,
