@@ -112,9 +112,7 @@ class MainViewController: UIViewController {
         viewController.errorDelegate = self
         viewController.dismissalDelegate = self
         viewController.navigationItem.title = "Scan Barcode"
-        
         navigationController?.pushViewController(viewController, animated: true)
-//        present(viewController, animated: true)
     }
     
     @objc func searchAction(sender: customButton!) {
@@ -162,7 +160,7 @@ extension MainViewController: ItemViewDismissalDelegate {
     func itemViewDidDismiss(_ controller: ItemViewController) {
         navigationController?.popViewController(animated: true)
         let controller = navigationController?.topViewController as! BarcodeScannerViewController
-        controller.reset(animated: false)
+        controller.reset(animated: true)
 
     }
 }

@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "0D24BE7E6771E93013C3D85FDC777CCC"
-               BuildableName = "Localization.bundle"
-               BlueprintName = "BarcodeScanner-Localization"
+               BlueprintIdentifier = "FE47F11E708D633621DB136BD3CD0034"
+               BuildableName = "leveldb.framework"
+               BlueprintName = "leveldb-library"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "0D24BE7E6771E93013C3D85FDC777CCC"
-            BuildableName = "Localization.bundle"
-            BlueprintName = "BarcodeScanner-Localization"
+            BlueprintIdentifier = "FE47F11E708D633621DB136BD3CD0034"
+            BuildableName = "leveldb.framework"
+            BlueprintName = "leveldb-library"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
