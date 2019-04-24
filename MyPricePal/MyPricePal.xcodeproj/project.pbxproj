@@ -18,6 +18,7 @@
 		35D2C4EA22665D6D009EA490 /* customButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D2C4E922665D6D009EA490 /* customButton.swift */; };
 		35D2C4EE2266783E009EA490 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35D2C4ED2266783E009EA490 /* Assets.xcassets */; };
 		35D2C4F0226678B9009EA490 /* AppIcon.appiconset in Resources */ = {isa = PBXBuildFile; fileRef = 35D2C4EF226678B9009EA490 /* AppIcon.appiconset */; };
+		36C8D7692270E0550079153B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 36C8D7682270E0550079153B /* GoogleService-Info.plist */; };
 		464484AC19DF04357144D9F5 /* Pods_MyPricePal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 902B3D5B3841F2C2786D54E2 /* Pods_MyPricePal.framework */; };
 /* End PBXBuildFile section */
 
@@ -35,6 +36,7 @@
 		35D2C4E922665D6D009EA490 /* customButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = customButton.swift; sourceTree = "<group>"; };
 		35D2C4ED2266783E009EA490 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../AppIcon.appiconset/Assets.xcassets; sourceTree = "<group>"; };
 		35D2C4EF226678B9009EA490 /* AppIcon.appiconset */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AppIcon.appiconset; path = ../AppIcon.appiconset; sourceTree = "<group>"; };
+		36C8D7682270E0550079153B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4CFAE486880BA84DE909E64C /* Pods-MyPricePal.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyPricePal.release.xcconfig"; path = "Pods/Target Support Files/Pods-MyPricePal/Pods-MyPricePal.release.xcconfig"; sourceTree = "<group>"; };
 		902B3D5B3841F2C2786D54E2 /* Pods_MyPricePal.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyPricePal.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2E7D8D56561BAB2AF97C0FE /* Pods-MyPricePal.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyPricePal.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MyPricePal/Pods-MyPricePal.debug.xcconfig"; sourceTree = "<group>"; };
@@ -81,6 +83,7 @@
 				3566152D226AA67B00C7DA65 /* SearchViewController.swift */,
 				35D2C4E922665D6D009EA490 /* customButton.swift */,
 				358AB527226590FA00E9C1E7 /* Main.storyboard */,
+				36C8D7682270E0550079153B /* GoogleService-Info.plist */,
 				35D2C4ED2266783E009EA490 /* Assets.xcassets */,
 				35D2C4EF226678B9009EA490 /* AppIcon.appiconset */,
 				358AB52C226590FB00E9C1E7 /* LaunchScreen.storyboard */,
@@ -170,6 +173,7 @@
 			files = (
 				35D2C4F0226678B9009EA490 /* AppIcon.appiconset in Resources */,
 				358AB52E226590FB00E9C1E7 /* LaunchScreen.storyboard in Resources */,
+				36C8D7692270E0550079153B /* GoogleService-Info.plist in Resources */,
 				35D2C4EE2266783E009EA490 /* Assets.xcassets in Resources */,
 				358AB529226590FA00E9C1E7 /* Main.storyboard in Resources */,
 			);
@@ -186,9 +190,12 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-MyPricePal/Pods-MyPricePal-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-MyPricePal/Pods-MyPricePal-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Anchors/Anchors.framework",
 				"${BUILT_PRODUCTS_DIR}/BarcodeScanner/BarcodeScanner.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
@@ -196,10 +203,13 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Anchors.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BarcodeScanner.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MyPricePal/Pods-MyPricePal-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MyPricePal/Pods-MyPricePal-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		97CD81007AF8AD5FA5FB11CB /* [CP] Check Pods Manifest.lock */ = {
