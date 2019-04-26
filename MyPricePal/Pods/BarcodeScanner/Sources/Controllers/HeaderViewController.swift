@@ -23,7 +23,7 @@ public final class HeaderViewController: UIViewController {
 
   public override func viewDidLoad() {
     super.viewDidLoad()
-    
+
     navigationBar.delegate = self
     closeButton.addTarget(self, action: #selector(handleCloseButtonTap), for: .touchUpInside)
 

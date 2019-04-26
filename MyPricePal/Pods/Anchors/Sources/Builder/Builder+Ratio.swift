@@ -10,7 +10,7 @@ public extension Builder {
     let sourceAnchor: Anchor
     let ratio: CGFloat
 
-    init(anchor: Anchor, ratio: CGFloat) {
+    public init(anchor: Anchor, ratio: CGFloat) {
       self.sourceAnchor = anchor
       self.ratio = ratio
     }
