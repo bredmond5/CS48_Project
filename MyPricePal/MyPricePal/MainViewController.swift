@@ -8,15 +8,17 @@
 
 import UIKit
 import BarcodeScanner
+import FirebaseDatabase
 
 class MainViewController: UIViewController{
 
     var firstOpen = true
+    var ref: DatabaseReference!
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setUpViewController()
-        
+        ref = Database.database().reference()
         if firstOpen {
             setUpScanner()
         }
