@@ -10,7 +10,11 @@ target 'MyPricePal' do
 pod 'BarcodeScanner'
 pod 'SwiftLint'
 pod 'Anchors'
-pod 'Firebase/Core'
+pod 'Firebase'
 pod 'Firebase/Database'
- 
+pod 'FirebaseAnalytics'
+pod 'GoogleUtilities'
+pod 'GoogleAppMeasurement'
+
+
 end
