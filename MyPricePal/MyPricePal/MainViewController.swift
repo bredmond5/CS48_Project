@@ -60,15 +60,15 @@ class MainViewController: UIViewController {
     //Called when the app opens up and lays out all of the views
     override func loadView() {
         super.loadView()
-        
         //add and lays out all the views
         view.backgroundColor = .white
-        
+        ref = Database.database().reference()
+        self.ref.child("food").child("chips").setValue(["price":"3.99"])
         navigationItem.title = "MyPricePal"
         navigationController?.navigationBar.barTintColor = .white
-        ref = Database.database().reference()
         addButtons()
     }
+    
     
     func addButtons() {
         view.addSubview(scanBarcodeButton)
