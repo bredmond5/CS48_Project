@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>66292489071-slme340cbou145ake3vs4mkf34rki6qb.apps.googleusercontent.com</string>
+	<string>261764384449-b33qc0epb2uvmlca4evo7hagjdd58rbk.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.66292489071-slme340cbou145ake3vs4mkf34rki6qb</string>
+	<string>com.googleusercontent.apps.261764384449-b33qc0epb2uvmlca4evo7hagjdd58rbk</string>
 	<key>API_KEY</key>
-	<string>AIzaSyA02TDzCtFvI_ujKRCajYPLqT_1XChXUIQ</string>
+	<string>AIzaSyC67Qj-pMD9yPA_e2SuRkR9B2p14rLeXWs</string>
 	<key>GCM_SENDER_ID</key>
-	<string>66292489071</string>
+	<string>261764384449</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.BriceRedmond.MyPricePal1</string>
 	<key>PROJECT_ID</key>
-	<string>cs48-project</string>
+	<string>cs48-mypricepal</string>
 	<key>STORAGE_BUCKET</key>
-	<string>cs48-project.appspot.com</string>
+	<string>cs48-mypricepal.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +29,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:66292489071:ios:27f540c610bf0808</string>
+	<string>1:261764384449:ios:27f540c610bf0808</string>
 	<key>DATABASE_URL</key>
-	<string>https://cs48-project.firebaseio.com</string>
+	<string>https://cs48-mypricepal.firebaseio.com</string>
 </dict>
 </plist>

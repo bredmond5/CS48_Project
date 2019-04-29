@@ -63,7 +63,7 @@ class MainViewController: UIViewController {
         //add and lays out all the views
         view.backgroundColor = .white
         ref = Database.database().reference()
-        self.ref.child("food").child("chips").setValue(["price":"3.99"])
+        self.ref.child("food").child("chips").setValue(["price":"4.99"])
         navigationItem.title = "MyPricePal"
         navigationController?.navigationBar.barTintColor = .white
         addButtons()
