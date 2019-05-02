@@ -27,6 +27,7 @@ public class ItemViewController: UIViewController {
             if let val = snapShot.value as? String{
                 self.textView.text = val
                 self.itemN = val
+                self.showAlertButtonTapped()
             }
             else{
                 print("could not execute")
@@ -60,13 +61,14 @@ public class ItemViewController: UIViewController {
     
     override open func loadView() {
         super.loadView()
+        getItemName()
         view.backgroundColor = .white
         navigationItem.titleView = titleLabel
         let backBarButton = UIBarButtonItem(title: "Scan", style: .plain, target: self, action: #selector(dismissalAction(sender:)))        
         navigationItem.leftBarButtonItem = backBarButton
         layoutViews()
     }
-    @IBAction func showAlertButtonTapped(_ sender: UIButton){
+    func showAlertButtonTapped(){
         let alert = UIAlertController(title: "Item", message: "Is " + itemN! + " your item?", preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Yes", style: UIAlertAction.Style.default, handler: nil))
         alert.addAction(UIAlertAction(title: "No", style: UIAlertAction.Style.cancel, handler: nil))
@@ -75,18 +77,20 @@ public class ItemViewController: UIViewController {
     
     func layoutViews() {
         
-        getItemName()
         textView.textColor = .black
         textView.font = UIFont.boldSystemFont(ofSize: 25)
         textView.textAlignment = .center
         view.addSubview(textView)
         
+//        let alertButton = UIButton(frame: .zero);
+//        alertButton.addTarget(self, action: #selector(showAlertButtonTapped(_:)), for: .touchUpInside)
+        
         activate(
-            
             textView.anchor.center.equal.to(view.safeAreaLayoutGuide.anchor.center),
             textView.anchor.width.equal.to(view.anchor.width).multiplier(3/5),
             textView.anchor.height.equal.to(textView.anchor.width).multiplier(1/2)
             
+
         )
     }
 }
