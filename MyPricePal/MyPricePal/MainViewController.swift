@@ -6,29 +6,25 @@
 //  Copyright © 2019 CS48. All rights reserved.
 //
 
+//
+//  ViewController.swift
+//  MyPricePal
+//
+//  Created by Brice Redmond on 4/15/19.
+//  Copyright © 2019 CS48. All rights reserved.
+//
+
 import UIKit
 import BarcodeScanner
 import Anchors
-import FirebaseDatabase
 
 class MainViewController: UIViewController {
-    //    lazy var stackView: UIStackView = {
-    //        let stackView = UIStackView(arrangedSubviews: [scanButton, searchButton])
-    //        stackView.alignment = .fill
-    //        stackView.distribution = .fillEqually
-    //        stackView.spacing = 15
-    //        stackView.axis = .vertical
-    //        stackView.translatesAutoresizingMaskIntoConstraints = false
-    //        return stackView
-    //    }()
-    
-    var ref: DatabaseReference!
-    
     
     //Creates the scanButton
     var scanBarcodeButton: UIButton = {
         let scanButton = customButton(frame: .zero)
         scanButton.setTitle("Scan barcode", for: .normal)
+        
         scanButton.addTarget(self, action: #selector(scanBarcodeAction), for: .touchUpInside)
         return scanButton
     }()
@@ -60,13 +56,15 @@ class MainViewController: UIViewController {
     //Called when the app opens up and lays out all of the views
     override func loadView() {
         super.loadView()
+        
         //add and lays out all the views
-        view.backgroundColor = .white 
+        view.backgroundColor = .white
+        
         navigationItem.title = "MyPricePal"
         navigationController?.navigationBar.barTintColor = .white
+        
         addButtons()
     }
-    
     
     func addButtons() {
         view.addSubview(scanBarcodeButton)
@@ -116,12 +114,15 @@ class MainViewController: UIViewController {
         viewController.navigationItem.title = "Scan Barcode"
         
         navigationController?.pushViewController(viewController, animated: true)
-        //        present(viewController, animated: true)
     }
     
     @objc func searchAction(sender: customButton!) {
         sender.shake()
-        print("search requested")
+        
+        let viewController = SearchViewController()
+        viewController.dismissalDelegate = self
+        
+        navigationController?.pushViewController(viewController, animated: true)
     }
     
     @objc func scanQRCodeAction(sender: customButton!) {
@@ -164,7 +165,12 @@ extension MainViewController: ItemViewDismissalDelegate {
     func itemViewDidDismiss(_ controller: ItemViewController) {
         navigationController?.popViewController(animated: true)
         let controller = navigationController?.topViewController as! BarcodeScannerViewController
-        controller.reset(animated: false)
-        
+        controller.reset(animated: true)
+    }
+}
+
+extension MainViewController: SearchViewControllerDismissalDelegate {
+    func searchViewDidDismiss(_ controller: SearchViewController) {
+        navigationController?.popViewController(animated: true)
     }
 }
