@@ -34,15 +34,7 @@ public class ItemViewController: UIViewController {
     })
 }
     
-//    var backButton: UIButton = {
-//        let button = UIButton(frame: .zero)
-//        button.setTitle("Scan", for: .normal)
-//        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 17)
-//        button.tintColor = .black
-//        button.setTitleColor(.black, for: .normal)
-//        button.addTarget(self, action: #selector(dismissalAction), for: .touchUpInside)
-//        return button
-//    }()
+
     
     var titleLabel: UILabel = {
         let label = UILabel()
@@ -81,14 +73,6 @@ public class ItemViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
-    func addNavigationBar() {
-//        navigationItem.leftBarButtonItem = backButton
-//        navigationItem.titleView = titleLabel
-//
-//        navigationBar.items = [navigationItem]
-
-    }
-    
     func layoutViews() {
         
         getItemName()
@@ -97,10 +81,7 @@ public class ItemViewController: UIViewController {
         textView.textAlignment = .center
         view.addSubview(textView)
         
-        //Activates the layout between the UIs.
         activate(
-//            navigationBar.anchor.left.right.equal.to(view.anchor.left.right),
-//            navigationBar.anchor.top.equal.to(view.safeAreaLayoutGuide.anchor.top),
             
             textView.anchor.center.equal.to(view.safeAreaLayoutGuide.anchor.center),
             textView.anchor.width.equal.to(view.anchor.width).multiplier(3/5),
