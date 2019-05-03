@@ -17,7 +17,7 @@
 import UIKit
 import BarcodeScanner
 import Anchors
-import Firebase
+
 class MainViewController: UIViewController {
     
     //Creates the scanButton
