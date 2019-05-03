@@ -123,6 +123,7 @@ open class BarcodeScannerViewController: UIViewController {
    - Parameter errorMessage: Error message that overrides the message from the config.
    */
   public func resetWithError(message: String? = nil) {
+    print("yo")
     status = Status(state: .notFound, text: message)
   }
 
@@ -332,7 +333,6 @@ extension BarcodeScannerViewController: CameraViewControllerDelegate {
       code = String(code.dropFirst())
       rawType = AVMetadataObject.ObjectType.upca.rawValue
     }
-
     codeDelegate?.scanner(self, didCaptureCode: code, type: rawType)
     animateFlash(whenProcessing: isOneTimeSearch)
   }
