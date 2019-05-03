@@ -1,0 +1,5 @@
+language:swift
+xcode_workspace:MyPricePal
+xcode_scheme:MyPricePalTests
+xcode_destination:platform=iOS Simulator,OS=10.1,name=iPad Pro (9.7-inch)
+#podfile: MyPricePal
