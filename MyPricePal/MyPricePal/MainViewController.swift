@@ -6,19 +6,16 @@
 //  Copyright © 2019 CS48. All rights reserved.
 //
 
-//
-//  ViewController.swift
-//  MyPricePal
-//
-//  Created by Brice Redmond on 4/15/19.
-//  Copyright © 2019 CS48. All rights reserved.
-//
-
 import UIKit
 import BarcodeScanner
 import Anchors
+import FirebaseDatabase
+import AVFoundation
 
 class MainViewController: UIViewController {
+    
+    var searchVC: SearchViewController?
+    var itemVC: ItemViewController?
     
     //Creates the scanButton
     var scanBarcodeButton: UIButton = {
@@ -56,6 +53,12 @@ class MainViewController: UIViewController {
     //Called when the app opens up and lays out all of the views
     override func loadView() {
         super.loadView()
+        
+        searchVC = SearchViewController()
+        searchVC?.dismissalDelegate = self
+        
+        itemVC = ItemViewController()
+        itemVC?.dismissalDelegate = self
         
         //add and lays out all the views
         view.backgroundColor = .white
@@ -107,22 +110,22 @@ class MainViewController: UIViewController {
     @objc func scanBarcodeAction(sender: customButton!) {
         sender.shake()
         
-        let viewController = BarcodeScannerViewController()
-        viewController.codeDelegate = self
-        viewController.errorDelegate = self
-        viewController.dismissalDelegate = self
-        viewController.navigationItem.title = "Scan Barcode"
-        
-        navigationController?.pushViewController(viewController, animated: true)
+        let barcodeVC = BarcodeScannerViewController()
+        barcodeVC.codeDelegate = self
+        barcodeVC.errorDelegate = self
+        barcodeVC.dismissalDelegate = self
+        barcodeVC.navigationItem.title = "Scan Barcode"
+        barcodeVC.isOneTimeSearch = true
+        barcodeVC.cameraViewController.showsCameraButton = true
+    
+  //      barcodeVC.metadata.append(AVMetadataObject.ObjectType.qr)
+
+        navigationController?.pushViewController(barcodeVC, animated: true)
     }
     
     @objc func searchAction(sender: customButton!) {
         sender.shake()
-        
-        let viewController = SearchViewController()
-        viewController.dismissalDelegate = self
-        
-        navigationController?.pushViewController(viewController, animated: true)
+        navigationController?.pushViewController(searchVC!, animated: true)
     }
     
     @objc func scanQRCodeAction(sender: customButton!) {
@@ -134,24 +137,53 @@ class MainViewController: UIViewController {
         sender.shake()
         print("settings requested")
     }
+    
+    func getItemName(_ barcodeString: String,  _ barcodeVC: BarcodeScannerViewController){
+        let ref = Database.database().reference().child("Barcodes")
+        ref.child(barcodeString).observeSingleEvent(of: .value, with: {(snapShot) in
+            if let val = snapShot.value as? String{
+                self.showAlertButtonTapped(val, barcodeVC)
+            }
+            else{
+                self.alertButtonError(barcode: barcodeString, barcodeVC)
+            }
+        })
+    }
+    
+    func alertButtonError(barcode: String, _ barcodeVC: BarcodeScannerViewController) {
+        let alert = UIAlertController(title: "Error", message: "Could not find " + barcode, preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "Try Again", style: UIAlertAction.Style.default, handler: {action in
+            barcodeVC.reset()
+        }))
+        
+        barcodeVC.present(alert, animated: true)
+    }
+    
+    func showAlertButtonTapped(_ itemN: String, _ barcodeVC: BarcodeScannerViewController){
+        let alert = UIAlertController(title: "Item", message: "Is " + itemN + " your item?", preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "Yes", style: UIAlertAction.Style.default, handler: {action in
+            self.searchVC?.giveItemScanned(itemN)
+            self.itemVC?.itemN = itemN
+            self.navigationController?.pushViewController(self.itemVC!, animated: true)
+        }))
+        alert.addAction(UIAlertAction(title: "No", style: UIAlertAction.Style.cancel, handler: {action in
+            barcodeVC.reset(animated: true)
+        }))
+        barcodeVC.present(alert, animated: true)
+    }
 }
 
 //The following extensions make MainViewController a delegate to the barcodeviewcontroller
-// and the itemviewcontroller.
+// and the itemviewcontroller and searchviewcontroller.
 extension MainViewController: BarcodeScannerCodeDelegate {
     func scanner(_ controller: BarcodeScannerViewController, didCaptureCode code: String, type: String) {
-        
-        let itemViewController = ItemViewController()
-        itemViewController.dismissalDelegate = self as ItemViewDismissalDelegate
-        itemViewController.barcodeString = code
-        
-        navigationController?.pushViewController(itemViewController, animated: true)
+        getItemName(code, controller)
     }
 }
 
 extension MainViewController: BarcodeScannerErrorDelegate {
     func scanner(_ controller: BarcodeScannerViewController, didReceiveError error: Error) {
-        print(error)
+        controller.resetWithError(message: error.localizedDescription)
     }
 }
 

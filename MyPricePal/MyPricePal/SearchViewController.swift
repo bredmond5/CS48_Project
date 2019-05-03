@@ -18,7 +18,7 @@ class SearchViewController: UITableViewController {
     
     public weak var dismissalDelegate: SearchViewControllerDismissalDelegate?
     
-    var items = ["Item 1", "Item 2", "Item 3"]
+    var items: [String] = []
     
     var titleLabel: UILabel = {
         let label = UILabel()
@@ -43,9 +43,18 @@ class SearchViewController: UITableViewController {
         //       navigationItem.leftBarButtonItem = backBarButton
     }
     
+    public func giveItemScanned(_ item: String) {
+        for x in items {
+            if(x == item) {
+                return
+            }
+        }
+        items.append(item)
+    }
+    
     override func viewDidLoad() {
-        tableView.register(ItemCell.self, forCellReuseIdentifier: "cellId")
-        tableView.register(Header.self, forHeaderFooterViewReuseIdentifier: "headerId")
+        tableView.register(SearchViewItemCell.self, forCellReuseIdentifier: "cellId")
+        tableView.register(SearchViewHeader.self, forHeaderFooterViewReuseIdentifier: "headerId")
         
         tableView.sectionHeaderHeight = 50
         
@@ -66,7 +75,7 @@ class SearchViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let itemCell = tableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath) as! ItemCell
+        let itemCell = tableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath) as! SearchViewItemCell
         itemCell.nameLabel.text = items[indexPath.row]
         itemCell.searchViewController = self
         return itemCell
@@ -84,7 +93,7 @@ class SearchViewController: UITableViewController {
     }
 }
 
-class Header: UITableViewHeaderFooterView {
+class SearchViewHeader: UITableViewHeaderFooterView {
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         setupViews()
@@ -123,7 +132,7 @@ class Header: UITableViewHeaderFooterView {
     }
 }
 
-class ItemCell: UITableViewCell {
+class SearchViewItemCell: UITableViewCell {
     
     var searchViewController: SearchViewController?
     
