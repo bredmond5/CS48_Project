@@ -1,0 +1,58 @@
+{
+  "Gatorade": {
+    "Product name": [
+      "Gatorade Fierce Sports Drink, Blue Cherry, 12 oz",
+      "Gatorade Fierce Sports Drink, Blue Cherry, 20 oz",
+      "Gatorade Fierce Sports Drink, Fruit Punch + Berry",
+      "Gatorade Fierce Sports Drink, Fruit Punch + Berry",
+      "Gatorade Fierce Sports Drink, Grape, 20 oz",
+      "Gatorade Fierce Sports Drink, Lemon-Lime+Strawberry, Frui...",
+      "Gatorade Frost Sports Drink, Glacier Freeze, Fierce Fruit..."
+    ],
+    "Size or Count": [
+      "12 ct",
+      "8 ct",
+      "28 oz",
+      "28 oz",
+      "8 ct",
+      "24 ct",
+      "28 ct"
+    ],
+    "Price": [
+      "|dollars|4|point|99",
+      "|dollars|4|point|99",
+      "2 for |dollars|3|point|50",
+      "2 for |dollars|4|point|00",
+      "|dollars|4|point|99",
+      "|dollars|14|point|99",
+      "|dollars|3|point|00 Off"
+    ],
+    "Deal End": [
+      "Ends 05-07-19",
+      "Ends 05-07-19",
+      "Ends Saturday",
+      "Ends Saturday",
+      "Ends 05-07-19",
+      "Ends 05-07-19",
+      "Ends 05-12-19"
+    ],
+    "Store Name": [
+      "Ralphs",
+      "Albertsons",
+      "CVS/pharmacy",
+      "Rite Aid",
+      "Vons",
+      "Smart & Final",
+      "Costco"
+    ],
+    "Picture URL": [
+      "https:|slash||slash|products|point|mygrocerydeals|point|com|slash|3|slash|1|slash|4|slash|5200010413|point|jpg?deal=09952f74-59ec-408c-aecb-772a13d5045e&upc=5200010413&chain=174",
+      "https:|slash||slash|products|point|mygrocerydeals|point|com|slash|2|slash|1|slash|4|slash|5200010412|point|jpg?deal=7f8958fd-b89d-4cbf-968c-1055f9026d64&upc=5200010412&chain=4",
+      "https:|slash||slash|products|point|mygrocerydeals|point|com|slash|5|slash|2|slash|5|slash|5200013525|point|jpg?deal=b82ba922-79e1-4201-84b0-519d32494131&upc=5200013525&chain=44",
+      "https:|slash||slash|products|point|mygrocerydeals|point|com|slash|5|slash|2|slash|5|slash|5200013525|point|jpg?deal=b5a49476-f178-4af7-9be8-c9b8806590a3&upc=5200013525&chain=182",
+      "https:|slash||slash|products|point|mygrocerydeals|point|com|slash|2|slash|4|slash|8|slash|5200020842|point|jpg?deal=cbb89169-d645-4e34-82b8-a6cb2148136d&upc=5200020842&chain=238",
+      "https:|slash||slash|products|point|mygrocerydeals|point|com|slash|1|slash|0|slash|8|slash|5200020801|point|jpg?deal=ddec950b-d09a-4728-ad2a-9ca54386322d&upc=5200020801&chain=199",
+      "https:|slash||slash|products|point|mygrocerydeals|point|com|slash|6|slash|7|slash|4|slash|5200010476|point|jpg?deal=b78b363c-9707-4459-891b-8536436c3a2a&upc=5200010476&chain=39"
+    ]
+  }
+}
