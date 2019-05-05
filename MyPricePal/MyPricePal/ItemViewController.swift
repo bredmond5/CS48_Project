@@ -23,7 +23,6 @@ class ItemViewController: UITableViewController {
     
     var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Lays Potato Chips"
         label.font = UIFont.boldSystemFont(ofSize: 17)
         label.numberOfLines = 1
         label.textAlignment = .center
@@ -46,6 +45,7 @@ class ItemViewController: UITableViewController {
     override func loadView() {
         super.loadView()
         view.backgroundColor = .white
+        titleLabel.text = itemN
         navigationItem.titleView = titleLabel
         let backBarButton = UIBarButtonItem(title: "Scan", style: .plain, target: self, action: #selector(dismissalAction(sender:)))        
         navigationItem.leftBarButtonItem = backBarButton
