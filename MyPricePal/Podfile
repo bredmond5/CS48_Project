@@ -17,10 +17,12 @@ pod 'GoogleUtilities'
 pod 'GoogleAppMeasurement'
 
 
+end
+
 target 'MyPricePalTests' do
        inherit! :search_paths
        pod 'Firebase'
-end
+
 
 
 end
