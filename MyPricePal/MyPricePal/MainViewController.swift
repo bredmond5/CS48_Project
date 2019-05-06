@@ -56,9 +56,11 @@ class MainViewController: UIViewController {
         
         searchVC = SearchViewController()
         searchVC?.dismissalDelegate = self
+        searchVC?.searchRequestedDelegate = self
         
         itemVC = ItemViewController()
         itemVC?.dismissalDelegate = self
+        
         
         //add and lays out all the views
         view.backgroundColor = .white
@@ -164,6 +166,8 @@ class MainViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "Yes", style: UIAlertAction.Style.default, handler: {action in
             self.searchVC?.giveItemScanned(itemN)
             self.itemVC?.itemN = itemN
+            let backBarButton = UIBarButtonItem(title: "Scan", style: .plain, target: self, action: #selector(dismissalAction(sender:)))
+            navigationItem.leftBarButtonItem = backBarButton
             self.navigationController?.pushViewController(self.itemVC!, animated: true)
         }))
         alert.addAction(UIAlertAction(title: "No", style: UIAlertAction.Style.cancel, handler: {action in
@@ -196,13 +200,25 @@ extension MainViewController: BarcodeScannerDismissalDelegate {
 extension MainViewController: ItemViewDismissalDelegate {
     func itemViewDidDismiss(_ controller: ItemViewController) {
         navigationController?.popViewController(animated: true)
-        let controller = navigationController?.topViewController as! BarcodeScannerViewController
-        controller.reset(animated: true)
+        
+        if navigationController?.topViewController is BarcodeScannerViewController
+        {
+            let barcodeVC = navigationController?.topViewController as! BarcodeScannerViewController
+            barcodeVC.reset(animated: true)
+        }
+        
     }
 }
 
 extension MainViewController: SearchViewControllerDismissalDelegate {
     func searchViewDidDismiss(_ controller: SearchViewController) {
         navigationController?.popViewController(animated: true)
+    }
+}
+
+extension MainViewController: SearchRequestedDelegate {
+    func searchRequested(_ item: String) {
+        itemVC?.itemN = item
+        navigationController?.pushViewController(itemVC!, animated: true)
     }
 }
