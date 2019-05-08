@@ -173,6 +173,7 @@ class SearchViewItemCell: UITableViewCell {
     let actionButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Delete", for: .normal)
+        
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()

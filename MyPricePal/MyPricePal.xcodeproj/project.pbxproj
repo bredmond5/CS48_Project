@@ -14,6 +14,7 @@
 		358AB52E226590FB00E9C1E7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 358AB52C226590FB00E9C1E7 /* LaunchScreen.storyboard */; };
 		35D2C4E622659336009EA490 /* BarcodeScanner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35D2C4E522659336009EA490 /* BarcodeScanner.framework */; };
 		35D2C4E82265933C009EA490 /* libc++.1.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 35D2C4E72265933C009EA490 /* libc++.1.tbd */; };
+		35DCDCE722813CA3002114BA /* BarcodeScannerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DCDCE622813CA3002114BA /* BarcodeScannerExtensions.swift */; };
 		36A593D72273F250009C4F18 /* ItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A593D62273F250009C4F18 /* ItemViewController.swift */; };
 		36A593D92273F26F009C4F18 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A593D82273F26F009C4F18 /* SearchViewController.swift */; };
 		36A593DB2273F27E009C4F18 /* customButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A593DA2273F27E009C4F18 /* customButton.swift */; };
@@ -44,6 +45,7 @@
 		358AB52F226590FB00E9C1E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		35D2C4E522659336009EA490 /* BarcodeScanner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BarcodeScanner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		35D2C4E72265933C009EA490 /* libc++.1.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.1.tbd"; path = "usr/lib/libc++.1.tbd"; sourceTree = SDKROOT; };
+		35DCDCE622813CA3002114BA /* BarcodeScannerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeScannerExtensions.swift; sourceTree = "<group>"; };
 		36A593D62273F250009C4F18 /* ItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemViewController.swift; sourceTree = "<group>"; };
 		36A593D82273F26F009C4F18 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		36A593DA2273F27E009C4F18 /* customButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = customButton.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				358AB523226590FA00E9C1E7 /* AppDelegate.swift */,
+				35DCDCE622813CA3002114BA /* BarcodeScannerExtensions.swift */,
 				358AB525226590FA00E9C1E7 /* MainViewController.swift */,
 				358AB527226590FA00E9C1E7 /* Main.storyboard */,
 				36A593D82273F26F009C4F18 /* SearchViewController.swift */,
@@ -361,6 +364,7 @@
 				358AB526226590FA00E9C1E7 /* MainViewController.swift in Sources */,
 				358AB524226590FA00E9C1E7 /* AppDelegate.swift in Sources */,
 				36A593D92273F26F009C4F18 /* SearchViewController.swift in Sources */,
+				35DCDCE722813CA3002114BA /* BarcodeScannerExtensions.swift in Sources */,
 				36A593D72273F250009C4F18 /* ItemViewController.swift in Sources */,
 				36A593DB2273F27E009C4F18 /* customButton.swift in Sources */,
 			);
