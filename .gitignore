@@ -15,6 +15,7 @@ build/*
 
 # osx noise
 .DS_Store
+MyPricePal/.DS_Store
 profile
 
 *.xcworkspace
