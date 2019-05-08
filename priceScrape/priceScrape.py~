@@ -1,6 +1,5 @@
 
-#from urllib.request import urlopen as ureq 	#use this one if you're running it as python3 priceScrape.py
-from urllib2 import urlopen as ureq
+from urllib.request import urlopen as ureq 	#use this one if you're running it as python3 priceScrape.py
 from bs4 import BeautifulSoup as soup
 import json
 import sys
