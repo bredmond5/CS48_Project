@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+.DS_Store
+
+MyPricePal/.DS_Store
+=======
 # xcode noise
 *.mode1v3
 *.pbxuser
@@ -19,3 +24,4 @@ MyPricePal/.DS_Store
 profile
 
 *.xcworkspace
+>>>>>>> 3ff06551d95b7a2137b36e1c91116c452a0a0ea1

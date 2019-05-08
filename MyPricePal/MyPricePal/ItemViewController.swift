@@ -15,7 +15,7 @@ protocol ItemViewDismissalDelegate : class {
 
 class ItemViewController: UITableViewController {
     
-    var items: [String] = []
+    var items: [String] = ["Costco: ","Walmart: ", "Amazon: ", "Albertsons: "]
 
     public weak var dismissalDelegate: ItemViewDismissalDelegate?
 //    public let textView = UITextView(frame: .zero)
@@ -23,22 +23,14 @@ class ItemViewController: UITableViewController {
     
     var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Lays Potato Chips"
-        label.font = UIFont.boldSystemFont(ofSize: 17)
+        label.font = UIFont.boldSystemFont(ofSize: 15)
         label.numberOfLines = 1
         label.textAlignment = .center
         label.textColor = .black
         label.sizeToFit()
         return label
     }()
-    
-//    var navigationBar: UINavigationBar = {
-//        let navigationBar = UINavigationBar()
-//        navigationBar.isTranslucent = false
-//        navigationBar.backgroundColor = .white
-//        return navigationBar
-//    }()
-    
+
     @objc func dismissalAction(sender: Any) {
         dismissalDelegate?.itemViewDidDismiss(self)
     }
@@ -46,11 +38,10 @@ class ItemViewController: UITableViewController {
     override func loadView() {
         super.loadView()
         view.backgroundColor = .white
+        titleLabel.text = itemN
         navigationItem.titleView = titleLabel
-        let backBarButton = UIBarButtonItem(title: "Scan", style: .plain, target: self, action: #selector(dismissalAction(sender:)))        
+        let backBarButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissalAction(sender:)))
         navigationItem.leftBarButtonItem = backBarButton
-        items.append(itemN!)
-  //      layoutViews()
     }
     
     override func viewDidLoad() {
@@ -81,26 +72,6 @@ class ItemViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         return tableView.dequeueReusableHeaderFooterView(withIdentifier: "itemHeaderId")
     }
-    
-//    func layoutViews() {
-//
-//        textView.textColor = .black
-//        textView.font = UIFont.boldSystemFont(ofSize: 25)
-//        textView.textAlignment = .center
-//        textView.text = barcodeString
-//        view.addSubview(textView)
-//
-////        let alertButton = UIButton(frame: .zero);
-////        alertButton.addTarget(self, action: #selector(showAlertButtonTapped(_:)), for: .touchUpInside)
-//
-//        activate(
-//            textView.anchor.center.equal.to(view.safeAreaLayoutGuide.anchor.center),
-//            textView.anchor.width.equal.to(view.anchor.width).multiplier(3/5),
-//            textView.anchor.height.equal.to(textView.anchor.width).multiplier(1/2)
-//
-//
-//        )
-//    }
 }
 
 class ItemViewHeader: UITableViewHeaderFooterView {
@@ -116,29 +87,17 @@ class ItemViewHeader: UITableViewHeaderFooterView {
     
     let nameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Similar Items"
+        label.text = "Best Prices:"
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.font = UIFont.boldSystemFont(ofSize: 15)
         return label
-    }()
-    
-    let textField: UITextField = {
-        let textField = UITextField(frame: .zero)
-        textField.placeholder = "Search"
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.font = UIFont.boldSystemFont(ofSize: 14)
-        return textField
     }()
     
     func setupViews() {
         addSubview(nameLabel)
-        addSubview(textField)
         activate(
-            textField.anchor.center,
-            textField.anchor.top.bottom
+           nameLabel.anchor.center
         )
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[v0]|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": nameLabel]))
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-12-[v0]-12-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": nameLabel]))
     }
 }
 
