@@ -7,12 +7,16 @@
 //
 
 import XCTest
-@testable import MyPricePal
 
+@testable import MyPricePal
 class MyPricePalTests: XCTestCase {
+    
+    var build: MainViewController?
+    var searchVC: SearchViewController?
 
     override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        build = MainViewController()
+        searchVC = SearchViewController()
     }
 
     override func tearDown() {
@@ -31,9 +35,45 @@ class MyPricePalTests: XCTestCase {
         }
     }
     
-    func testbuild(){
-        var build: MainViewController
+    func testAddItem(){
+        searchVC?.giveItemScanned("Deodorant")
+        XCTAssert(searchVC?.returnNumItems() == 1, "SearchVC does not have the correct amount of items")
     }
-
+    
+    func testAddMaxItems() {
+        
+        for i in 0...searchVC!.maxItems {
+            searchVC?.giveItemScanned("Deodorant \(i)")
+        }
+        
+        XCTAssert(searchVC?.returnNumItems() == searchVC?.maxItems, "SearchVC added \(searchVC?.returnNumItems()) items")
+        XCTAssert(searchVC!.items[0] == "Deodorant \(searchVC!.maxItems)", "\(searchVC!.items[0]) != Deodorant \(searchVC!.maxItems)")
+        XCTAssert(searchVC?.items[(searchVC?.maxItems)! - 1] == "Deodorant \(1)", "not Deodorant 1")
+    }
+    
+    func testShiftItems() {
+        searchVC?.giveItemScanned("Deodorant")
+        searchVC?.giveItemScanned("Gum")
+        searchVC?.giveItemScanned("Binder")
+        searchVC?.giveItemScanned("Deodorant")
+        
+        XCTAssert(searchVC?.items[0] == "Deodorant", "Did not shift correctly")
+        XCTAssert(searchVC?.items[2] == "Gum", "Gum not shifted correctly")
+    }
+    
+    func testDeleteCell() {
+        searchVC?.giveItemScanned("Deodorant")
+        searchVC?.giveItemScanned("Gum")
+        searchVC?.giveItemScanned("Binder")
+        let tableView = searchVC?.tableView
+        let deletionIndexPath = IndexPath(item: 0, section: 0)
+        let cell = tableView?.cellForRow(at: deletionIndexPath)
+        searchVC?.deleteCell(cell: cell!)
+        
+        XCTAssert(searchVC?.items[0] == "Gum", "items[0] = \(searchVC?.items[0])")
+        XCTAssert(searchVC?.items[1] == "Deodorant", "items[1] = \(searchVC?.items[1])")
+    }
+    
+    
 }
 
