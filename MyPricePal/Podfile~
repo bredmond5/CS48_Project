@@ -9,5 +9,18 @@ target 'MyPricePal' do
 
 pod 'BarcodeScanner'
 pod 'SwiftLint'
+pod 'Anchors'
+pod 'Firebase'
+pod 'Firebase/Database'
+pod 'FirebaseAnalytics'
+pod 'GoogleUtilities'
+pod 'GoogleAppMeasurement'
+
+
+target 'MyPricePalTests' do
+       inherit! :search_paths
+       pod 'Firebase'
+
+
 
 end

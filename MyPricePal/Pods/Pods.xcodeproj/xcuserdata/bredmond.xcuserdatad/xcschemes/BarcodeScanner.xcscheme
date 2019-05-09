@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "39FC8B020BAFAD3C9E5D0E71C539C4F4"
+               BlueprintIdentifier = "894BB10BEB19E876EC584B855311CC1B"
                BuildableName = "BarcodeScanner.framework"
                BlueprintName = "BarcodeScanner"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "39FC8B020BAFAD3C9E5D0E71C539C4F4"
+            BlueprintIdentifier = "894BB10BEB19E876EC584B855311CC1B"
             BuildableName = "BarcodeScanner.framework"
             BlueprintName = "BarcodeScanner"
             ReferencedContainer = "container:Pods.xcodeproj">

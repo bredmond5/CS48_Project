@@ -14,11 +14,17 @@ protocol SearchViewControllerDismissalDelegate: class {
     func searchViewDidDismiss(_ controller: SearchViewController)
 }
 
+protocol SearchRequestedDelegate: class {
+    func searchRequested(_ item: String)
+}
+
 class SearchViewController: UITableViewController {
     
     public weak var dismissalDelegate: SearchViewControllerDismissalDelegate?
     
-    var items = ["Item 1", "Item 2", "Item 3"]
+    public weak var searchRequestedDelegate: SearchRequestedDelegate?
+    
+    var items: [String] = []
     
     var titleLabel: UILabel = {
         let label = UILabel()
@@ -39,15 +45,31 @@ class SearchViewController: UITableViewController {
         super.loadView()
         view.backgroundColor = .white
         navigationItem.titleView = titleLabel
-        //        let backBarButton = UIBarButtonItem(title: "MyPricePal", style: .plain, target: self, action: #selector(dismissalAction(sender:)))
-        //       navigationItem.leftBarButtonItem = backBarButton
+        tableView.isScrollEnabled = false
+    }
+    
+    public func giveItemScanned(_ item: String) {
+        for x in items {
+            if(x == item) {
+                return
+            }
+        }
+        items.insert(item, at: 0)
+        let insertionIndexPath = IndexPath(item: items.count - 1, section: 0)
+        tableView.insertRows(at: [insertionIndexPath], with: .automatic)
+        tableView.reloadData()
+        if(items.count == 11) {
+            let deletionIndexPath = IndexPath(item: items.count - 1, section: 0)
+            deleteCell(cell: tableView.cellForRow(at: deletionIndexPath)!)
+        }
+        tableView.reloadData()
     }
     
     override func viewDidLoad() {
-        tableView.register(ItemCell.self, forCellReuseIdentifier: "cellId")
-        tableView.register(Header.self, forHeaderFooterViewReuseIdentifier: "headerId")
+        tableView.register(SearchViewItemCell.self, forCellReuseIdentifier: "cellId")
+        tableView.register(SearchViewHeader.self, forHeaderFooterViewReuseIdentifier: "headerId")
         
-        tableView.sectionHeaderHeight = 50
+        tableView.sectionHeaderHeight = 0
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Insert", style: .plain, target: self, action: #selector(insert(sender:)))
     }
@@ -66,7 +88,7 @@ class SearchViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let itemCell = tableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath) as! ItemCell
+        let itemCell = tableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath) as! SearchViewItemCell
         itemCell.nameLabel.text = items[indexPath.row]
         itemCell.searchViewController = self
         return itemCell
@@ -74,6 +96,10 @@ class SearchViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         return tableView.dequeueReusableHeaderFooterView(withIdentifier: "headerId")
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        searchRequestedDelegate?.searchRequested(items[indexPath.row])
     }
     
     func deleteCell(cell: UITableViewCell) {
@@ -84,7 +110,7 @@ class SearchViewController: UITableViewController {
     }
 }
 
-class Header: UITableViewHeaderFooterView {
+class SearchViewHeader: UITableViewHeaderFooterView {
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         setupViews()
@@ -97,7 +123,7 @@ class Header: UITableViewHeaderFooterView {
     
     let nameLabel: UILabel = {
         let label = UILabel()
-        label.text = "My Header"
+        label.text = "Items"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.boldSystemFont(ofSize: 14)
         return label
@@ -123,7 +149,7 @@ class Header: UITableViewHeaderFooterView {
     }
 }
 
-class ItemCell: UITableViewCell {
+class SearchViewItemCell: UITableViewCell {
     
     var searchViewController: SearchViewController?
     
@@ -147,6 +173,7 @@ class ItemCell: UITableViewCell {
     let actionButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Delete", for: .normal)
+        
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()

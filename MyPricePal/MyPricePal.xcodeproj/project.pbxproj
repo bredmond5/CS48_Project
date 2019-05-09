@@ -14,12 +14,26 @@
 		358AB52E226590FB00E9C1E7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 358AB52C226590FB00E9C1E7 /* LaunchScreen.storyboard */; };
 		35D2C4E622659336009EA490 /* BarcodeScanner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35D2C4E522659336009EA490 /* BarcodeScanner.framework */; };
 		35D2C4E82265933C009EA490 /* libc++.1.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 35D2C4E72265933C009EA490 /* libc++.1.tbd */; };
+		35DCDCE722813CA3002114BA /* BarcodeScannerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DCDCE622813CA3002114BA /* BarcodeScannerExtensions.swift */; };
 		36A593D72273F250009C4F18 /* ItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A593D62273F250009C4F18 /* ItemViewController.swift */; };
 		36A593D92273F26F009C4F18 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A593D82273F26F009C4F18 /* SearchViewController.swift */; };
 		36A593DB2273F27E009C4F18 /* customButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A593DA2273F27E009C4F18 /* customButton.swift */; };
 		36A594082277A9A2009C4F18 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 36A594072277A9A1009C4F18 /* GoogleService-Info.plist */; };
+		36A5941D227BF77A009C4F18 /* MyPricePalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A5941C227BF77A009C4F18 /* MyPricePalTests.swift */; };
+		36A59425227C0384009C4F18 /* test1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A59424227C0384009C4F18 /* test1.swift */; };
 		464484AC19DF04357144D9F5 /* Pods_MyPricePal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 902B3D5B3841F2C2786D54E2 /* Pods_MyPricePal.framework */; };
+		DA6ECF176066035F1E87625F /* libPods-MyPricePalTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EB3D465F6A013FFFC811769 /* libPods-MyPricePalTests.a */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		36A5941F227BF77A009C4F18 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 358AB518226590FA00E9C1E7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 358AB51F226590FA00E9C1E7;
+			remoteInfo = MyPricePal;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		358AB520226590FA00E9C1E7 /* MyPricePal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyPricePal.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -31,13 +45,21 @@
 		358AB52F226590FB00E9C1E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		35D2C4E522659336009EA490 /* BarcodeScanner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BarcodeScanner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		35D2C4E72265933C009EA490 /* libc++.1.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.1.tbd"; path = "usr/lib/libc++.1.tbd"; sourceTree = SDKROOT; };
+		35DCDCE622813CA3002114BA /* BarcodeScannerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeScannerExtensions.swift; sourceTree = "<group>"; };
 		36A593D62273F250009C4F18 /* ItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemViewController.swift; sourceTree = "<group>"; };
 		36A593D82273F26F009C4F18 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		36A593DA2273F27E009C4F18 /* customButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = customButton.swift; sourceTree = "<group>"; };
 		36A594072277A9A1009C4F18 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		36A5941A227BF77A009C4F18 /* MyPricePalTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyPricePalTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		36A5941C227BF77A009C4F18 /* MyPricePalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPricePalTests.swift; sourceTree = "<group>"; };
+		36A5941E227BF77A009C4F18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		36A59424227C0384009C4F18 /* test1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test1.swift; sourceTree = "<group>"; };
 		4CFAE486880BA84DE909E64C /* Pods-MyPricePal.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyPricePal.release.xcconfig"; path = "Pods/Target Support Files/Pods-MyPricePal/Pods-MyPricePal.release.xcconfig"; sourceTree = "<group>"; };
+		5EB3D465F6A013FFFC811769 /* libPods-MyPricePalTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MyPricePalTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6A3EA4299ABFDDB60D9CEB97 /* Pods-MyPricePalTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyPricePalTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MyPricePalTests/Pods-MyPricePalTests.debug.xcconfig"; sourceTree = "<group>"; };
 		902B3D5B3841F2C2786D54E2 /* Pods_MyPricePal.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyPricePal.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2E7D8D56561BAB2AF97C0FE /* Pods-MyPricePal.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyPricePal.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MyPricePal/Pods-MyPricePal.debug.xcconfig"; sourceTree = "<group>"; };
+		D74A20A4BE5DDE699D67F1C4 /* Pods-MyPricePalTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyPricePalTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MyPricePalTests/Pods-MyPricePalTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +73,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		36A59417227BF77A009C4F18 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA6ECF176066035F1E87625F /* libPods-MyPricePalTests.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -58,6 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				358AB522226590FA00E9C1E7 /* MyPricePal */,
+				36A5941B227BF77A009C4F18 /* MyPricePalTests */,
 				358AB521226590FA00E9C1E7 /* Products */,
 				CD945682062695C8E44F14D4 /* Pods */,
 				5B2FCF19BE8E4B0CC4F334F1 /* Frameworks */,
@@ -68,6 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				358AB520226590FA00E9C1E7 /* MyPricePal.app */,
+				36A5941A227BF77A009C4F18 /* MyPricePalTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -76,11 +108,12 @@
 			isa = PBXGroup;
 			children = (
 				358AB523226590FA00E9C1E7 /* AppDelegate.swift */,
+				35DCDCE622813CA3002114BA /* BarcodeScannerExtensions.swift */,
 				358AB525226590FA00E9C1E7 /* MainViewController.swift */,
 				358AB527226590FA00E9C1E7 /* Main.storyboard */,
 				36A593D82273F26F009C4F18 /* SearchViewController.swift */,
-				36A593DA2273F27E009C4F18 /* customButton.swift */,
 				36A593D62273F250009C4F18 /* ItemViewController.swift */,
+				36A593DA2273F27E009C4F18 /* customButton.swift */,
 				36A594072277A9A1009C4F18 /* GoogleService-Info.plist */,
 				358AB52A226590FB00E9C1E7 /* Assets.xcassets */,
 				358AB52C226590FB00E9C1E7 /* LaunchScreen.storyboard */,
@@ -89,12 +122,23 @@
 			path = MyPricePal;
 			sourceTree = "<group>";
 		};
+		36A5941B227BF77A009C4F18 /* MyPricePalTests */ = {
+			isa = PBXGroup;
+			children = (
+				36A5941C227BF77A009C4F18 /* MyPricePalTests.swift */,
+				36A5941E227BF77A009C4F18 /* Info.plist */,
+				36A59424227C0384009C4F18 /* test1.swift */,
+			);
+			path = MyPricePalTests;
+			sourceTree = "<group>";
+		};
 		5B2FCF19BE8E4B0CC4F334F1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				35D2C4E72265933C009EA490 /* libc++.1.tbd */,
 				35D2C4E522659336009EA490 /* BarcodeScanner.framework */,
 				902B3D5B3841F2C2786D54E2 /* Pods_MyPricePal.framework */,
+				5EB3D465F6A013FFFC811769 /* libPods-MyPricePalTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -104,6 +148,8 @@
 			children = (
 				C2E7D8D56561BAB2AF97C0FE /* Pods-MyPricePal.debug.xcconfig */,
 				4CFAE486880BA84DE909E64C /* Pods-MyPricePal.release.xcconfig */,
+				6A3EA4299ABFDDB60D9CEB97 /* Pods-MyPricePalTests.debug.xcconfig */,
+				D74A20A4BE5DDE699D67F1C4 /* Pods-MyPricePalTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -130,6 +176,25 @@
 			productReference = 358AB520226590FA00E9C1E7 /* MyPricePal.app */;
 			productType = "com.apple.product-type.application";
 		};
+		36A59419227BF77A009C4F18 /* MyPricePalTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 36A59423227BF77A009C4F18 /* Build configuration list for PBXNativeTarget "MyPricePalTests" */;
+			buildPhases = (
+				AF4615190141F08A3256E53A /* [CP] Check Pods Manifest.lock */,
+				36A59416227BF77A009C4F18 /* Sources */,
+				36A59417227BF77A009C4F18 /* Frameworks */,
+				36A59418227BF77A009C4F18 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				36A59420227BF77A009C4F18 /* PBXTargetDependency */,
+			);
+			name = MyPricePalTests;
+			productName = MyPricePalTests;
+			productReference = 36A5941A227BF77A009C4F18 /* MyPricePalTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -142,6 +207,10 @@
 				TargetAttributes = {
 					358AB51F226590FA00E9C1E7 = {
 						CreatedOnToolsVersion = 10.2;
+					};
+					36A59419227BF77A009C4F18 = {
+						CreatedOnToolsVersion = 10.2.1;
+						TestTargetID = 358AB51F226590FA00E9C1E7;
 					};
 				};
 			};
@@ -159,6 +228,7 @@
 			projectRoot = "";
 			targets = (
 				358AB51F226590FA00E9C1E7 /* MyPricePal */,
+				36A59419227BF77A009C4F18 /* MyPricePalTests */,
 			);
 		};
 /* End PBXProject section */
@@ -172,6 +242,13 @@
 				36A594082277A9A2009C4F18 /* GoogleService-Info.plist in Resources */,
 				358AB52B226590FB00E9C1E7 /* Assets.xcassets in Resources */,
 				358AB529226590FA00E9C1E7 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		36A59418227BF77A009C4F18 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -191,7 +268,7 @@
 				"${BUILT_PRODUCTS_DIR}/BarcodeScanner/BarcodeScanner.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
-				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb-framework/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
@@ -230,6 +307,28 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		AF4615190141F08A3256E53A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MyPricePalTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -240,12 +339,30 @@
 				358AB526226590FA00E9C1E7 /* MainViewController.swift in Sources */,
 				358AB524226590FA00E9C1E7 /* AppDelegate.swift in Sources */,
 				36A593D92273F26F009C4F18 /* SearchViewController.swift in Sources */,
+				35DCDCE722813CA3002114BA /* BarcodeScannerExtensions.swift in Sources */,
 				36A593D72273F250009C4F18 /* ItemViewController.swift in Sources */,
 				36A593DB2273F27E009C4F18 /* customButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		36A59416227BF77A009C4F18 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				36A5941D227BF77A009C4F18 /* MyPricePalTests.swift in Sources */,
+				36A59425227C0384009C4F18 /* test1.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		36A59420227BF77A009C4F18 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 358AB51F226590FA00E9C1E7 /* MyPricePal */;
+			targetProxy = 36A5941F227BF77A009C4F18 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		358AB527226590FA00E9C1E7 /* Main.storyboard */ = {
@@ -423,6 +540,50 @@
 			};
 			name = Release;
 		};
+		36A59421227BF77A009C4F18 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6A3EA4299ABFDDB60D9CEB97 /* Pods-MyPricePalTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 46LJ792MXB;
+				"HEADER_SEARCH_PATHS[arch=*]" = "${PODS_ROOT}/Firebase/CoreOnly/Sources";
+				INFOPLIST_FILE = MyPricePalTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = MomBasement.MyPricePalTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyPricePal.app/MyPricePal";
+			};
+			name = Debug;
+		};
+		36A59422227BF77A009C4F18 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D74A20A4BE5DDE699D67F1C4 /* Pods-MyPricePalTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 46LJ792MXB;
+				"HEADER_SEARCH_PATHS[arch=*]" = "${PODS_ROOT}/Firebase/CoreOnly/Sources";
+				INFOPLIST_FILE = MyPricePalTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = MomBasement.MyPricePalTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyPricePal.app/MyPricePal";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -440,6 +601,15 @@
 			buildConfigurations = (
 				358AB533226590FB00E9C1E7 /* Debug */,
 				358AB534226590FB00E9C1E7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		36A59423227BF77A009C4F18 /* Build configuration list for PBXNativeTarget "MyPricePalTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				36A59421227BF77A009C4F18 /* Debug */,
+				36A59422227BF77A009C4F18 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
