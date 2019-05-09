@@ -9,6 +9,7 @@
 import UIKit
 import Anchors
 
+
 protocol ItemViewDismissalDelegate : class {
     func itemViewDidDismiss(_ controller: ItemViewController)
 }
@@ -21,6 +22,7 @@ class ItemViewController: UITableViewController {
 //    public let textView = UITextView(frame: .zero)
     public var itemN: String?
     
+
     var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 15)
