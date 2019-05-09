@@ -9,6 +9,7 @@
 import UIKit
 import Anchors
 import FirebaseDatabase
+import Foundation
 
 public protocol ItemViewDismissalDelegate : class {
     func itemViewDidDismiss(_ controller: ItemViewController)
