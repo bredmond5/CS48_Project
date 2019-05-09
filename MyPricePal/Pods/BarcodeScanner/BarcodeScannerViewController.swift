@@ -43,11 +43,11 @@ open class BarcodeScannerViewController: UIViewController {
     /// Delegate to dismiss barcode scanner when the close button has been pressed.
     public weak var dismissalDelegate: BarcodeScannerDismissalDelegate?
     
-    /// When the flag is set to `true` controller returns a captured code
+    /// When the flag is set to true controller returns a captured code
     /// and waits for the next reset action.
     public var isOneTimeSearch = true
     
-    /// `AVCaptureMetadataOutput` metadata object types.
+    /// AVCaptureMetadataOutput metadata object types.
     public var metadata = AVMetadataObject.ObjectType.barcodeScannerMetadata {
         didSet {
             cameraViewController.metadata = metadata
@@ -194,7 +194,7 @@ open class BarcodeScannerViewController: UIViewController {
     
     /**
      Simulates flash animation.
-     - Parameter processing: Flag to set the current state to `.processing`.
+     - Parameter processing: Flag to set the current state to .processing.
      */
     private func animateFlash(whenProcessing: Bool = false) {
         let flashView = UIView(frame: view.bounds)

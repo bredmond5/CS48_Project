@@ -18,10 +18,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         //Sets the window and mainviewcontroller programatically.
-        
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
         
+        //Create a BarcodeScannerViewController and pass it to the MainViewController
         let barcodeVC = BarcodeScannerViewController()
         window?.rootViewController = MainViewController(rootViewController: barcodeVC)
 
