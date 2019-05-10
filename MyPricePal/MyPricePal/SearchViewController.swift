@@ -59,12 +59,14 @@ class SearchViewController: UITableViewController {
     //Function called by MainViewController to give the scanned item.
     public func giveItemScanned(_ item: String) {
         //TODO make it so that the item goes to the zeroth index if it is already in the items array
-        for x in items {
-            if(x == item) { //item is already in the items array
-                //let str = items[0]
-                return
+        for i in 0..<items.count {
+            if(item == items[i]) { //item is already in the items array
+                let deletionIndexPath = IndexPath(item: i, section: 0)
+                let cell = tableView?.cellForRow(at: deletionIndexPath)
+                deleteCell(cell: cell!)
             }
         }
+        
         items.insert(item, at: 0)
         insertLastRow()
        
