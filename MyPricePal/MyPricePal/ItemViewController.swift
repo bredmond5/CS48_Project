@@ -66,20 +66,20 @@ class ItemViewController: UITableViewController {
 //            layer.cornerRadius  = frame.size.height / 2
 //        }
 //    }
-    @IBAction func watchButtonTapped(_sender: SAButton) {
-        showSafariVC(for: "https://www.amazon.com/s?k=lays&ref=nb_sb_noss_1")
-    }
+//    @IBAction func watchButtonTapped(_sender: SAButton) {
+//        showSafariVC(for: "https://www.amazon.com/s?k=lays&ref=nb_sb_noss_1")
+//    }
+//
     
-    
-    func showSafariVC(for url: String) {
-        guard let url = URL(string: url) else {
-            //Show an invalid URL error alert
-            return
-        }
-        
-        let safariVC = SFSafariViewController(url: url)
-        present(safariVC, animated: true)
-    }
+//    func showSafariVC(for url: String) {
+//        guard let url = URL(string: url) else {
+//            //Show an invalid URL error alert
+//            return
+//        }
+//        
+//        let safariVC = SFSafariViewController(url: url)
+//        present(safariVC, animated: true)
+//    }
     
     override func viewDidLoad() {
         tableView.register(ItemViewItemCell.self, forCellReuseIdentifier: "itemCellId")
