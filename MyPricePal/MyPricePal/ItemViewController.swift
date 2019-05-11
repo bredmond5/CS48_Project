@@ -21,6 +21,8 @@ class ItemViewController: UITableViewController {
 //    public let textView = UITextView(frame: .zero)
     public var itemN: String?
     
+
+   
     var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 15)
@@ -43,12 +45,52 @@ class ItemViewController: UITableViewController {
         let backBarButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissalAction(sender:)))
         navigationItem.leftBarButtonItem = backBarButton
     }
+//    class SAButton: UIButton {
+//
+//        override init(frame: CGRect) {
+//            super.init(frame: frame)
+//            setupButton()
+//        }
+//
+//
+//        required init?(coder aDecoder: NSCoder) {
+//            super.init(coder: aDecoder)
+//            setupButton()
+//        }
+//
+//
+//        private func setupButton() {
+//            setTitleColor(.white, for: .normal)
+//            backgroundColor     = UIColor(red: 255/255, green: 5/255, blue: 41/255, alpha: 1.0)
+//            titleLabel?.font    = .boldSystemFont(ofSize: 20)
+//            layer.cornerRadius  = frame.size.height / 2
+//        }
+//    }
+    @IBAction func watchButtonTapped(_sender: SAButton) {
+        showSafariVC(for: "https://www.amazon.com/s?k=lays&ref=nb_sb_noss_1")
+    }
+    
+    
+    func showSafariVC(for url: String) {
+        guard let url = URL(string: url) else {
+            //Show an invalid URL error alert
+            return
+        }
+        
+        let safariVC = SFSafariViewController(url: url)
+        present(safariVC, animated: true)
+    }
     
     override func viewDidLoad() {
         tableView.register(ItemViewItemCell.self, forCellReuseIdentifier: "itemCellId")
         tableView.register(ItemViewHeader.self, forHeaderFooterViewReuseIdentifier: "itemHeaderId")
         
          tableView.sectionHeaderHeight = 50
+        
+//        let url1 = URL(string: "https://www.amazon.com/s?k=lays&ref=nb_sb_noss_1")
+//        if (UIApplication.shared.canOpenURL(url1)) {
+//            UIApplication.shared.openURL(url1)
+//        }
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

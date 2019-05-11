@@ -18,6 +18,9 @@ class MainViewController: UINavigationController {
     var itemVC: ItemViewController?
     var barcodeVC: BarcodeScannerViewController?
     
+//    if let link = URL(string: "https://www.amazon.com/s?k=lays&ref=nb_sb_noss_1") 
+//        UIApplication.shared.open(link)
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
