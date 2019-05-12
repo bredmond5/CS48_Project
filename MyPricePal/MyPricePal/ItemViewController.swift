@@ -21,7 +21,6 @@ class ItemViewController: UITableViewController {
     public weak var dismissalDelegate: ItemViewDismissalDelegate?
 //    public let textView = UITextView(frame: .zero)
     public var itemN: String?
-    
 
     var titleLabel: UILabel = {
         let label = UILabel()
@@ -44,6 +43,12 @@ class ItemViewController: UITableViewController {
         navigationItem.titleView = titleLabel
         let backBarButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissalAction(sender:)))
         navigationItem.leftBarButtonItem = backBarButton
+        
+//        view.addSubview(imageView)
+//        activate(
+//            imageView.anchor.center,
+//            imageView.anchor.size.equal.to(view.anchor.size).multiplier(1/2)
+//        )
     }
     
     override func viewDidLoad() {
@@ -112,6 +117,14 @@ class ItemViewItemCell: UITableViewCell {
         setupViews()
     }
     
+    var imageViewCell: UIImageView = {
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 20))
+        imageView.image = UIImage(named: "costco")
+        imageView.sizeToFit()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been initialized")
     }
@@ -132,15 +145,17 @@ class ItemViewItemCell: UITableViewCell {
     }()
     
     func setupViews() {
-        addSubview(nameLabel)
+ //       addSubview(nameLabel)
         addSubview(actionButton)
+        addSubview(imageViewCell)
+        
         
         actionButton.addTarget(self, action: #selector(handleAction(sender:)), for: .touchUpInside)
         
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[v0]-8-[v1(80)]-8-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": nameLabel, "v1": actionButton]))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[v0]-8-[v1(80)]-8-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": imageViewCell, "v1": actionButton]))
         
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-12-[v0]-12-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": nameLabel]))
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-12-[v0]-12-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": actionButton]))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[v0]-5-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": imageViewCell]))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[v0]-5-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": actionButton]))
     }
     
     @objc func handleAction(sender: UIButton) {
