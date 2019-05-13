@@ -21,7 +21,10 @@ protocol SearchRequestedDelegate: class {
 //SearchViewController handles showing the user their recent searches and sending items
 //to the itemVC if they are pressed.
 
-class SearchViewController: UITableViewController {
+class SearchViewController: UITableViewController, SearchRequestedDelegate {
+    func searchRequested(_ item: String) {
+        }
+    
     
     public weak var dismissalDelegate: SearchViewControllerDismissalDelegate?
     public weak var searchRequestedDelegate: SearchRequestedDelegate?
