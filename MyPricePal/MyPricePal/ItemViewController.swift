@@ -8,16 +8,24 @@
 
 import UIKit
 import Anchors
+import SafariServices
 
 
 protocol ItemViewDismissalDelegate : class {
     func itemViewDidDismiss(_ controller: ItemViewController)
-}
+} 
 
 class ItemViewController: UITableViewController {
-    
+    var image = UIImage(named: "imageC.jpg")
     var items: [String] = ["Costco: ","Walmart: ", "Amazon: ", "Albertsons: "]
 
+//    var imageView = UIImageView {
+//        var imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 20))
+//        imageView.image = UIImage(named: "imageC.jpg")
+//        imageView.translatesAutoresizingMaskIntoConstraints = false
+//        return imageView
+//    }()
+    
     public weak var dismissalDelegate: ItemViewDismissalDelegate?
 //    public let textView = UITextView(frame: .zero)
     public var itemN: String?
@@ -45,6 +53,10 @@ class ItemViewController: UITableViewController {
         let backBarButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissalAction(sender:)))
         navigationItem.leftBarButtonItem = backBarButton
     }
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
+    {
+        return 90
+    }
     
     override func viewDidLoad() {
         tableView.register(ItemViewItemCell.self, forCellReuseIdentifier: "itemCellId")
@@ -55,6 +67,33 @@ class ItemViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
+    }
+    func showSafariVC(for url: String){
+        guard let url = URL(string: url)else{
+            return
+        }
+        let safariVC = SFSafariViewController(url: url)
+        present(safariVC, animated: true)
+    }
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row==0{
+            let urlBase = "https://www.costco.com/CatalogSearch?dept=All&keyword="
+            guard let item = itemN?.replacingOccurrences(of: " ", with: "+", options: .literal, range: nil) else { return}
+            showSafariVC(for: urlBase + item)
+        }
+        if indexPath.row == 1{
+            //URl is hard to manipulate
+            
+        }
+        if indexPath.row == 2{
+            let urlBase = "https://www.amazon.com/s?k="
+            let urlEnd = "&i=grocery&crid=1RQ40Q09MZBMW&sprefix=5+gum%2Caps%2C189&ref=nb_sb_ss_c_2_5"
+            guard let item = itemN?.replacingOccurrences(of: " ", with: "+", options: .literal, range: nil) else { return}
+            showSafariVC(for: urlBase + item + urlEnd)
+        }
+        if indexPath.row == 3{
+            //URl is hard to manipulate
+        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -107,6 +146,13 @@ class ItemViewItemCell: UITableViewCell {
     
     var itemViewController: ItemViewController?
     
+    var mainImageView : UIImageView = {
+        var imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 20))
+        imageView.image = UIImage(named: "imageC.jpg")
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
@@ -134,6 +180,12 @@ class ItemViewItemCell: UITableViewCell {
     func setupViews() {
         addSubview(nameLabel)
         addSubview(actionButton)
+        addSubview(mainImageView)
+        
+        activate(
+            mainImageView.anchor.center
+            //mainImageView.anchor.size
+        )
         
         actionButton.addTarget(self, action: #selector(handleAction(sender:)), for: .touchUpInside)
         
