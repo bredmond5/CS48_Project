@@ -198,6 +198,9 @@
 		358AB518226590FA00E9C1E7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				KnownAssetTags = (
+					image,
+				);
 				LastSwiftUpdateCheck = 1020;
 				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = CS48;
