@@ -8,12 +8,14 @@
 
 import UIKit
 import Anchors
-import SafariServices
-
 
 protocol ItemViewDismissalDelegate : class {
     func itemViewDidDismiss(_ controller: ItemViewController)
-} 
+}
+
+protocol ItemViewURLDelegate: class {
+    func showSafariVC(_ url: String)
+}
 
 class ItemViewController: UITableViewController {
     var image = UIImage(named: "imageC.jpg")
@@ -27,6 +29,7 @@ class ItemViewController: UITableViewController {
 //    }()
     
     public weak var dismissalDelegate: ItemViewDismissalDelegate?
+    public weak var urlDelegate: ItemViewURLDelegate?
 //    public let textView = UITextView(frame: .zero)
     public var itemN: String?
     
@@ -68,18 +71,14 @@ class ItemViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }
-    func showSafariVC(for url: String){
-        guard let url = URL(string: url)else{
-            return
-        }
-        let safariVC = SFSafariViewController(url: url)
-        present(safariVC, animated: true)
-    }
+    
+   
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row==0{
             let urlBase = "https://www.costco.com/CatalogSearch?dept=All&keyword="
             guard let item = itemN?.replacingOccurrences(of: " ", with: "+", options: .literal, range: nil) else { return}
-            showSafariVC(for: urlBase + item)
+            urlDelegate?.showSafariVC(urlBase + item)
         }
         if indexPath.row == 1{
             //URl is hard to manipulate
@@ -89,8 +88,9 @@ class ItemViewController: UITableViewController {
             let urlBase = "https://www.amazon.com/s?k="
             let urlEnd = "&i=grocery&crid=1RQ40Q09MZBMW&sprefix=5+gum%2Caps%2C189&ref=nb_sb_ss_c_2_5"
             guard let item = itemN?.replacingOccurrences(of: " ", with: "+", options: .literal, range: nil) else { return}
-            showSafariVC(for: urlBase + item + urlEnd)
+            urlDelegate?.showSafariVC(urlBase + item + urlEnd)
         }
+        
         if indexPath.row == 3{
             //URl is hard to manipulate
         }

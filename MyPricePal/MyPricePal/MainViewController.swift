@@ -12,6 +12,7 @@ import Anchors
 import FirebaseDatabase
 import Foundation
 import AVFoundation
+import SafariServices
 
 //The MainViewController handles switching between the other view controllers. It does
 //not have any views of its own as it is a UINavigationController.
@@ -39,6 +40,7 @@ class MainViewController: UINavigationController {
         //Initialize itemVC and set delegates.
         itemVC = ItemViewController()
         itemVC?.dismissalDelegate = self
+        itemVC?.urlDelegate = self
         
         //initialize barcodeVC and send delegates.
         let barcodeVC = topViewController as! BarcodeScannerViewController
@@ -173,5 +175,16 @@ extension MainViewController: SearchRequestedDelegate {
     @objc func searchRequested(_ item: String) {
         itemVC?.itemN = item
         pushViewController(itemVC!, animated: true)
+    }
+}
+
+extension MainViewController: ItemViewURLDelegate {
+    func showSafariVC(_ url: String) {
+        print("what the nuts")
+        guard let url = URL(string: url)else{
+            return
+        }
+        let safariVC = SFSafariViewController(url: url)
+        pushViewController(safariVC, animated: true)
     }
 }
