@@ -18,14 +18,23 @@ protocol SearchRequestedDelegate: class {
     func searchRequested(_ item: String)
 }
 
-class SearchViewController: UITableViewController {
+//SearchViewController handles showing the user their recent searches and sending items
+//to the itemVC if they are pressed.
+
+class SearchViewController: UITableViewController, SearchRequestedDelegate {
+    func searchRequested(_ item: String) {
+        }
+    
     
     public weak var dismissalDelegate: SearchViewControllerDismissalDelegate?
-    
     public weak var searchRequestedDelegate: SearchRequestedDelegate?
     
+    //These are shown as the items in the table. Defaults to zero items.
     var items: [String] = []
     
+    var maxItems = 11 //Maximum amount of items shown
+    
+    //Set up the navigationBar UILabel
     var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Searched Items"
@@ -36,6 +45,8 @@ class SearchViewController: UITableViewController {
         label.sizeToFit()
         return label
     }()
+    
+    func returnNumItems() -> Int{ return items.count }
     
     @objc func dismissalAction(sender: Any) {
         dismissalDelegate?.searchViewDidDismiss(self)
@@ -48,23 +59,35 @@ class SearchViewController: UITableViewController {
         tableView.isScrollEnabled = false
     }
     
+    //Function called by MainViewController to give the scanned item.
     public func giveItemScanned(_ item: String) {
-        for x in items {
-            if(x == item) {
-                return
+        //TODO make it so that the item goes to the zeroth index if it is already in the items array
+        for i in 0..<items.count {
+            if(item == items[i]) { //item is already in the items array
+                let deletionIndexPath = IndexPath(item: i, section: 0)
+                let cell = tableView?.cellForRow(at: deletionIndexPath)
+                deleteCell(cell: cell!)
             }
         }
+        
         items.insert(item, at: 0)
-        let insertionIndexPath = IndexPath(item: items.count - 1, section: 0)
-        tableView.insertRows(at: [insertionIndexPath], with: .automatic)
-        tableView.reloadData()
-        if(items.count == 11) {
+        insertLastRow()
+       
+        if(items.count == maxItems + 1) {
             let deletionIndexPath = IndexPath(item: items.count - 1, section: 0)
             deleteCell(cell: tableView.cellForRow(at: deletionIndexPath)!)
         }
+        
         tableView.reloadData()
     }
     
+    func insertLastRow() {
+        let insertionIndexPath = IndexPath(item: items.count - 1, section: 0)
+        tableView.insertRows(at: [insertionIndexPath], with: .automatic)
+    }
+    
+    
+    //Sets up all the cell stuff for the tableView so that we see rows.
     override func viewDidLoad() {
         tableView.register(SearchViewItemCell.self, forCellReuseIdentifier: "cellId")
         tableView.register(SearchViewHeader.self, forHeaderFooterViewReuseIdentifier: "headerId")
@@ -76,10 +99,7 @@ class SearchViewController: UITableViewController {
     
     @objc func insert(sender: UIBarButtonItem) {
         items.append("Item \(items.count + 1)")
-        
-        let insertionIndexPath = IndexPath(item: items.count - 1, section: 0)
-        tableView.insertRows(at: [insertionIndexPath], with: .automatic)
-        
+        insertLastRow()
         tableView.reloadData()
     }
     
@@ -141,8 +161,7 @@ class SearchViewHeader: UITableViewHeaderFooterView {
         addSubview(nameLabel)
         addSubview(textField)
         activate(
-            textField.anchor.center,
-            textField.anchor.top.bottom
+            textField.anchor.center
         )
         NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[v0]|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": nameLabel]))
         NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-12-[v0]-12-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": nameLabel]))
