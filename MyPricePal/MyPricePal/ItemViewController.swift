@@ -17,6 +17,7 @@ protocol ItemViewDismissalDelegate : class {
 class ItemViewController: UITableViewController {
     
     var items: [String] = ["Costco: ","Walmart: ", "Amazon: ", "Albertsons: "]
+    var itemImages: [UIImage] = [UIImage(named: "costco")!,UIImage(named: "WalmartLogo")!,UIImage(named: "AmazonLogo")!,UIImage(named: "AlbertsonsLogo")!]
 
     public weak var dismissalDelegate: ItemViewDismissalDelegate?
 //    public let textView = UITextView(frame: .zero)
@@ -64,8 +65,14 @@ class ItemViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let itemCell = tableView.dequeueReusableCell(withIdentifier: "itemCellId", for: indexPath) as! ItemViewItemCell
+        
         itemCell.nameLabel.text = items[indexPath.row]
+        itemCell.logo.image = itemImages[indexPath.row]
+        itemCell.logo.clipsToBounds = true
+        
         itemCell.itemViewController = self
+        
+        itemCell.setupViews()
         return itemCell
     }
     
@@ -114,15 +121,13 @@ class ItemViewItemCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupViews()
+        
     }
     
-    var imageViewCell: UIImageView = {
-        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 20))
-        imageView.image = UIImage(named: "costco")
-        imageView.sizeToFit()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
+    var logo: UIImageView = {
+        let logo = UIImageView(frame: .zero)
+        logo.translatesAutoresizingMaskIntoConstraints = false
+        return logo
     }()
     
     required init?(coder aDecoder: NSCoder) {
@@ -145,16 +150,14 @@ class ItemViewItemCell: UITableViewCell {
     }()
     
     func setupViews() {
- //       addSubview(nameLabel)
         addSubview(actionButton)
-        addSubview(imageViewCell)
-        
-        
+        addSubview(logo)
+
         actionButton.addTarget(self, action: #selector(handleAction(sender:)), for: .touchUpInside)
         
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[v0]-8-[v1(80)]-8-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": imageViewCell, "v1": actionButton]))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[v0]-8-[v1(80)]-8-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": logo, "v1": actionButton]))
         
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[v0]-5-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": imageViewCell]))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[v0]-5-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": logo]))
         NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[v0]-5-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": actionButton]))
     }
     

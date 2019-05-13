@@ -8,10 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		05ABD7E6B8C140FE06C792E8 /* Pods_MyPricePalTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 404BFE2759315F3B80A5533B /* Pods_MyPricePalTests.framework */; };
+		356F5E9F2289E9FF00E31F81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 356F5E9E2289E9FF00E31F81 /* Assets.xcassets */; };
 		358AB524226590FA00E9C1E7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358AB523226590FA00E9C1E7 /* AppDelegate.swift */; };
 		358AB526226590FA00E9C1E7 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358AB525226590FA00E9C1E7 /* MainViewController.swift */; };
 		358AB529226590FA00E9C1E7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 358AB527226590FA00E9C1E7 /* Main.storyboard */; };
-		358AB52B226590FB00E9C1E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 358AB52A226590FB00E9C1E7 /* Assets.xcassets */; };
 		358AB52E226590FB00E9C1E7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 358AB52C226590FB00E9C1E7 /* LaunchScreen.storyboard */; };
 		35D2C4E622659336009EA490 /* BarcodeScanner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35D2C4E522659336009EA490 /* BarcodeScanner.framework */; };
 		35D2C4E82265933C009EA490 /* libc++.1.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 35D2C4E72265933C009EA490 /* libc++.1.tbd */; };
@@ -35,11 +35,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		356F5E9E2289E9FF00E31F81 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "AppIcon.appiconset /Assets.xcassets"; sourceTree = SOURCE_ROOT; };
 		358AB520226590FA00E9C1E7 /* MyPricePal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyPricePal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		358AB523226590FA00E9C1E7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		358AB525226590FA00E9C1E7 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		358AB528226590FA00E9C1E7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		358AB52A226590FB00E9C1E7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		358AB52D226590FB00E9C1E7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		358AB52F226590FB00E9C1E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		35D2C4E522659336009EA490 /* BarcodeScanner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BarcodeScanner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -111,8 +111,8 @@
 				36A593D82273F26F009C4F18 /* SearchViewController.swift */,
 				36A593D62273F250009C4F18 /* ItemViewController.swift */,
 				36A593DA2273F27E009C4F18 /* customButton.swift */,
+				356F5E9E2289E9FF00E31F81 /* Assets.xcassets */,
 				36A594072277A9A1009C4F18 /* GoogleService-Info.plist */,
-				358AB52A226590FB00E9C1E7 /* Assets.xcassets */,
 				358AB52C226590FB00E9C1E7 /* LaunchScreen.storyboard */,
 				358AB52F226590FB00E9C1E7 /* Info.plist */,
 			);
@@ -237,7 +237,7 @@
 			files = (
 				358AB52E226590FB00E9C1E7 /* LaunchScreen.storyboard in Resources */,
 				36A594082277A9A2009C4F18 /* GoogleService-Info.plist in Resources */,
-				358AB52B226590FB00E9C1E7 /* Assets.xcassets in Resources */,
+				356F5E9F2289E9FF00E31F81 /* Assets.xcassets in Resources */,
 				358AB529226590FA00E9C1E7 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

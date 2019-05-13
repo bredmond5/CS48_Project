@@ -127,7 +127,13 @@ class MainViewController: UINavigationController {
 //Function for getting the barcode from the BarcodeScannerViewController
 extension MainViewController: BarcodeScannerCodeDelegate {
     func scanner(_ controller: BarcodeScannerViewController, didCaptureCode code: String, type: String) {
+//        var gotItem = false
         getItemName(code, controller)
+//        gotItem = getItemName(code, controller)
+//        usleep(500000)
+//        if(!gotItem) {
+//
+//        }
     }
 }
 
