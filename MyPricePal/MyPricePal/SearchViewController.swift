@@ -22,7 +22,6 @@ protocol SearchRequestedDelegate: class {
 //to the itemVC if they are pressed.
 
 class SearchViewController: UITableViewController, UISearchBarDelegate {
-    
     public weak var dismissalDelegate: SearchViewControllerDismissalDelegate?
     public weak var searchRequestedDelegate: SearchRequestedDelegate?
     

@@ -55,9 +55,18 @@ class ItemViewController: UITableViewController {
         navigationItem.titleView = titleLabel
         let backBarButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissalAction(sender:)))
         navigationItem.leftBarButtonItem = backBarButton
-
+<<<<<<< HEAD
+        navigationItem.titleView = titleLabel
+        
+=======
+    }
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
+    {
+        return 90
+    }
+    
     override func viewDidLoad() {
-    	super.viewDidLoad()
+>>>>>>> 06b4352bbe1e5e982a41ecf62813a28fe7671787
         tableView.register(ItemViewItemCell.self, forCellReuseIdentifier: "itemCellId")
         tableView.register(ItemViewHeader.self, forHeaderFooterViewReuseIdentifier: "itemHeaderId")
         
