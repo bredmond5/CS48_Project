@@ -118,6 +118,11 @@ class ItemViewController: UITableViewController {
         let backBarButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissalAction(sender:)))
         navigationItem.leftBarButtonItem = backBarButton
         navigationItem.titleView = titleLabel
+        
+        let priceFinder = PriceFinder()
+        priceFinder.priceDelegate = self
+        priceFinder.getBestPrices(barcodeNum!)
+       
  
     }
     
@@ -280,5 +285,11 @@ class ItemViewItemCell: UITableViewCell {
     
     @objc func handleAction(sender: UIButton) {
         itemViewController?.deleteCell(cell: self)
+    }
+}
+
+extension ItemViewController: PriceFinderDelegate {
+    func returnPrices(_ prices: [String]) {
+        print(prices)
     }
 }
