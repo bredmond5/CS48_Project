@@ -110,11 +110,13 @@ class MainViewController: UINavigationController {
     //Asks the user if the item is correct, and if so goes to the itemVC. If not goes back to scanning
     func showAlertButtonTapped(_ itemN: String, _ barcodeVC: BarcodeScannerViewController){
         let alert = UIAlertController(title: "Item", message: "Is " + itemN + " your item?", preferredStyle: UIAlertController.Style.alert)
-        alert.addAction(UIAlertAction(title: "Yes", style: UIAlertAction.Style.default, handler: {action in
-            self.searchVC?.giveItemScanned(itemN)
-            self.pushViewController(self.itemVC!, animated: true)
-            self.itemVC?.itemN = itemN
+        alert.addAction(UIAlertAction(title: "Search by similar items", style: UIAlertAction.Style.default, handler: {action in
+            self.pushItemVC(false, itemN)
         }))
+        alert.addAction(UIAlertAction(title: "Search by exact item", style: UIAlertAction.Style.default, handler: {action in
+            self.pushItemVC(true, itemN)
+        }))
+        
         alert.addAction(UIAlertAction(title: "No", style: UIAlertAction.Style.cancel, handler: {action in
             barcodeVC.reset(animated: true)
         }))
@@ -129,6 +131,13 @@ class MainViewController: UINavigationController {
         
         barcodeVC.present(alert, animated: true)
 
+    }
+    
+    func pushItemVC(_ exact: Bool, _ itemN: String) {
+        self.searchVC?.giveItemScanned(itemN)
+        self.itemVC?.exact = exact
+        self.pushViewController(self.itemVC!, animated: true)
+        self.itemVC?.itemN = itemN
     }
 }
 
