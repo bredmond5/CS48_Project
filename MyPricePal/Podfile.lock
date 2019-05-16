@@ -1,4 +1,5 @@
 PODS:
+  - Alamofire (4.8.2)
   - Anchors (2.5.0)
   - BarcodeScanner (4.1.3)
   - Firebase (5.20.2):
@@ -75,9 +76,11 @@ PODS:
     - nanopb/encode (= 0.3.901)
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
+  - ReachabilitySwift (4.3.1)
   - SwiftLint (0.31.0)
 
 DEPENDENCIES:
+  - Alamofire
   - Anchors
   - BarcodeScanner
   - Firebase
@@ -85,10 +88,12 @@ DEPENDENCIES:
   - FirebaseAnalytics
   - GoogleAppMeasurement
   - GoogleUtilities
+  - ReachabilitySwift
   - SwiftLint
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - Alamofire
     - Anchors
     - BarcodeScanner
     - Firebase
@@ -101,9 +106,11 @@ SPEC REPOS:
     - GoogleUtilities
     - leveldb-library
     - nanopb
+    - ReachabilitySwift
     - SwiftLint
 
 SPEC CHECKSUMS:
+  Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
   Anchors: c039992ebab2fa53deccac429031a46debfbdc5a
   BarcodeScanner: fce1ad2b3f28286b1ab5091fe0979789618bee27
   Firebase: 0c8cf33f266410c61ab3e2265cfa412200351d9c
@@ -116,8 +123,9 @@ SPEC CHECKSUMS:
   GoogleUtilities: 04fce34bcd5620c1ee76fb79172105c74a4df335
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
+  ReachabilitySwift: 4032e2f59586e11e3b0ebe15b167abdd587a388b
   SwiftLint: 7a0227733d786395817373b2d0ca799fd0093ff3
 
-PODFILE CHECKSUM: e4352b36d430d2dd49efab499b5e80aa7c5ead83
+PODFILE CHECKSUM: 2321cd9cdb1fa17ed63cf65c006ecc8e6d94312f
 
 COCOAPODS: 1.5.3

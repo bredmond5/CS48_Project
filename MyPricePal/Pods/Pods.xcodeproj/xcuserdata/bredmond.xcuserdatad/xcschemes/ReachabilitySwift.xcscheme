@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "FB43E9EE2DD3DF1B2BCCC06637ECA275"
-               BuildableName = "Pods_MyPricePal.framework"
-               BlueprintName = "Pods-MyPricePal"
+               BlueprintIdentifier = "21680389A705BCE08FE7A98501849D28"
+               BuildableName = "Reachability.framework"
+               BlueprintName = "ReachabilitySwift"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "FB43E9EE2DD3DF1B2BCCC06637ECA275"
-            BuildableName = "Pods_MyPricePal.framework"
-            BlueprintName = "Pods-MyPricePal"
+            BlueprintIdentifier = "21680389A705BCE08FE7A98501849D28"
+            BuildableName = "Reachability.framework"
+            BlueprintName = "ReachabilitySwift"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
