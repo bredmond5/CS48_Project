@@ -8,11 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		05ABD7E6B8C140FE06C792E8 /* Pods_MyPricePalTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 404BFE2759315F3B80A5533B /* Pods_MyPricePalTests.framework */; };
+		356F5E9F2289E9FF00E31F81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 356F5E9E2289E9FF00E31F81 /* Assets.xcassets */; };
 		358AB524226590FA00E9C1E7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358AB523226590FA00E9C1E7 /* AppDelegate.swift */; };
 		358AB526226590FA00E9C1E7 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358AB525226590FA00E9C1E7 /* MainViewController.swift */; };
 		358AB529226590FA00E9C1E7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 358AB527226590FA00E9C1E7 /* Main.storyboard */; };
-		358AB52B226590FB00E9C1E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 358AB52A226590FB00E9C1E7 /* Assets.xcassets */; };
 		358AB52E226590FB00E9C1E7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 358AB52C226590FB00E9C1E7 /* LaunchScreen.storyboard */; };
+		35AA1AA8228CA23E00D2565A /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AA1AA7228CA23E00D2565A /* NetworkManager.swift */; };
 		35D2C4E622659336009EA490 /* BarcodeScanner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35D2C4E522659336009EA490 /* BarcodeScanner.framework */; };
 		35D2C4E82265933C009EA490 /* libc++.1.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 35D2C4E72265933C009EA490 /* libc++.1.tbd */; };
 		360CE0732289609200182E27 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 360CE0722289609200182E27 /* GoogleService-Info.plist */; };
@@ -35,13 +36,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		356F5E9E2289E9FF00E31F81 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "AppIcon.appiconset /Assets.xcassets"; sourceTree = SOURCE_ROOT; };
 		358AB520226590FA00E9C1E7 /* MyPricePal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyPricePal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		358AB523226590FA00E9C1E7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		358AB525226590FA00E9C1E7 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		358AB528226590FA00E9C1E7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		358AB52A226590FB00E9C1E7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		358AB52D226590FB00E9C1E7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		358AB52F226590FB00E9C1E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		35AA1AA7228CA23E00D2565A /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		35D2C4E522659336009EA490 /* BarcodeScanner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BarcodeScanner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		35D2C4E72265933C009EA490 /* libc++.1.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.1.tbd"; path = "usr/lib/libc++.1.tbd"; sourceTree = SDKROOT; };
 		360CE0722289609200182E27 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -106,13 +108,19 @@
 			isa = PBXGroup;
 			children = (
 				358AB523226590FA00E9C1E7 /* AppDelegate.swift */,
+				35AA1AA7228CA23E00D2565A /* NetworkManager.swift */,
 				358AB525226590FA00E9C1E7 /* MainViewController.swift */,
 				360CE0722289609200182E27 /* GoogleService-Info.plist */,
 				358AB527226590FA00E9C1E7 /* Main.storyboard */,
 				36A593D82273F26F009C4F18 /* SearchViewController.swift */,
 				36A593D62273F250009C4F18 /* ItemViewController.swift */,
 				36A593DA2273F27E009C4F18 /* customButton.swift */,
+<<<<<<< HEAD
+				356F5E9E2289E9FF00E31F81 /* Assets.xcassets */,
+				36A594072277A9A1009C4F18 /* GoogleService-Info.plist */,
+=======
 				358AB52A226590FB00E9C1E7 /* Assets.xcassets */,
+>>>>>>> 06b4352bbe1e5e982a41ecf62813a28fe7671787
 				358AB52C226590FB00E9C1E7 /* LaunchScreen.storyboard */,
 				358AB52F226590FB00E9C1E7 /* Info.plist */,
 			);
@@ -239,8 +247,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				358AB52E226590FB00E9C1E7 /* LaunchScreen.storyboard in Resources */,
+<<<<<<< HEAD
+				36A594082277A9A2009C4F18 /* GoogleService-Info.plist in Resources */,
+				356F5E9F2289E9FF00E31F81 /* Assets.xcassets in Resources */,
+=======
 				360CE0732289609200182E27 /* GoogleService-Info.plist in Resources */,
 				358AB52B226590FB00E9C1E7 /* Assets.xcassets in Resources */,
+>>>>>>> 06b4352bbe1e5e982a41ecf62813a28fe7671787
 				358AB529226590FA00E9C1E7 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -264,9 +277,11 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-MyPricePal/Pods-MyPricePal-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/Anchors/Anchors.framework",
 				"${BUILT_PRODUCTS_DIR}/BarcodeScanner/BarcodeScanner.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
@@ -274,9 +289,11 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Anchors.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BarcodeScanner.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -336,6 +353,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35AA1AA8228CA23E00D2565A /* NetworkManager.swift in Sources */,
 				358AB526226590FA00E9C1E7 /* MainViewController.swift in Sources */,
 				358AB524226590FA00E9C1E7 /* AppDelegate.swift in Sources */,
 				36A593D92273F26F009C4F18 /* SearchViewController.swift in Sources */,

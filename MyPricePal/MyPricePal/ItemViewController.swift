@@ -18,6 +18,7 @@ protocol ItemViewDismissalDelegate : class {
 class ItemViewController: UITableViewController {
     var image = UIImage(named: "imageC.jpg")
     var items: [String] = ["Costco: ","Walmart: ", "Amazon: ", "Albertsons: "]
+//    var itemImages: [UIImage] = [UIImage(named: "costco")!,UIImage(named: "WalmartLogo")!,UIImage(named: "AmazonLogo")!,UIImage(named: "AlbertsonsLogo")!]
 
 //    var imageView = UIImageView {
 //        var imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 20))
@@ -28,8 +29,11 @@ class ItemViewController: UITableViewController {
     
     public weak var dismissalDelegate: ItemViewDismissalDelegate?
 //    public let textView = UITextView(frame: .zero)
-    public var itemN: String?
-    
+    var itemN: String? {
+        didSet {
+            self.titleLabel.text = itemN
+        }
+    }
 
     var titleLabel: UILabel = {
         let label = UILabel()
@@ -48,10 +52,13 @@ class ItemViewController: UITableViewController {
     override func loadView() {
         super.loadView()
         view.backgroundColor = .white
-        titleLabel.text = itemN
         navigationItem.titleView = titleLabel
         let backBarButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissalAction(sender:)))
         navigationItem.leftBarButtonItem = backBarButton
+<<<<<<< HEAD
+        navigationItem.titleView = titleLabel
+        
+=======
     }
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
     {
@@ -59,10 +66,11 @@ class ItemViewController: UITableViewController {
     }
     
     override func viewDidLoad() {
+>>>>>>> 06b4352bbe1e5e982a41ecf62813a28fe7671787
         tableView.register(ItemViewItemCell.self, forCellReuseIdentifier: "itemCellId")
         tableView.register(ItemViewHeader.self, forHeaderFooterViewReuseIdentifier: "itemHeaderId")
         
-         tableView.sectionHeaderHeight = 50
+        tableView.sectionHeaderHeight = 50
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -98,8 +106,15 @@ class ItemViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let itemCell = tableView.dequeueReusableCell(withIdentifier: "itemCellId", for: indexPath) as! ItemViewItemCell
+        
         itemCell.nameLabel.text = items[indexPath.row]
+ //       itemCell.logo.image = itemImages[indexPath.row]
+//        itemCell.logo.clipsToBounds = true
+        itemCell.contentMode = .scaleAspectFit
+        
         itemCell.itemViewController = self
+        
+        itemCell.setupViews()
         return itemCell
     }
     
@@ -137,7 +152,8 @@ class ItemViewHeader: UITableViewHeaderFooterView {
     func setupViews() {
         addSubview(nameLabel)
         activate(
-           nameLabel.anchor.center
+           nameLabel.anchor.left.constant(16),
+           nameLabel.anchor.centerY
         )
     }
 }
@@ -155,8 +171,14 @@ class ItemViewItemCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupViews()
+        
     }
+    
+//    var logo: UIImageView = {
+//        let logo = UIImageView(frame: .zero)
+//        logo.translatesAutoresizingMaskIntoConstraints = false
+//        return logo
+//    }()
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been initialized")
@@ -178,8 +200,11 @@ class ItemViewItemCell: UITableViewCell {
     }()
     
     func setupViews() {
-        addSubview(nameLabel)
         addSubview(actionButton)
+<<<<<<< HEAD
+        addSubview(nameLabel)
+
+=======
         addSubview(mainImageView)
         
         activate(
@@ -187,12 +212,13 @@ class ItemViewItemCell: UITableViewCell {
             //mainImageView.anchor.size
         )
         
+>>>>>>> 06b4352bbe1e5e982a41ecf62813a28fe7671787
         actionButton.addTarget(self, action: #selector(handleAction(sender:)), for: .touchUpInside)
         
         NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[v0]-8-[v1(80)]-8-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": nameLabel, "v1": actionButton]))
         
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-12-[v0]-12-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": nameLabel]))
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-12-[v0]-12-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": actionButton]))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[v0]-20-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": nameLabel]))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[v0]-20-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": actionButton]))
     }
     
     @objc func handleAction(sender: UIButton) {

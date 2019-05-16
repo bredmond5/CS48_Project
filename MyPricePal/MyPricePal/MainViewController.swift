@@ -112,13 +112,23 @@ class MainViewController: UINavigationController {
         let alert = UIAlertController(title: "Item", message: "Is " + itemN + " your item?", preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Yes", style: UIAlertAction.Style.default, handler: {action in
             self.searchVC?.giveItemScanned(itemN)
-            self.itemVC?.itemN = itemN
             self.pushViewController(self.itemVC!, animated: true)
+            self.itemVC?.itemN = itemN
         }))
         alert.addAction(UIAlertAction(title: "No", style: UIAlertAction.Style.cancel, handler: {action in
             barcodeVC.reset(animated: true)
         }))
         barcodeVC.present(alert, animated: true)
+    }
+    
+    func showNoInternetAlert(_ barcodeVC: BarcodeScannerViewController) {
+        let alert = UIAlertController(title: "Error", message: "No internet", preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "Try Again", style: UIAlertAction.Style.default, handler: {action in
+            barcodeVC.reset()
+        }))
+        
+        barcodeVC.present(alert, animated: true)
+
     }
 }
 
@@ -127,7 +137,14 @@ class MainViewController: UINavigationController {
 //Function for getting the barcode from the BarcodeScannerViewController
 extension MainViewController: BarcodeScannerCodeDelegate {
     func scanner(_ controller: BarcodeScannerViewController, didCaptureCode code: String, type: String) {
-        getItemName(code, controller)
+//        var gotItem = false
+        NetworkManager.isReachable { networkManagerInstance in
+            self.getItemName(code, controller)
+        }
+        
+        NetworkManager.isUnreachable { networkManagerInstance in
+            self.showNoInternetAlert(controller)
+        }
     }
 }
 
@@ -171,7 +188,7 @@ extension MainViewController: SearchViewControllerDismissalDelegate {
 //Function for handling when the barcodeVC presses the search button in the top right.
 extension MainViewController: SearchRequestedDelegate {
     @objc func searchRequested(_ item: String) {
-        itemVC?.itemN = item
         pushViewController(itemVC!, animated: true)
+        itemVC?.itemN = item
     }
 }
