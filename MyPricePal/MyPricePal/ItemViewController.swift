@@ -7,15 +7,32 @@
 //
 
 import UIKit
+import Foundation
 import Anchors
-import SafariServices
-
 
 protocol ItemViewDismissalDelegate : class {
     func itemViewDidDismiss(_ controller: ItemViewController)
-} 
+}
+
+protocol ItemViewURLDelegate: class {
+    func showSafariVC(_ url: String)
+}
 
 class ItemViewController: UITableViewController {
+    
+    struct responseJSON: Decodable{
+        let response: responseType
+        //        let entities: [Content]
+    }
+    
+    struct responseType: Decodable{
+        let entities: [Content]
+    }
+    
+    struct Content: Decodable{
+        let entityEnglishId: String
+    }
+    
     var image = UIImage(named: "imageC.jpg")
     var items: [String] = ["Costco: ","Walmart: ", "Amazon: ", "Albertsons: "]
     
@@ -30,7 +47,12 @@ class ItemViewController: UITableViewController {
 //    }()
     
     public weak var dismissalDelegate: ItemViewDismissalDelegate?
+    public weak var urlDelegate: ItemViewURLDelegate?
 //    public let textView = UITextView(frame: .zero)
+
+    public var Similiar: Bool = false
+    public var barcodeNum: String?
+    
     var itemN: String? {
         didSet {
             self.titleLabel.text = itemN
@@ -49,6 +71,44 @@ class ItemViewController: UITableViewController {
 
     @objc func dismissalAction(sender: Any) {
         dismissalDelegate?.itemViewDidDismiss(self)
+    }
+    func truncateName(){
+        let urlString = "https://api.textrazor.com/"
+        let headers = [
+            "x-textrazor-key" : "55864c94efce2b09deef214d17c8de7f0eeb73573655571c5ca9125b"
+        ]
+        var z : String = ""
+        let x : String = "text=" + itemN!
+        let y : String = x + "&extractors=entities"
+        let postData = NSMutableData(data: y.data(using: String.Encoding.utf8)!)
+        let request = NSMutableURLRequest(url: NSURL(string: urlString)! as URL, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 1.0)
+        request.httpMethod = "POST"
+        request.allHTTPHeaderFields = headers
+        request.httpBody = postData as Data
+        let task = URLSession.shared.dataTask(with: request as URLRequest){ (data, response, error) in
+            if let data = data{
+                do{
+                    let JSONinfo = try JSONDecoder().decode(responseJSON.self, from: data)
+                    for i in (JSONinfo.response.entities).indices{
+                        z = z + JSONinfo.response.entities[i].entityEnglishId
+                    }
+                    print(z)
+                }catch{
+                    print(error)
+                }
+                return
+            }
+            //guard let Website = try? JSONDecoder().decode(Website.self, from: data)else{
+            //   return
+            //}
+//            if let JSONString = String(data: data, encoding: String.Encoding.utf8){
+//                print(JSONString)
+//            }
+            
+        }
+        task.resume()
+        
+    
     }
     
     override func loadView() {
@@ -72,29 +132,40 @@ class ItemViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }
-    func showSafariVC(for url: String){
-        guard let url = URL(string: url)else{
-            return
-        }
-        let safariVC = SFSafariViewController(url: url)
-        present(safariVC, animated: true)
-    }
+    
+   
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row==0{
             let urlBase = "https://www.costco.com/CatalogSearch?dept=All&keyword="
             guard let item = itemN?.replacingOccurrences(of: " ", with: "+", options: .literal, range: nil) else { return}
-            showSafariVC(for: urlBase + item)
+            //if(Similiar==true){
+            urlDelegate?.showSafariVC(urlBase + item)
+            //}
+            //else{
+                //urlDelegate?.showSafariVC(urlBase + barcodeNum!)
+            //}
         }
         if indexPath.row == 1{
             //URl is hard to manipulate
             
         }
         if indexPath.row == 2{
-            let urlBase = "https://www.amazon.com/s?k="
-            let urlEnd = "&i=grocery&crid=1RQ40Q09MZBMW&sprefix=5+gum%2Caps%2C189&ref=nb_sb_ss_c_2_5"
-            guard let item = itemN?.replacingOccurrences(of: " ", with: "+", options: .literal, range: nil) else { return}
-            showSafariVC(for: urlBase + item + urlEnd)
+            if(Similiar==true){
+                let urlBase = "https://www.amazon.com/s?k="
+                let urlEnd = "&i=grocery&crid=1RQ40Q09MZBMW&sprefix=5+gum%2Caps%2C189&ref=nb_sb_ss_c_2_5"
+                guard let item = itemN?.replacingOccurrences(of: " ", with: "+", options: .literal, range: nil) else { return}
+                urlDelegate?.showSafariVC(urlBase + item + urlEnd)
+            }
+            else{
+                print("THIS SHOULD BE JSON OUTPUT")
+                truncateName()
+                let urlBase = "https://www.amazon.com/s?k="
+                let urlEnd = "&ref=nb_sb_nos"
+                urlDelegate?.showSafariVC(urlBase + barcodeNum! + urlEnd)
+            }
         }
+        
         if indexPath.row == 3{
             //URl is hard to manipulate
         }
