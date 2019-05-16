@@ -57,6 +57,12 @@ class ItemViewController: UITableViewController {
         navigationItem.titleView = titleLabel
         let backBarButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissalAction(sender:)))
         navigationItem.leftBarButtonItem = backBarButton
+        navigationItem.titleView = titleLabel
+ 
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         tableView.register(ItemViewItemCell.self, forCellReuseIdentifier: "itemCellId")
         tableView.register(ItemViewHeader.self, forHeaderFooterViewReuseIdentifier: "itemHeaderId")
         
@@ -192,7 +198,7 @@ class ItemViewItemCell: UITableViewCell {
     func setupViews() {
         addSubview(actionButton)
         addSubview(nameLabel)
-        
+
         actionButton.addTarget(self, action: #selector(handleAction(sender:)), for: .touchUpInside)
         
         NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[v0]-8-[v1(80)]-8-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": nameLabel, "v1": actionButton]))

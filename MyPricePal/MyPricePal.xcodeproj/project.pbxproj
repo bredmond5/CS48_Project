@@ -16,6 +16,7 @@
 		35D2C4E622659336009EA490 /* BarcodeScanner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35D2C4E522659336009EA490 /* BarcodeScanner.framework */; };
 		35D2C4E82265933C009EA490 /* libc++.1.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 35D2C4E72265933C009EA490 /* libc++.1.tbd */; };
 		35E42FB1228E168C00BD9EB4 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E42FB0228E168C00BD9EB4 /* NetworkManager.swift */; };
+
 		360CE0732289609200182E27 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 360CE0722289609200182E27 /* GoogleService-Info.plist */; };
 		36A593D72273F250009C4F18 /* ItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A593D62273F250009C4F18 /* ItemViewController.swift */; };
 		36A593D92273F26F009C4F18 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A593D82273F26F009C4F18 /* SearchViewController.swift */; };
@@ -46,6 +47,7 @@
 		35D2C4E522659336009EA490 /* BarcodeScanner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BarcodeScanner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		35D2C4E72265933C009EA490 /* libc++.1.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.1.tbd"; path = "usr/lib/libc++.1.tbd"; sourceTree = SDKROOT; };
 		35E42FB0228E168C00BD9EB4 /* NetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+
 		360CE0722289609200182E27 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		36A593D62273F250009C4F18 /* ItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemViewController.swift; sourceTree = "<group>"; };
 		36A593D82273F26F009C4F18 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -111,11 +113,18 @@
 				358AB525226590FA00E9C1E7 /* MainViewController.swift */,
 				360CE0722289609200182E27 /* GoogleService-Info.plist */,
 				35E42FB0228E168C00BD9EB4 /* NetworkManager.swift */,
+
 				358AB527226590FA00E9C1E7 /* Main.storyboard */,
 				36A593D82273F26F009C4F18 /* SearchViewController.swift */,
 				36A593D62273F250009C4F18 /* ItemViewController.swift */,
 				36A593DA2273F27E009C4F18 /* customButton.swift */,
 				358AB52A226590FB00E9C1E7 /* Assets.xcassets */,
+
+				356F5E9E2289E9FF00E31F81 /* Assets.xcassets */,
+				36A594072277A9A1009C4F18 /* GoogleService-Info.plist */,
+
+				358AB52A226590FB00E9C1E7 /* Assets.xcassets */,
+
 				358AB52C226590FB00E9C1E7 /* LaunchScreen.storyboard */,
 				358AB52F226590FB00E9C1E7 /* Info.plist */,
 			);
@@ -244,6 +253,12 @@
 				358AB52E226590FB00E9C1E7 /* LaunchScreen.storyboard in Resources */,
 				360CE0732289609200182E27 /* GoogleService-Info.plist in Resources */,
 				358AB52B226590FB00E9C1E7 /* Assets.xcassets in Resources */,
+
+				36A594082277A9A2009C4F18 /* GoogleService-Info.plist in Resources */,
+				356F5E9F2289E9FF00E31F81 /* Assets.xcassets in Resources */,
+				360CE0732289609200182E27 /* GoogleService-Info.plist in Resources */,
+				358AB52B226590FB00E9C1E7 /* Assets.xcassets in Resources */,
+
 				358AB529226590FA00E9C1E7 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
