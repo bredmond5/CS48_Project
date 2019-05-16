@@ -12,10 +12,10 @@ import Anchors
 import FirebaseDatabase
 import Foundation
 import AVFoundation
+import SafariServices
 
 //The MainViewController handles switching between the other view controllers. It does
 //not have any views of its own as it is a UINavigationController.
-
 class MainViewController: UINavigationController {
 
     //The controller where all the barcodes searched will show up
@@ -39,6 +39,7 @@ class MainViewController: UINavigationController {
         //Initialize itemVC and set delegates.
         itemVC = ItemViewController()
         itemVC?.dismissalDelegate = self
+        itemVC?.urlDelegate = self
         
         //initialize barcodeVC and send delegates.
         let barcodeVC = topViewController as! BarcodeScannerViewController
@@ -92,7 +93,7 @@ class MainViewController: UINavigationController {
                 return
             }//Creates right side range
             let rangeOfTheValue = leftRange.upperBound..<rightRange.lowerBound //Appends the ranges together
-            self.showAlertButtonTapped(String(htmlString[rangeOfTheValue]), barcodeVC) //Displays the product name
+            self.showAlertButtonTapped(String(htmlString[rangeOfTheValue]), barcodeString,barcodeVC) //Displays the product name
         }
         task.resume()
     }
@@ -108,17 +109,38 @@ class MainViewController: UINavigationController {
     }
     
     //Asks the user if the item is correct, and if so goes to the itemVC. If not goes back to scanning
-    func showAlertButtonTapped(_ itemN: String, _ barcodeVC: BarcodeScannerViewController){
+    func showAlertButtonTapped(_ itemN: String, _ barcodeNum: String, _ barcodeVC: BarcodeScannerViewController){
         let alert = UIAlertController(title: "Item", message: "Is " + itemN + " your item?", preferredStyle: UIAlertController.Style.alert)
-        alert.addAction(UIAlertAction(title: "Yes", style: UIAlertAction.Style.default, handler: {action in
-            self.searchVC?.giveItemScanned(itemN)
-            self.itemVC?.itemN = itemN
-            self.pushViewController(self.itemVC!, animated: true)
+
+        alert.addAction(UIAlertAction(title: "Search by similar items", style: UIAlertAction.Style.default, handler: {action in
+            self.pushItemVC(false, itemN, barcodeNum)
         }))
+        alert.addAction(UIAlertAction(title: "Search by exact item", style: UIAlertAction.Style.default, handler: {action in
+            self.pushItemVC(true, itemN, barcodeNum)
+        }))
+        
         alert.addAction(UIAlertAction(title: "No", style: UIAlertAction.Style.cancel, handler: {action in
             barcodeVC.reset(animated: true)
         }))
         barcodeVC.present(alert, animated: true)
+    }
+    
+    func showNoInternetAlert(_ barcodeVC: BarcodeScannerViewController) {
+        let alert = UIAlertController(title: "Error", message: "No internet", preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "Try Again", style: UIAlertAction.Style.default, handler: {action in
+            barcodeVC.reset()
+        }))
+        
+        barcodeVC.present(alert, animated: true)
+
+    }
+    
+func pushItemVC(_ exact: Bool, _ itemN: String, _ barcodeNum: String) {
+        self.searchVC?.giveItemScanned(itemN)
+        self.itemVC?.exact = exact
+        self.itemVC?.barcodeNum = barcodeNum
+        self.pushViewController(self.itemVC!, animated: true)
+        self.itemVC?.itemN = itemN
     }
 }
 
@@ -127,7 +149,14 @@ class MainViewController: UINavigationController {
 //Function for getting the barcode from the BarcodeScannerViewController
 extension MainViewController: BarcodeScannerCodeDelegate {
     func scanner(_ controller: BarcodeScannerViewController, didCaptureCode code: String, type: String) {
-        getItemName(code, controller)
+//        var gotItem = false
+        NetworkManager.isReachable { networkManagerInstance in
+            self.getItemName(code, controller)
+        }
+        
+        NetworkManager.isUnreachable { networkManagerInstance in
+            self.showNoInternetAlert(controller)
+        }
     }
 }
 
@@ -171,7 +200,18 @@ extension MainViewController: SearchViewControllerDismissalDelegate {
 //Function for handling when the barcodeVC presses the search button in the top right.
 extension MainViewController: SearchRequestedDelegate {
     @objc func searchRequested(_ item: String) {
-        itemVC?.itemN = item
         pushViewController(itemVC!, animated: true)
+        itemVC?.itemN = item
+    }
+}
+
+extension MainViewController: ItemViewURLDelegate {
+    func showSafariVC(_ url: String) {
+        print("what the nuts")
+        guard let url = URL(string: url)else{
+            return
+        }
+        let safariVC = SFSafariViewController(url: url)
+        pushViewController(safariVC, animated: true)
     }
 }

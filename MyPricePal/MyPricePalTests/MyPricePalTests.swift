@@ -53,6 +53,7 @@ class MyPricePalTests: XCTestCase {
         searchVC?.giveItemScanned("Deodorant")
         
         XCTAssert(searchVC?.items[0] == "Deodorant", "Deodorant != \(searchVC!.items[0])")
+        XCTAssert(searchVC?.items[1] == "Binder", "Binder != \(searchVC!.items[1])")
         XCTAssert(searchVC?.items[2] == "Gum", "Gum != \(searchVC!.items[2])")
     }
     
@@ -74,6 +75,52 @@ class MyPricePalTests: XCTestCase {
         itemVC.loadView()
         itemVC.viewDidLoad()
     }
+    
+    func testSearchViewControllerLeak() {
+        
+        var controller:SearchViewController? = SearchViewController()
+        
+        weak var leakReferance = controller
+        controller = nil
+        XCTAssertNil(leakReferance)
+    }
+    
+    func testItemViewControllerLeak() {
+        
+        var controller:ItemViewController? = ItemViewController()
+        
+        weak var leakReferance = controller
+        controller = nil
+        XCTAssertNil(leakReferance)
+    }
+    
+    func testCustomButtonLeak() {
+        
+        var controller:customButton? = customButton()
+        
+        weak var leakReferance = controller
+        controller = nil
+        XCTAssertNil(leakReferance)
+    }
+    
+    func testMainViewControllerLeak() {
+        
+        var controller:MainViewController? = MainViewController()
+        
+        weak var leakReferance = controller
+        controller = nil
+        XCTAssertNil(leakReferance)
+    }
+    
+    func testAppDelegateLeak() {
+        
+        var controller:AppDelegate? = AppDelegate()
+        
+        weak var leakReferance = controller
+        controller = nil
+        XCTAssertNil(leakReferance)
+    }
+    
     
 //   func testGetItem() {
 //    let barcodeString = "022000005120"
@@ -116,5 +163,7 @@ class MyPricePalTests: XCTestCase {
 //        }
 //        task.resume()
 //    }
+    
+
 }
 

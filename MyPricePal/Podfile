@@ -15,6 +15,8 @@ pod 'Firebase/Database'
 pod 'FirebaseAnalytics'
 pod 'GoogleUtilities'
 pod 'GoogleAppMeasurement'
+pod 'ReachabilitySwift'
+pod 'Alamofire'
 
 target 'MyPricePalTests' do
     inherit! :search_paths
