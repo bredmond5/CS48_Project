@@ -16,7 +16,6 @@ import SafariServices
 
 //The MainViewController handles switching between the other view controllers. It does
 //not have any views of its own as it is a UINavigationController.
-
 class MainViewController: UINavigationController {
 
     //The controller where all the barcodes searched will show up
@@ -94,7 +93,7 @@ class MainViewController: UINavigationController {
                 return
             }//Creates right side range
             let rangeOfTheValue = leftRange.upperBound..<rightRange.lowerBound //Appends the ranges together
-            self.showAlertButtonTapped(String(htmlString[rangeOfTheValue]), barcodeVC) //Displays the product name
+            self.showAlertButtonTapped(String(htmlString[rangeOfTheValue]), barcodeString,barcodeVC) //Displays the product name
         }
         task.resume()
     }
@@ -110,11 +109,12 @@ class MainViewController: UINavigationController {
     }
     
     //Asks the user if the item is correct, and if so goes to the itemVC. If not goes back to scanning
-    func showAlertButtonTapped(_ itemN: String, _ barcodeVC: BarcodeScannerViewController){
+    func showAlertButtonTapped(_ itemN: String, _ barcodeNum: String, _ barcodeVC: BarcodeScannerViewController){
         let alert = UIAlertController(title: "Item", message: "Is " + itemN + " your item?", preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Yes", style: UIAlertAction.Style.default, handler: {action in
             self.searchVC?.giveItemScanned(itemN)
             self.itemVC?.itemN = itemN
+            self.itemVC?.barcodeNum = barcodeNum
             self.pushViewController(self.itemVC!, animated: true)
         }))
         alert.addAction(UIAlertAction(title: "No", style: UIAlertAction.Style.cancel, handler: {action in
