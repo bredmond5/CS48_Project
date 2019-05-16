@@ -15,6 +15,7 @@ pod 'Firebase/Database'
 pod 'FirebaseAnalytics'
 pod 'GoogleUtilities'
 pod 'GoogleAppMeasurement'
+pod 'SwiftSoup'
 
 
 end
