@@ -53,6 +53,7 @@ class MyPricePalTests: XCTestCase {
         searchVC?.giveItemScanned("Deodorant")
         
         XCTAssert(searchVC?.items[0] == "Deodorant", "Deodorant != \(searchVC!.items[0])")
+        XCTAssert(searchVC?.items[1] == "Binder", "Binder != \(searchVC!.items[1])")
         XCTAssert(searchVC?.items[2] == "Gum", "Gum != \(searchVC!.items[2])")
     }
     
