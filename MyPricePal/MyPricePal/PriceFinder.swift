@@ -115,7 +115,10 @@ class PriceFinder: NSObject {
                     let responseJSON = try JSONDecoder().decode(returnJSON.self, from: data)
                     self.prices.append(responseJSON.results[0].content.url)
                     for i in (responseJSON.results[0].content.offers).indices{
-                        self.prices.append(responseJSON.results[0].content.offers[i].price + " at " + responseJSON.results[0].content.offers[i].shop_name + " " + responseJSON.results[0].content.offers[i].url)
+                      self.prices.append(responseJSON.results[0].content.offers[i].shop_name)
+
+                        self.prices.append(responseJSON.results[0].content.offers[i].price)
+                        self.prices.append(responseJSON.results[0].content.offers[i].url)
                     }
                     self.priceDelegate?.returnPrices(self.prices)
 

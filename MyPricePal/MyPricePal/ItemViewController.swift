@@ -18,6 +18,11 @@ protocol ItemViewURLDelegate: class {
     func showSafariVC(_ url: String)
 }
 
+struct InfoStruct {
+    let companyAndPrice: String?
+    let url: String?
+}
+
 class ItemViewController: UITableViewController {
     
     struct responseJSON: Decodable{
@@ -33,10 +38,23 @@ class ItemViewController: UITableViewController {
         let entityEnglishId: String
     }
     
-    var image = UIImage(named: "imageC.jpg")
-    var items: [String] = ["Costco: ","Walmart: ", "Amazon: ", "Albertsons: "]
+    var priceArray: [String] = [String]() {
+        didSet {
+            let google = InfoStruct(companyAndPrice: "Google Shopping", url: priceArray[0])
+            items.append(google)
+            
+            var i = 1
+            while i < priceArray.count {
+                let infoStruct = InfoStruct(companyAndPrice: priceArray[i] + ": " +  priceArray[i + 1], url: priceArray[i + 2])
+                items.append(infoStruct)
+                i = i + 3
+            }
+        }
+    }
     
-    var exact: Bool?
+    var items: [InfoStruct] = [InfoStruct]()
+    
+    var exact = true
 //    var itemImages: [UIImage] = [UIImage(named: "costco")!,UIImage(named: "WalmartLogo")!,UIImage(named: "AmazonLogo")!,UIImage(named: "AlbertsonsLogo")!]
 
 //    var imageView = UIImageView {
@@ -53,11 +71,7 @@ class ItemViewController: UITableViewController {
     public var Similiar: Bool = false
     public var barcodeNum: String?
     
-    var itemN: String? {
-        didSet {
-            self.titleLabel.text = itemN
-        }
-    }
+    var itemN: String?
 
     var titleLabel: UILabel = {
         let label = UILabel()
@@ -72,6 +86,21 @@ class ItemViewController: UITableViewController {
     @objc func dismissalAction(sender: Any) {
         dismissalDelegate?.itemViewDidDismiss(self)
     }
+    
+    @objc func changeResults(_ sender: Any) {
+        //TODO: make the view swap for similar
+        setChangeButtonTitle()
+        exact = !exact
+    }
+    
+    func setChangeButtonTitle() {
+        if(exact) {
+            navigationItem.rightBarButtonItem?.title = "Lookup by Exact"
+        }else{
+            navigationItem.rightBarButtonItem?.title = "Lookup by Similar"
+        }
+    }
+    
     func truncateName(){
         let urlString = "https://api.textrazor.com/"
         let headers = [
@@ -107,8 +136,6 @@ class ItemViewController: UITableViewController {
             
         }
         task.resume()
-        
-    
     }
     
     override func loadView() {
@@ -116,14 +143,11 @@ class ItemViewController: UITableViewController {
         view.backgroundColor = .white
         navigationItem.titleView = titleLabel
         let backBarButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissalAction(sender:)))
+        let changeButton = UIBarButtonItem(title: "Lookup by Similar", style: .plain, target: self, action: #selector(changeResults(_:)))
+        setChangeButtonTitle()
         navigationItem.leftBarButtonItem = backBarButton
+        navigationItem.rightBarButtonItem = changeButton
         navigationItem.titleView = titleLabel
-        
-        let priceFinder = PriceFinder()
-        priceFinder.priceDelegate = self
-        priceFinder.getBestPrices(barcodeNum!)
-       
- 
     }
     
     override func viewDidLoad() {
@@ -133,57 +157,58 @@ class ItemViewController: UITableViewController {
         
         tableView.sectionHeaderHeight = 50
     }
+  
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }
     
-   
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row==0{
-            let urlBase = "https://www.costco.com/CatalogSearch?dept=All&keyword="
-            guard let item = itemN?.replacingOccurrences(of: " ", with: "+", options: .literal, range: nil) else { return}
-            //if(Similiar==true){
-            urlDelegate?.showSafariVC(urlBase + item)
-            //}
-            //else{
-                //urlDelegate?.showSafariVC(urlBase + barcodeNum!)
-            //}
-        }
-        if indexPath.row == 1{
-            //URl is hard to manipulate
-            
-        }
-        if indexPath.row == 2{
-            if(Similiar==true){
-                let urlBase = "https://www.amazon.com/s?k="
-                let urlEnd = "&i=grocery&crid=1RQ40Q09MZBMW&sprefix=5+gum%2Caps%2C189&ref=nb_sb_ss_c_2_5"
-                guard let item = itemN?.replacingOccurrences(of: " ", with: "+", options: .literal, range: nil) else { return}
-                urlDelegate?.showSafariVC(urlBase + item + urlEnd)
-            }
-            else{
-                print("THIS SHOULD BE JSON OUTPUT")
-                truncateName()
-                let urlBase = "https://www.amazon.com/s?k="
-                let urlEnd = "&ref=nb_sb_nos"
-                urlDelegate?.showSafariVC(urlBase + barcodeNum! + urlEnd)
-            }
-        }
+        let cell = tableView.cellForRow(at: indexPath) as! ItemViewItemCell
         
-        if indexPath.row == 3{
-            //URl is hard to manipulate
-        }
+        urlDelegate?.showSafariVC(cell.url!)
+        
+//        if indexPath.row==0{
+//            let urlBase = "https://www.costco.com/CatalogSearch?dept=All&keyword="
+//            guard let item = itemN?.replacingOccurrences(of: " ", with: "+", options: .literal, range: nil) else { return}
+//            //if(Similiar==true){
+//            urlDelegate?.showSafariVC(urlBase + item)
+//            //}
+//            //else{
+//                //urlDelegate?.showSafariVC(urlBase + barcodeNum!)
+//            //}
+//        }
+//        if indexPath.row == 1{
+//            //URl is hard to manipulate
+//
+//        }
+//        if indexPath.row == 2{
+//            if(Similiar==true){
+//                let urlBase = "https://www.amazon.com/s?k="
+//                let urlEnd = "&i=grocery&crid=1RQ40Q09MZBMW&sprefix=5+gum%2Caps%2C189&ref=nb_sb_ss_c_2_5"
+//                guard let item = itemN?.replacingOccurrences(of: " ", with: "+", options: .literal, range: nil) else { return}
+//                urlDelegate?.showSafariVC(urlBase + item + urlEnd)
+//            }
+//            else{
+//                print("THIS SHOULD BE JSON OUTPUT")
+//                truncateName()
+//                let urlBase = "https://www.amazon.com/s?k="
+//                let urlEnd = "&ref=nb_sb_nos"
+//                urlDelegate?.showSafariVC(urlBase + barcodeNum! + urlEnd)
+//            }
+//        }
+//
+//        if indexPath.row == 3{
+//            //URl is hard to manipulate
+//        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let itemCell = tableView.dequeueReusableCell(withIdentifier: "itemCellId", for: indexPath) as! ItemViewItemCell
         
-        itemCell.nameLabel.text = items[indexPath.row]
- //       itemCell.logo.image = itemImages[indexPath.row]
-//        itemCell.logo.clipsToBounds = true
+        itemCell.nameLabel.text = items[indexPath.row].companyAndPrice
+        itemCell.url = items[indexPath.row].url
         itemCell.contentMode = .scaleAspectFit
-        
         itemCell.itemViewController = self
         
         itemCell.setupViews()
@@ -198,7 +223,9 @@ class ItemViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return tableView.dequeueReusableHeaderFooterView(withIdentifier: "itemHeaderId")
+        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "itemHeaderId") as! ItemViewHeader
+        header.nameLabel.text = itemN
+        return header
     }
 }
 
@@ -215,9 +242,13 @@ class ItemViewHeader: UITableViewHeaderFooterView {
     
     let nameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Best Prices:"
-        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = ""
+        label.sizeToFit()
+        label.numberOfLines = 2
         label.font = UIFont.boldSystemFont(ofSize: 15)
+        label.adjustsFontSizeToFitWidth = true
+    
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -225,7 +256,8 @@ class ItemViewHeader: UITableViewHeaderFooterView {
         addSubview(nameLabel)
         activate(
            nameLabel.anchor.left.constant(16),
-           nameLabel.anchor.centerY
+           nameLabel.anchor.centerY,
+           nameLabel.anchor.size
         )
     }
 }
@@ -233,6 +265,8 @@ class ItemViewHeader: UITableViewHeaderFooterView {
 class ItemViewItemCell: UITableViewCell {
     
     var itemViewController: ItemViewController?
+    
+    var url: String?
     
     var mainImageView : UIImageView = {
         var imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 20))
@@ -285,11 +319,5 @@ class ItemViewItemCell: UITableViewCell {
     
     @objc func handleAction(sender: UIButton) {
         itemViewController?.deleteCell(cell: self)
-    }
-}
-
-extension ItemViewController: PriceFinderDelegate {
-    func returnPrices(_ prices: [String]) {
-        print(prices)
     }
 }
