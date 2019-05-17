@@ -28,7 +28,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "33AB5254E6A20173167DDFD66DC9AB5C"
+               BlueprintIdentifier = "FB43E9EE2DD3DF1B2BCCC06637ECA275"
                BuildableName = "Pods_MyPricePal.framework"
                BlueprintName = "Pods-MyPricePal"
                ReferencedContainer = "container:Pods/Pods.xcodeproj">
