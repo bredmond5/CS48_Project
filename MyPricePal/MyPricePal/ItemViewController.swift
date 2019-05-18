@@ -19,7 +19,8 @@ protocol ItemViewURLDelegate: class {
 }
 
 struct InfoStruct {
-    let companyAndPrice: String?
+    let company: String?
+    let price: String?
     let url: String?
 }
 
@@ -42,21 +43,30 @@ class ItemViewController: UITableViewController {
 
     var priceArray: [String] = [String]() {
         didSet {
-            let google = InfoStruct(companyAndPrice: "Google Shopping", url: priceArray[0])
-            items.append(google)
+            var firstSet = [InfoStruct]()
+            let google = InfoStruct(company: "Google Shopping", price: "", url: priceArray[0])
+            firstSet.append(google)
             
+            var maxItems = 6
             var i = 1
-            while i < priceArray.count {
-                let infoStruct = InfoStruct(companyAndPrice: priceArray[i] + ": " +  priceArray[i + 1], url: priceArray[i + 2])
-                items.append(infoStruct)
+            if(priceArray.count < 1 + maxItems*3) {
+                maxItems = (priceArray.count / 3)
+            }
+            while i < 1 + maxItems*3 {
+                let infoStruct = InfoStruct(company: priceArray[i] + ":", price: priceArray[i + 1], url: priceArray[i + 2])
+                firstSet.append(infoStruct)
                 i = i + 3
             }
+            items.append(firstSet)
+            let placeholder = InfoStruct(company: "Placeholder company", price: "0", url: "http://www.engrish.com/")
+            let placeholderArray = [placeholder]
+            items.append(placeholderArray)
         }
     }
     
-    var items: [InfoStruct] = [InfoStruct]()
+    let sections = ["Cheapest Deals", "Cheapest Deals For Similar Items"]
     
-    var exact = true
+    var items = [[InfoStruct]]()
     
     public weak var dismissalDelegate: ItemViewDismissalDelegate?
     public weak var urlDelegate: ItemViewURLDelegate?
@@ -79,20 +89,6 @@ class ItemViewController: UITableViewController {
 
     @objc func dismissalAction(sender: Any) {
         dismissalDelegate?.itemViewDidDismiss(self)
-    }
-    
-    @objc func changeResults(_ sender: Any) {
-        //TODO: make the view swap for similar
-        setChangeButtonTitle()
-        exact = !exact
-    }
-    
-    func setChangeButtonTitle() {
-        if(exact) {
-            navigationItem.rightBarButtonItem?.title = "Lookup by Exact"
-        }else{
-            navigationItem.rightBarButtonItem?.title = "Lookup by Similar"
-        }
     }
     
     func truncateName(){
@@ -140,17 +136,25 @@ class ItemViewController: UITableViewController {
         view.backgroundColor = .white
         navigationItem.titleView = titleLabel
         let backBarButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissalAction(sender:)))
-        let changeButton = UIBarButtonItem(title: "Lookup by Similar", style: .plain, target: self, action: #selector(changeResults(_:)))
-        setChangeButtonTitle()
         navigationItem.leftBarButtonItem = backBarButton
-        navigationItem.rightBarButtonItem = changeButton
         navigationItem.titleView = titleLabel
     }
 
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
+        return items[section].count
     }
+    
+//    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+//        return section.count
+//    }
+    
+//    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        // #warning Incomplete implementation, return the number of rows
+//
+//        return self.items[section].count
+//
+//    }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! ItemViewItemCell
@@ -160,8 +164,9 @@ class ItemViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let itemCell = tableView.dequeueReusableCell(withIdentifier: "itemCellId", for: indexPath) as! ItemViewItemCell
         
-        itemCell.nameLabel.text = items[indexPath.row].companyAndPrice
-        itemCell.url = items[indexPath.row].url
+        itemCell.company.text = items[indexPath.section][indexPath.row].company
+        itemCell.price.text = items[indexPath.section][indexPath.row].price
+        itemCell.url = items[indexPath.section][indexPath.row].url
         itemCell.contentMode = .scaleAspectFit
         itemCell.itemViewController = self
         
@@ -178,8 +183,12 @@ class ItemViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "itemHeaderId") as! ItemViewHeader
-        header.nameLabel.text = itemN
+        header.nameLabel.text = sections[section]
         return header
+    }
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return sections.count
     }
 }
 
@@ -245,34 +254,41 @@ class ItemViewItemCell: UITableViewCell {
         fatalError("init(coder:) has not been initialized")
     }
     
-    let nameLabel: UILabel = {
+    let company: UILabel = {
         let label = UILabel()
-        label.text = "Sample Item"
+        label.text = ""
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.boldSystemFont(ofSize: 14)
         return label
     }()
     
-    let actionButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Delete", for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
+    let price: UILabel = {
+        let label = UILabel()
+        label.text = ""
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.boldSystemFont(ofSize: 14)
+        return label
     }()
     
+//    let actionButton: UIButton = {
+//        let button = UIButton(type: .system)
+//        button.setTitle("Delete", for: .normal)
+//        button.translatesAutoresizingMaskIntoConstraints = false
+//        return button
+//    }()
+    
     func setupViews() {
-        addSubview(actionButton)
-        addSubview(nameLabel)
-
-        actionButton.addTarget(self, action: #selector(handleAction(sender:)), for: .touchUpInside)
+//        addSubview(actionButton)
+        addSubview(company)
+        addSubview(price)
         
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[v0]-8-[v1(80)]-8-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": nameLabel, "v1": actionButton]))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[v0]-8-[v1(40)]-8-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": company, "v1": price]))
         
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[v0]-20-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": nameLabel]))
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[v0]-20-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": actionButton]))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[v0]-20-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": company]))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[v0]-20-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": price]))
     }
     
-    @objc func handleAction(sender: UIButton) {
-        itemViewController?.deleteCell(cell: self)
-    }
+//    @objc func handleAction(sender: UIButton) {
+//        itemViewController?.deleteCell(cell: self)
+//    }
 }
