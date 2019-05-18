@@ -20,6 +20,8 @@ class PriceFinder: NSObject {
     
     weak var priceDelegate: PriceFinderDelegate?
     
+    var sent = false
+    
     struct initialRequestJSON: Decodable{ //struct for the initial JSON parsing
         let job_id: String
     }
@@ -117,7 +119,11 @@ class PriceFinder: NSObject {
                     self.prices.append(responseJSON.results[0].content.offers[i].price)
                     self.prices.append(responseJSON.results[0].content.offers[i].url)
                 }
-                self.priceDelegate?.returnPrices(self.prices)
+                
+                if !self.sent {
+                    self.priceDelegate?.returnPrices(self.prices)
+                    self.sent = true
+                }
                 
             }catch{
                 print("Error getJSON")
