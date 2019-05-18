@@ -18,6 +18,11 @@ protocol ItemViewURLDelegate: class {
     func showSafariVC(_ url: String)
 }
 
+struct InfoStruct {
+    let companyAndPrice: String?
+    let url: String?
+}
+
 class ItemViewController: UITableViewController {
     
     struct responseJSON: Decodable{
@@ -33,6 +38,7 @@ class ItemViewController: UITableViewController {
         let entityEnglishId: String
     }
     
+
     var items: [String] = ["Costco: ","Walmart: ", "Amazon: ", "Albertsons: "]
     
     var exact: Bool?
@@ -44,11 +50,7 @@ class ItemViewController: UITableViewController {
     public var barcodeNum: String?
     public var keywordString: String?
     
-    var itemN: String? {
-        didSet {
-            self.titleLabel.text = itemN
-        }
-    }
+    var itemN: String?
 
     var titleLabel: UILabel = {
         let label = UILabel()
@@ -63,6 +65,21 @@ class ItemViewController: UITableViewController {
     @objc func dismissalAction(sender: Any) {
         dismissalDelegate?.itemViewDidDismiss(self)
     }
+    
+    @objc func changeResults(_ sender: Any) {
+        //TODO: make the view swap for similar
+        setChangeButtonTitle()
+        exact = !exact
+    }
+    
+    func setChangeButtonTitle() {
+        if(exact) {
+            navigationItem.rightBarButtonItem?.title = "Lookup by Exact"
+        }else{
+            navigationItem.rightBarButtonItem?.title = "Lookup by Similar"
+        }
+    }
+    
     func truncateName(){
         let urlString = "https://api.textrazor.com/"
         let headers = [
@@ -103,14 +120,11 @@ class ItemViewController: UITableViewController {
         view.backgroundColor = .white
         navigationItem.titleView = titleLabel
         let backBarButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissalAction(sender:)))
+        let changeButton = UIBarButtonItem(title: "Lookup by Similar", style: .plain, target: self, action: #selector(changeResults(_:)))
+        setChangeButtonTitle()
         navigationItem.leftBarButtonItem = backBarButton
+        navigationItem.rightBarButtonItem = changeButton
         navigationItem.titleView = titleLabel
-        
-        let priceFinder = PriceFinder()
-        priceFinder.priceDelegate = self
-        priceFinder.getBestPrices(barcodeNum!)
-       
- 
     }
 
     
@@ -118,9 +132,8 @@ class ItemViewController: UITableViewController {
         return items.count
     }
     
-   
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
         if indexPath.row == 2{
             if(exact==false){
                 let urlBase = "https://www.amazon.com/s?k="
@@ -135,16 +148,15 @@ class ItemViewController: UITableViewController {
             }
         }
 
+
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let itemCell = tableView.dequeueReusableCell(withIdentifier: "itemCellId", for: indexPath) as! ItemViewItemCell
         
-        itemCell.nameLabel.text = items[indexPath.row]
- //       itemCell.logo.image = itemImages[indexPath.row]
-//        itemCell.logo.clipsToBounds = true
+        itemCell.nameLabel.text = items[indexPath.row].companyAndPrice
+        itemCell.url = items[indexPath.row].url
         itemCell.contentMode = .scaleAspectFit
-        
         itemCell.itemViewController = self
         
         itemCell.setupViews()
@@ -159,7 +171,9 @@ class ItemViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return tableView.dequeueReusableHeaderFooterView(withIdentifier: "itemHeaderId")
+        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "itemHeaderId") as! ItemViewHeader
+        header.nameLabel.text = itemN
+        return header
     }
 }
 
@@ -176,9 +190,13 @@ class ItemViewHeader: UITableViewHeaderFooterView {
     
     let nameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Best Prices:"
-        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = ""
+        label.sizeToFit()
+        label.numberOfLines = 2
         label.font = UIFont.boldSystemFont(ofSize: 15)
+        label.adjustsFontSizeToFitWidth = true
+    
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -186,7 +204,8 @@ class ItemViewHeader: UITableViewHeaderFooterView {
         addSubview(nameLabel)
         activate(
            nameLabel.anchor.left.constant(16),
-           nameLabel.anchor.centerY
+           nameLabel.anchor.centerY,
+           nameLabel.anchor.size
         )
     }
 }
@@ -194,6 +213,8 @@ class ItemViewHeader: UITableViewHeaderFooterView {
 class ItemViewItemCell: UITableViewCell {
     
     var itemViewController: ItemViewController?
+    
+    var url: String?
     
     var mainImageView : UIImageView = {
         var imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 20))
@@ -246,11 +267,5 @@ class ItemViewItemCell: UITableViewCell {
     
     @objc func handleAction(sender: UIButton) {
         itemViewController?.deleteCell(cell: self)
-    }
-}
-
-extension ItemViewController: PriceFinderDelegate {
-    func returnPrices(_ prices: [String]) {
-        print(prices)
     }
 }
