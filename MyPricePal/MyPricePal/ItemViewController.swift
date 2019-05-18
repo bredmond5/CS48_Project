@@ -35,7 +35,8 @@ class ItemViewController: UITableViewController {
     }
     
     struct Content: Decodable{
-        let entityEnglishId: String
+        let entityId: String
+        let unit: String
     }
     
 
@@ -62,7 +63,7 @@ class ItemViewController: UITableViewController {
 //    public let textView = UITextView(frame: .zero)
 
     public var barcodeNum: String?
-    public var keywordString: String?
+    public var keywordString: [String]?
     
     var itemN: String?
 
@@ -99,7 +100,7 @@ class ItemViewController: UITableViewController {
         let headers = [
             "x-textrazor-key" : "55864c94efce2b09deef214d17c8de7f0eeb73573655571c5ca9125b"
         ]
-        var z : String = ""
+        var z : [String] = []
         let x : String = "text=" + itemN!
         let y : String = x + "&extractors=entities"
         let postData = NSMutableData(data: y.data(using: String.Encoding.utf8)!)
@@ -110,9 +111,14 @@ class ItemViewController: UITableViewController {
         let task = URLSession.shared.dataTask(with: request as URLRequest){ (data, response, error) in
             if let data = data{
                 do{
+                    let JSON = try JSONSerialization.jsonObject(with: data, options: [])
+                    print(JSON)
                     let JSONinfo = try JSONDecoder().decode(responseJSON.self, from: data)
                     for i in (JSONinfo.response.entities).indices{
-                        z = z + JSONinfo.response.entities[i].entityEnglishId
+                        if  !(z.contains(JSONinfo.response.entities[i].entityId)) && (JSONinfo.response.entities[i].entityId != ""){
+                            z.append(JSONinfo.response.entities[i].entityId)
+                            print(z)
+                        }
                     }
                     self.keywordString = z
                 }catch{
@@ -149,41 +155,6 @@ class ItemViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! ItemViewItemCell
         urlDelegate?.showSafariVC(cell.url!)
-        //URl is hard to manipulate
-    //        if indexPath.row==0{
-    //            let urlBase = "https://www.costco.com/CatalogSearch?dept=All&keyword="
-    //            guard let item = itemN?.replacingOccurrences(of: " ", with: "+", options: .literal, range: nil) else { return}
-    //            //if(Similiar==true){
-    //            urlDelegate?.showSafariVC(urlBase + item)
-    //            //}
-    //            //else{
-    //                //urlDelegate?.showSafariVC(urlBase + barcodeNum!)
-    //            //}
-    //        }
-    //        if indexPath.row == 1{
-    //            //URl is hard to manipulate
-    //
-    //        }
-    //        if indexPath.row == 2{
-    //            if(Similiar==true){
-    //                let urlBase = "https://www.amazon.com/s?k="
-    //                let urlEnd = "&i=grocery&crid=1RQ40Q09MZBMW&sprefix=5+gum%2Caps%2C189&ref=nb_sb_ss_c_2_5"
-    //                guard let item = itemN?.replacingOccurrences(of: " ", with: "+", options: .literal, range: nil) else { return}
-    //                urlDelegate?.showSafariVC(urlBase + item + urlEnd)
-    //            }
-    //            else{
-    //                print("THIS SHOULD BE JSON OUTPUT")
-    //                truncateName()
-    //                let urlBase = "https://www.amazon.com/s?k="
-    //                let urlEnd = "&ref=nb_sb_nos"
-    //                urlDelegate?.showSafariVC(urlBase + barcodeNum! + urlEnd)
-    //            }
-    //        }
-    //
-    //        if indexPath.row == 3{
-    //            //URl is hard to manipulate
-    //        }
-    
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
