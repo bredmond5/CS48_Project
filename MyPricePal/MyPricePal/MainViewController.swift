@@ -282,7 +282,7 @@ extension MainViewController: PriceFinderDelegate {
     func returnPrices(_ prices: [String]) {
         DispatchQueue.main.async {
             for price in prices {
-                print(price + ",")
+                //print(price + ",")
             }
             //itemVC was already initialized in the alert function, so you do not have to do it again.
             if(!self.itemVCUp) {
