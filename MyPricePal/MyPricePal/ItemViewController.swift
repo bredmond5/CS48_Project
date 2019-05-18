@@ -39,9 +39,23 @@ class ItemViewController: UITableViewController {
     }
     
 
-    var items: [String] = ["Costco: ","Walmart: ", "Amazon: ", "Albertsons: "]
+    var priceArray: [String] = [String]() {
+        didSet {
+            let google = InfoStruct(companyAndPrice: "Google Shopping", url: priceArray[0])
+            items.append(google)
+            
+            var i = 1
+            while i < priceArray.count {
+                let infoStruct = InfoStruct(companyAndPrice: priceArray[i] + ": " +  priceArray[i + 1], url: priceArray[i + 2])
+                items.append(infoStruct)
+                i = i + 3
+            }
+        }
+    }
     
-    var exact: Bool?
+    var items: [InfoStruct] = [InfoStruct]()
+    
+    var exact = true
     
     public weak var dismissalDelegate: ItemViewDismissalDelegate?
     public weak var urlDelegate: ItemViewURLDelegate?
@@ -133,22 +147,43 @@ class ItemViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
-        if indexPath.row == 2{
-            if(exact==false){
-                let urlBase = "https://www.amazon.com/s?k="
-                let urlEnd = "&i=grocery&crid=1RQ40Q09MZBMW&sprefix=5+gum%2Caps%2C189&ref=nb_sb_ss_c_2_5"
-                let item = keywordString!.replacingOccurrences(of: " ", with: "+", options: .literal, range: nil)
-                urlDelegate?.showSafariVC(urlBase + item + urlEnd)
-            }
-            else{
-                let urlBase = "https://www.amazon.com/s?k="
-                let urlEnd = "&ref=nb_sb_nos"
-                urlDelegate?.showSafariVC(urlBase + barcodeNum! + urlEnd)
-            }
-        }
-
-
+        let cell = tableView.cellForRow(at: indexPath) as! ItemViewItemCell
+        urlDelegate?.showSafariVC(cell.url!)
+        //URl is hard to manipulate
+    //        if indexPath.row==0{
+    //            let urlBase = "https://www.costco.com/CatalogSearch?dept=All&keyword="
+    //            guard let item = itemN?.replacingOccurrences(of: " ", with: "+", options: .literal, range: nil) else { return}
+    //            //if(Similiar==true){
+    //            urlDelegate?.showSafariVC(urlBase + item)
+    //            //}
+    //            //else{
+    //                //urlDelegate?.showSafariVC(urlBase + barcodeNum!)
+    //            //}
+    //        }
+    //        if indexPath.row == 1{
+    //            //URl is hard to manipulate
+    //
+    //        }
+    //        if indexPath.row == 2{
+    //            if(Similiar==true){
+    //                let urlBase = "https://www.amazon.com/s?k="
+    //                let urlEnd = "&i=grocery&crid=1RQ40Q09MZBMW&sprefix=5+gum%2Caps%2C189&ref=nb_sb_ss_c_2_5"
+    //                guard let item = itemN?.replacingOccurrences(of: " ", with: "+", options: .literal, range: nil) else { return}
+    //                urlDelegate?.showSafariVC(urlBase + item + urlEnd)
+    //            }
+    //            else{
+    //                print("THIS SHOULD BE JSON OUTPUT")
+    //                truncateName()
+    //                let urlBase = "https://www.amazon.com/s?k="
+    //                let urlEnd = "&ref=nb_sb_nos"
+    //                urlDelegate?.showSafariVC(urlBase + barcodeNum! + urlEnd)
+    //            }
+    //        }
+    //
+    //        if indexPath.row == 3{
+    //            //URl is hard to manipulate
+    //        }
+    
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -204,6 +239,7 @@ class ItemViewHeader: UITableViewHeaderFooterView {
         addSubview(nameLabel)
         activate(
            nameLabel.anchor.left.constant(16),
+           nameLabel.anchor.right.constant(16),
            nameLabel.anchor.centerY,
            nameLabel.anchor.size
         )
