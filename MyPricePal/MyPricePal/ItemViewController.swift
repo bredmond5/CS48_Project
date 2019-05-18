@@ -33,25 +33,16 @@ class ItemViewController: UITableViewController {
         let entityEnglishId: String
     }
     
-    var image = UIImage(named: "imageC.jpg")
     var items: [String] = ["Costco: ","Walmart: ", "Amazon: ", "Albertsons: "]
     
     var exact: Bool?
-//    var itemImages: [UIImage] = [UIImage(named: "costco")!,UIImage(named: "WalmartLogo")!,UIImage(named: "AmazonLogo")!,UIImage(named: "AlbertsonsLogo")!]
-
-//    var imageView = UIImageView {
-//        var imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 20))
-//        imageView.image = UIImage(named: "imageC.jpg")
-//        imageView.translatesAutoresizingMaskIntoConstraints = false
-//        return imageView
-//    }()
     
     public weak var dismissalDelegate: ItemViewDismissalDelegate?
     public weak var urlDelegate: ItemViewURLDelegate?
 //    public let textView = UITextView(frame: .zero)
 
-    public var Similiar: Bool = false
     public var barcodeNum: String?
+    public var keywordString: String?
     
     var itemN: String? {
         didSet {
@@ -92,27 +83,23 @@ class ItemViewController: UITableViewController {
                     for i in (JSONinfo.response.entities).indices{
                         z = z + JSONinfo.response.entities[i].entityEnglishId
                     }
-                    print(z)
+                    self.keywordString = z
                 }catch{
                     print(error)
                 }
                 return
             }
-            //guard let Website = try? JSONDecoder().decode(Website.self, from: data)else{
-            //   return
-            //}
-//            if let JSONString = String(data: data, encoding: String.Encoding.utf8){
-//                print(JSONString)
-//            }
-            
         }
         task.resume()
-        
-    
     }
     
     override func loadView() {
         super.loadView()
+        truncateName()
+        tableView.register(ItemViewItemCell.self, forCellReuseIdentifier: "itemCellId")
+        tableView.register(ItemViewHeader.self, forHeaderFooterViewReuseIdentifier: "itemHeaderId")
+        
+        tableView.sectionHeaderHeight = 50
         view.backgroundColor = .white
         navigationItem.titleView = titleLabel
         let backBarButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissalAction(sender:)))
@@ -120,14 +107,7 @@ class ItemViewController: UITableViewController {
         navigationItem.titleView = titleLabel
  
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        tableView.register(ItemViewItemCell.self, forCellReuseIdentifier: "itemCellId")
-        tableView.register(ItemViewHeader.self, forHeaderFooterViewReuseIdentifier: "itemHeaderId")
-        
-        tableView.sectionHeaderHeight = 50
-    }
+
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
@@ -136,39 +116,20 @@ class ItemViewController: UITableViewController {
    
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row==0{
-            let urlBase = "https://www.costco.com/CatalogSearch?dept=All&keyword="
-            guard let item = itemN?.replacingOccurrences(of: " ", with: "+", options: .literal, range: nil) else { return}
-            //if(Similiar==true){
-            urlDelegate?.showSafariVC(urlBase + item)
-            //}
-            //else{
-                //urlDelegate?.showSafariVC(urlBase + barcodeNum!)
-            //}
-        }
-        if indexPath.row == 1{
-            //URl is hard to manipulate
-            
-        }
         if indexPath.row == 2{
-            if(Similiar==true){
+            if(exact==false){
                 let urlBase = "https://www.amazon.com/s?k="
                 let urlEnd = "&i=grocery&crid=1RQ40Q09MZBMW&sprefix=5+gum%2Caps%2C189&ref=nb_sb_ss_c_2_5"
-                guard let item = itemN?.replacingOccurrences(of: " ", with: "+", options: .literal, range: nil) else { return}
+                let item = keywordString!.replacingOccurrences(of: " ", with: "+", options: .literal, range: nil)
                 urlDelegate?.showSafariVC(urlBase + item + urlEnd)
             }
             else{
-                print("THIS SHOULD BE JSON OUTPUT")
-                truncateName()
                 let urlBase = "https://www.amazon.com/s?k="
                 let urlEnd = "&ref=nb_sb_nos"
                 urlDelegate?.showSafariVC(urlBase + barcodeNum! + urlEnd)
             }
         }
-        
-        if indexPath.row == 3{
-            //URl is hard to manipulate
-        }
+
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
