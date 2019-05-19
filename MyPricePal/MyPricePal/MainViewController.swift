@@ -145,6 +145,8 @@ class MainViewController: UINavigationController {
             if let text = textField!.text {
                 self.initializeItemVC(text, shouldPush: true)
             }
+            let ref2 = Database.database().reference()
+            ref2.child("Barcodes").child(barcode).setValue(textField?.text)
         }))
         barcodeVC.present(alert, animated: true)
     }
