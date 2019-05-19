@@ -18,6 +18,12 @@ protocol ItemViewURLDelegate: class {
     func showSafariVC(_ url: String)
 }
 
+struct InfoStruct {
+    let company: String?
+    let price: String?
+    let url: String?
+}
+
 class ItemViewController: UITableViewController {
     
     struct responseJSON: Decodable{
@@ -30,25 +36,46 @@ class ItemViewController: UITableViewController {
     }
     
     struct Content: Decodable{
-        let entityEnglishId: String
+        let entityId: String
+        let unit: String
     }
     
-    var items: [String] = ["Costco: ","Walmart: ", "Amazon: ", "Albertsons: "]
+
+    var priceArray: [String] = [String]() {
+        didSet {
+            var firstSet = [InfoStruct]()
+            let google = InfoStruct(company: "Google Shopping", price: "", url: priceArray[0])
+            firstSet.append(google)
+            
+            var maxItems = 6
+            var i = 1
+            if(priceArray.count < 1 + maxItems*3) {
+                maxItems = (priceArray.count / 3)
+            }
+            while i < 1 + maxItems*3 {
+                let infoStruct = InfoStruct(company: priceArray[i] + ":", price: priceArray[i + 1], url: priceArray[i + 2])
+                firstSet.append(infoStruct)
+                i = i + 3
+            }
+            items.append(firstSet)
+            let placeholder = InfoStruct(company: "Placeholder company", price: "0", url: "http://www.engrish.com/")
+            let placeholderArray = [placeholder]
+            items.append(placeholderArray)
+        }
+    }
     
-    var exact: Bool?
+    let sections = ["Cheapest Deals", "Cheapest Deals For Similar Items"]
+    
+    var items = [[InfoStruct]]()
     
     public weak var dismissalDelegate: ItemViewDismissalDelegate?
     public weak var urlDelegate: ItemViewURLDelegate?
 //    public let textView = UITextView(frame: .zero)
 
     public var barcodeNum: String?
-    public var keywordString: String?
+    public var keywordString: [String]?
     
-    var itemN: String? {
-        didSet {
-            self.titleLabel.text = itemN
-        }
-    }
+    var itemN: String?
 
     var titleLabel: UILabel = {
         let label = UILabel()
@@ -63,12 +90,13 @@ class ItemViewController: UITableViewController {
     @objc func dismissalAction(sender: Any) {
         dismissalDelegate?.itemViewDidDismiss(self)
     }
+    
     func truncateName(){
         let urlString = "https://api.textrazor.com/"
         let headers = [
             "x-textrazor-key" : "55864c94efce2b09deef214d17c8de7f0eeb73573655571c5ca9125b"
         ]
-        var z : String = ""
+        var z : [String] = []
         let x : String = "text=" + itemN!
         let y : String = x + "&extractors=entities"
         let postData = NSMutableData(data: y.data(using: String.Encoding.utf8)!)
@@ -79,9 +107,14 @@ class ItemViewController: UITableViewController {
         let task = URLSession.shared.dataTask(with: request as URLRequest){ (data, response, error) in
             if let data = data{
                 do{
+                    let JSON = try JSONSerialization.jsonObject(with: data, options: [])
+                    print(JSON)
                     let JSONinfo = try JSONDecoder().decode(responseJSON.self, from: data)
                     for i in (JSONinfo.response.entities).indices{
-                        z = z + JSONinfo.response.entities[i].entityEnglishId
+                        if  !(z.contains(JSONinfo.response.entities[i].entityId)) && (JSONinfo.response.entities[i].entityId != ""){
+                            z.append(JSONinfo.response.entities[i].entityId)
+                            print(z)
+                        }
                     }
                     self.keywordString = z
                 }catch{
@@ -105,46 +138,36 @@ class ItemViewController: UITableViewController {
         let backBarButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissalAction(sender:)))
         navigationItem.leftBarButtonItem = backBarButton
         navigationItem.titleView = titleLabel
-        
-        let priceFinder = PriceFinder()
-        priceFinder.priceDelegate = self
-        priceFinder.getBestPrices(barcodeNum!)
-       
- 
     }
 
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
+        return items[section].count
     }
     
-   
+//    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+//        return section.count
+//    }
+    
+//    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        // #warning Incomplete implementation, return the number of rows
+//
+//        return self.items[section].count
+//
+//    }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 2{
-            if(exact==false){
-                let urlBase = "https://www.amazon.com/s?k="
-                let urlEnd = "&i=grocery&crid=1RQ40Q09MZBMW&sprefix=5+gum%2Caps%2C189&ref=nb_sb_ss_c_2_5"
-                let item = keywordString!.replacingOccurrences(of: " ", with: "+", options: .literal, range: nil)
-                urlDelegate?.showSafariVC(urlBase + item + urlEnd)
-            }
-            else{
-                let urlBase = "https://www.amazon.com/s?k="
-                let urlEnd = "&ref=nb_sb_nos"
-                urlDelegate?.showSafariVC(urlBase + barcodeNum! + urlEnd)
-            }
-        }
-
+        let cell = tableView.cellForRow(at: indexPath) as! ItemViewItemCell
+        urlDelegate?.showSafariVC(cell.url!)
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let itemCell = tableView.dequeueReusableCell(withIdentifier: "itemCellId", for: indexPath) as! ItemViewItemCell
         
-        itemCell.nameLabel.text = items[indexPath.row]
- //       itemCell.logo.image = itemImages[indexPath.row]
-//        itemCell.logo.clipsToBounds = true
+        itemCell.company.text = items[indexPath.section][indexPath.row].company
+        itemCell.price.text = items[indexPath.section][indexPath.row].price
+        itemCell.url = items[indexPath.section][indexPath.row].url
         itemCell.contentMode = .scaleAspectFit
-        
         itemCell.itemViewController = self
         
         itemCell.setupViews()
@@ -159,7 +182,13 @@ class ItemViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return tableView.dequeueReusableHeaderFooterView(withIdentifier: "itemHeaderId")
+        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "itemHeaderId") as! ItemViewHeader
+        header.nameLabel.text = sections[section]
+        return header
+    }
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return sections.count
     }
 }
 
@@ -176,9 +205,13 @@ class ItemViewHeader: UITableViewHeaderFooterView {
     
     let nameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Best Prices:"
-        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = ""
+        label.sizeToFit()
+        label.numberOfLines = 2
         label.font = UIFont.boldSystemFont(ofSize: 15)
+        label.adjustsFontSizeToFitWidth = true
+    
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -186,7 +219,9 @@ class ItemViewHeader: UITableViewHeaderFooterView {
         addSubview(nameLabel)
         activate(
            nameLabel.anchor.left.constant(16),
-           nameLabel.anchor.centerY
+           nameLabel.anchor.right.constant(16),
+           nameLabel.anchor.centerY,
+           nameLabel.anchor.size
         )
     }
 }
@@ -194,6 +229,8 @@ class ItemViewHeader: UITableViewHeaderFooterView {
 class ItemViewItemCell: UITableViewCell {
     
     var itemViewController: ItemViewController?
+    
+    var url: String?
     
     var mainImageView : UIImageView = {
         var imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 20))
@@ -217,40 +254,41 @@ class ItemViewItemCell: UITableViewCell {
         fatalError("init(coder:) has not been initialized")
     }
     
-    let nameLabel: UILabel = {
+    let company: UILabel = {
         let label = UILabel()
-        label.text = "Sample Item"
+        label.text = ""
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.boldSystemFont(ofSize: 14)
         return label
     }()
     
-    let actionButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Delete", for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
+    let price: UILabel = {
+        let label = UILabel()
+        label.text = ""
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.boldSystemFont(ofSize: 14)
+        return label
     }()
     
+//    let actionButton: UIButton = {
+//        let button = UIButton(type: .system)
+//        button.setTitle("Delete", for: .normal)
+//        button.translatesAutoresizingMaskIntoConstraints = false
+//        return button
+//    }()
+    
     func setupViews() {
-        addSubview(actionButton)
-        addSubview(nameLabel)
-
-        actionButton.addTarget(self, action: #selector(handleAction(sender:)), for: .touchUpInside)
+//        addSubview(actionButton)
+        addSubview(company)
+        addSubview(price)
         
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[v0]-8-[v1(80)]-8-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": nameLabel, "v1": actionButton]))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[v0]-8-[v1(40)]-8-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": company, "v1": price]))
         
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[v0]-20-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": nameLabel]))
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[v0]-20-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": actionButton]))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[v0]-20-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": company]))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[v0]-20-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": price]))
     }
     
-    @objc func handleAction(sender: UIButton) {
-        itemViewController?.deleteCell(cell: self)
-    }
-}
-
-extension ItemViewController: PriceFinderDelegate {
-    func returnPrices(_ prices: [String]) {
-        print(prices)
-    }
+//    @objc func handleAction(sender: UIButton) {
+//        itemViewController?.deleteCell(cell: self)
+//    }
 }
