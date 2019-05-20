@@ -26,19 +26,7 @@ struct InfoStruct {
 
 class ItemViewController: UITableViewController {
     
-    struct responseJSON: Decodable{
-        let response: responseType
-        //        let entities: [Content]
-    }
-    
-    struct responseType: Decodable{
-        let entities: [Content]
-    }
-    
-    struct Content: Decodable{
-        let entityId: String
-        let unit: String
-    }
+
     
 
     var priceArray: [String] = [String]() {
@@ -53,13 +41,18 @@ class ItemViewController: UITableViewController {
                 maxItems = (priceArray.count / 3)
             }
             while i < 1 + maxItems*3 {
-                let infoStruct = InfoStruct(company: priceArray[i] + ":", price: priceArray[i + 1], url: priceArray[i + 2])
+                let infoStruct = InfoStruct(company: priceArray[i] + ": $", price: priceArray[i + 1], url: priceArray[i + 2])
                 firstSet.append(infoStruct)
                 i = i + 3
             }
             items.append(firstSet)
-            let placeholder = InfoStruct(company: "Placeholder company", price: "0", url: "http://www.engrish.com/")
-            let placeholderArray = [placeholder]
+            print(keywordString!)
+            var placeholderArray = [InfoStruct]()
+            for x in keywordString! {
+                print(x)
+                let placeholder = InfoStruct(company: x, price: "0", url: "http://www.engrish.com/")
+                placeholderArray.append(placeholder)
+            }
             items.append(placeholderArray)
         }
     }
@@ -91,44 +84,9 @@ class ItemViewController: UITableViewController {
         dismissalDelegate?.itemViewDidDismiss(self)
     }
     
-    func truncateName(){
-        let urlString = "https://api.textrazor.com/"
-        let headers = [
-            "x-textrazor-key" : "55864c94efce2b09deef214d17c8de7f0eeb73573655571c5ca9125b"
-        ]
-        var z : [String] = []
-        let x : String = "text=" + itemN!
-        let y : String = x + "&extractors=entities"
-        let postData = NSMutableData(data: y.data(using: String.Encoding.utf8)!)
-        let request = NSMutableURLRequest(url: NSURL(string: urlString)! as URL, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 1.0)
-        request.httpMethod = "POST"
-        request.allHTTPHeaderFields = headers
-        request.httpBody = postData as Data
-        let task = URLSession.shared.dataTask(with: request as URLRequest){ (data, response, error) in
-            if let data = data{
-                do{
-                    let JSON = try JSONSerialization.jsonObject(with: data, options: [])
-                    print(JSON)
-                    let JSONinfo = try JSONDecoder().decode(responseJSON.self, from: data)
-                    for i in (JSONinfo.response.entities).indices{
-                        if  !(z.contains(JSONinfo.response.entities[i].entityId)) && (JSONinfo.response.entities[i].entityId != ""){
-                            z.append(JSONinfo.response.entities[i].entityId)
-                            print(z)
-                        }
-                    }
-                    self.keywordString = z
-                }catch{
-                    print(error)
-                }
-                return
-            }
-        }
-        task.resume()
-    }
     
     override func loadView() {
         super.loadView()
-        truncateName()
         tableView.register(ItemViewItemCell.self, forCellReuseIdentifier: "itemCellId")
         tableView.register(ItemViewHeader.self, forHeaderFooterViewReuseIdentifier: "itemHeaderId")
         
@@ -143,8 +101,7 @@ class ItemViewController: UITableViewController {
 //        )
         titleLabel.numberOfLines = 2
         navigationItem.titleView = titleLabel
-}
-
+    }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items[section].count
