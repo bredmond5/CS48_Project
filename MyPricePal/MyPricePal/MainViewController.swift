@@ -49,13 +49,60 @@ class MainViewController: UINavigationController {
         barcodeVC.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchAction(sender:)))
         
     }
+    struct responseJSON: Decodable{
+        let response: responseType
+    }
+    
+    struct responseType: Decodable{
+        let entities: [Content]
+    }
+    
+    struct Content: Decodable{
+        let entityId: String
+    }
+    func truncateName(_ itemN: String){
+        //DispatchQueue.main.async {
+            let urlString = "https://api.textrazor.com/"
+            let headers = [
+                "x-textrazor-key" : "55864c94efce2b09deef214d17c8de7f0eeb73573655571c5ca9125b"
+            ]
+            var z : [String] = []
+            let x : String = "text=" + itemN
+            let y : String = x + "&extractors=entities"
+            let postData = NSMutableData(data: y.data(using: String.Encoding.utf8)!)
+            let request = NSMutableURLRequest(url: NSURL(string: urlString)! as URL, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 1.0)
+            request.httpMethod = "POST"
+            request.allHTTPHeaderFields = headers
+            request.httpBody = postData as Data
+            print("Before Session")
+            let task = URLSession.shared.dataTask(with: request as URLRequest){ (data, response, error) in
+                if let data = data{
+                    do{
+                        print("INSIDE SESSION")
+                        let JSONinfo = try JSONDecoder().decode(responseJSON.self, from: data)
+                        for i in (JSONinfo.response.entities).indices{
+                            if  !(z.contains(JSONinfo.response.entities[i].entityId)) && (JSONinfo.response.entities[i].entityId != ""){
+                                z.append(JSONinfo.response.entities[i].entityId)
+                                print(z)
+                            }
+                        }
+                        self.itemVC?.keywordString = z
+                    }catch{
+                        print(error)
+                    }
+                    return
+                }
+            }
+            task.resume()
+        //}
+    }
     
     func getItemName(_ barcodeString: String,  _ barcodeVC: BarcodeScannerViewController){
         let ref = Database.database().reference().child("Barcodes")
     
         ref.child(barcodeString).observeSingleEvent(of: .value, with: {(snapShot) in
             if let val = snapShot.value as? String{
-                
+                self.truncateName(val)
                 self.setPriceFinderAndVCs(val, barcodeString)
             }
            else{
@@ -89,8 +136,8 @@ class MainViewController: UINavigationController {
                         return
                     }//Creates right side range
                     let rangeOfTheValue = leftRange.upperBound..<rightRange.lowerBound //Appends the ranges together
-                    
                  //   self.showAlertButtonTapped(String(htmlString[rangeOfTheValue]), barcodeString,barcodeVC) //Displays the product name
+                    self.truncateName(String(htmlString[rangeOfTheValue]))
                     self.setPriceFinderAndVCs(String(htmlString[rangeOfTheValue]), barcodeString)
                     
                     let ref2 = Database.database().reference()
@@ -101,6 +148,8 @@ class MainViewController: UINavigationController {
             }
         })
     }
+
+
 
     //Asks the user if the item is correct, and if so goes to the itemVC. If not goes back to scanning
     func showAlertButtonTapped(_ itemN: String, _ barcodeNum: String, _ barcodeVC: BarcodeScannerViewController){
@@ -259,7 +308,6 @@ extension MainViewController: SearchRequestedDelegate {
     }
 }
 
-
 extension MainViewController: ItemViewURLDelegate {
     func showSafariVC(_ url: String) {
         guard let url = URL(string: url)else{
@@ -283,10 +331,6 @@ extension MainViewController: SFSafariViewControllerDelegate {
 extension MainViewController: PriceFinderDelegate {
     func returnPrices(_ prices: [String]) {
         DispatchQueue.main.async {
-            for price in prices {
-                //print(price + ",")
-            }
-            
             self.itemVC?.priceArray = prices
             
             self.showAlertButtonTapped(self.itemVC!.itemN!, self.itemVC!.barcodeNum!, self.barcodeVC!)
