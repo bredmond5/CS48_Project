@@ -331,6 +331,7 @@ extension MainViewController: SFSafariViewControllerDelegate {
 extension MainViewController: PriceFinderDelegate {
     func returnPrices(_ prices: [String]) {
         DispatchQueue.main.async {
+       
             self.itemVC?.priceArray = prices
             
             self.showAlertButtonTapped(self.itemVC!.itemN!, self.itemVC!.barcodeNum!, self.barcodeVC!)
