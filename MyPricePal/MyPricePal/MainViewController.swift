@@ -281,9 +281,9 @@ extension MainViewController: SFSafariViewControllerDelegate {
 extension MainViewController: PriceFinderDelegate {
     func returnPrices(_ prices: [String]) {
         DispatchQueue.main.async {
-            for price in prices {
-                //print(price + ",")
-            }
+//            for price in prices {
+//                //print(price + ",")
+//            }
             
             self.itemVC?.priceArray = prices
             

@@ -134,27 +134,21 @@ class ItemViewController: UITableViewController {
         
         tableView.sectionHeaderHeight = 50
         view.backgroundColor = .white
-        navigationItem.titleView = titleLabel
         let backBarButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissalAction(sender:)))
         navigationItem.leftBarButtonItem = backBarButton
+        titleLabel.text = itemN
+        titleLabel.adjustsFontSizeToFitWidth = true
+//        activate(
+//        titleLabel.anchor.right.constant(30)
+//        )
+        titleLabel.numberOfLines = 2
         navigationItem.titleView = titleLabel
-    }
+}
 
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items[section].count
     }
-    
-//    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-//        return section.count
-//    }
-    
-//    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        // #warning Incomplete implementation, return the number of rows
-//
-//        return self.items[section].count
-//
-//    }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! ItemViewItemCell
