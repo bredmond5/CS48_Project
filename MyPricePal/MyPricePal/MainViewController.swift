@@ -60,7 +60,7 @@ class MainViewController: UINavigationController {
     struct Content: Decodable{
         let entityId: String
     }
-    func truncateName(_ itemN: String){
+    func truncateNameThenSetVCs(_ itemN: String, _ barcodeString: String) {
         //DispatchQueue.main.async {
             let urlString = "https://api.textrazor.com/"
             let headers = [
@@ -86,11 +86,12 @@ class MainViewController: UINavigationController {
                                 print(z)
                             }
                         }
-                        self.itemVC?.keywordString = z
+                        DispatchQueue.main.async {
+                            self.setPriceFinderAndVCs(itemN, barcodeString, z)
+                        }
                     }catch{
                         print(error)
                     }
-                    return
                 }
             }
             task.resume()
@@ -102,10 +103,8 @@ class MainViewController: UINavigationController {
     
         ref.child(barcodeString).observeSingleEvent(of: .value, with: {(snapShot) in
             if let val = snapShot.value as? String{
-                self.truncateName(val)
-                self.setPriceFinderAndVCs(val, barcodeString)
-            }
-           else{
+                self.truncateNameThenSetVCs(val, barcodeString)
+            }else{
                 let urlBase = "https://api.upcitemdb.com/prod/trial/lookup?upc=" //barcodeString and urlBase combine to create the url
                 let url = URL(string: urlBase + barcodeString)!
                 let task = URLSession.shared.dataTask(with: url){(data, resp, error) in //Creates the url connection to the API
@@ -137,8 +136,7 @@ class MainViewController: UINavigationController {
                     }//Creates right side range
                     let rangeOfTheValue = leftRange.upperBound..<rightRange.lowerBound //Appends the ranges together
                  //   self.showAlertButtonTapped(String(htmlString[rangeOfTheValue]), barcodeString,barcodeVC) //Displays the product name
-                    self.truncateName(String(htmlString[rangeOfTheValue]))
-                    self.setPriceFinderAndVCs(String(htmlString[rangeOfTheValue]), barcodeString)
+                    self.truncateNameThenSetVCs(String(htmlString[rangeOfTheValue]), barcodeString)
                     
                     let ref2 = Database.database().reference()
                     ref2.child("Barcodes").child(barcodeString).setValue(String(htmlString[rangeOfTheValue]))
@@ -153,33 +151,37 @@ class MainViewController: UINavigationController {
 
     //Asks the user if the item is correct, and if so goes to the itemVC. If not goes back to scanning
     func showAlertButtonTapped(_ itemN: String, _ barcodeNum: String, _ barcodeVC: BarcodeScannerViewController){
-        let alert = UIAlertController(title: "Item", message: "Is " + itemN + " your item?", preferredStyle: UIAlertController.Style.alert)
-        
-        alert.addAction(UIAlertAction(title: "Yes", style: UIAlertAction.Style.default, handler: {action in
+        if topViewController is BarcodeScannerViewController {
+            let alert = UIAlertController(title: "Item", message: "Is " + itemN + " your item?", preferredStyle: UIAlertController.Style.alert)
             
+            alert.addAction(UIAlertAction(title: "Yes", style: UIAlertAction.Style.default, handler: {action in
+                
+                self.pushViewController(self.itemVC!, animated: true)
+               
+            }))
+            
+            alert.addAction(UIAlertAction(title: "No", style: UIAlertAction.Style.cancel, handler: {action in
+                barcodeVC.reset(animated: true)
+            }))
+            
+            barcodeVC.present(alert, animated: true)
+        }else{
             self.pushViewController(self.itemVC!, animated: true)
-           
-        }))
-        
-        alert.addAction(UIAlertAction(title: "No", style: UIAlertAction.Style.cancel, handler: {action in
-            barcodeVC.reset(animated: true)
-        }))
-        
-        barcodeVC.present(alert, animated: true)
+        }
     }
-    
-    
-    //Shows that the firebase could not find the barcodestring and sends the user back to scanning
+        
+        
+        //Shows that the firebase could not find the barcodestring and sends the user back to scanning
     func alertButtonError(_ barcodeNum: String, _ barcodeVC: BarcodeScannerViewController) {
         let alert = UIAlertController(title: "Error", message: "Could not find " + barcodeNum, preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Enter Item Yourself", style: UIAlertAction.Style.default, handler: {action in
             self.alertAddItem(barcodeNum, barcodeVC)
         }))
-            
+        
         alert.addAction(UIAlertAction(title: "Try Again", style: UIAlertAction.Style.default, handler: {action in
             barcodeVC.reset()
         }))
-            
+        
         barcodeVC.present(alert, animated: true)
     }
     
@@ -192,7 +194,7 @@ class MainViewController: UINavigationController {
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
             let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
             if let text = textField!.text {
-                self.initializeItemVC(text, shouldPush: true)
+                self.truncateNameThenSetVCs(text, barcode)
             }
             let ref2 = Database.database().reference()
             ref2.child("Barcodes").child(barcode).setValue(textField?.text)
@@ -212,26 +214,27 @@ class MainViewController: UINavigationController {
 
     }
     
-    func setPriceFinderAndVCs(_ itemN: String, _ barcodeString: String) {
+    func setPriceFinderAndVCs(_ itemN: String, _ barcodeString: String, _ keywordString: [String]) {
         let priceFinder = PriceFinder()
         priceFinder.priceDelegate = self
         priceFinder.getBestPrices(barcodeString)
-        initializeItemVC(itemN, barcodeString, shouldPush: false)
+        initializeItemVC(itemN, barcodeString, keywordString, shouldPush: false)
         
-        self.searchVC?.giveItemScanned(itemN)
+        self.searchVC?.giveItemScanned(barcodeString, itemN, keywordString)
     }
     
     //In order to update the name of the item for the itemVC, we have to reset the itemVC.
     //This function initializes everything needed, and if wanted will also push the itemVC
     //controller to the navigation stack. You wouldnt want to push it if you are doing a call
     //to get the prices because you have to wait for pricefinder to return.
-    func initializeItemVC(_ itemN: String, _ barcodeNum: String = "", shouldPush: Bool) {
+    func initializeItemVC(_ itemN: String, _ barcodeNum: String = "", _ keywordString: [String], shouldPush: Bool) {
         itemVC = nil
         itemVC = ItemViewController()
 //        if(barcodeNum == "") {
 //            itemVC?.exact = false
 //        }
         itemVC?.itemN = itemN
+        itemVC?.keywordString = keywordString
         itemVC?.barcodeNum = barcodeNum
         itemVC?.dismissalDelegate = self
         itemVC?.urlDelegate = self
@@ -303,8 +306,8 @@ extension MainViewController: SearchViewControllerDismissalDelegate {
 
 //Function for handling when the barcodeVC presses the search button in the top right.
 extension MainViewController: SearchRequestedDelegate {
-    @objc func searchRequested(_ item: String) {
-        initializeItemVC(item, shouldPush: true)
+    @objc func searchRequested(_ barcodeString: String, _ itemN: String, _ keywordString: [String]) {
+        setPriceFinderAndVCs(itemN, barcodeString, keywordString)
     }
 }
 
