@@ -1,11 +1,4 @@
-//
-//  ViewController.swift
-//  TestAPI
-//
-//  Created by Sai Kathika on 5/12/19.
-//  Copyright © 2019 Sai Kathika. All rights
-
-
+//PriceFinder.swift
 
 import UIKit
 import Foundation
