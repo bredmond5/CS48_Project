@@ -85,6 +85,7 @@ class PriceFinder: NSObject {
                     }
                 }catch{
                     print("Error checkStatus")
+                    self.getBestPrices(barcode)
                 }
             }
         }
