@@ -51,7 +51,7 @@ class PriceFinder: NSObject {
         let url = URL(string: base)
         let initialRequest = NSMutableURLRequest(url: url!)
         let initialSession = URLSession.shared
-        let fields = "token=IZSVNVFBCNHRBVHLOVVECMFFEYEFVFWQKSXZOVWIYYZOLEUJUQZPEKVWIJHXFPMB&source=google_shopping&country=us&topic=product_and_offers&key=gtin&values=" + barcode
+        let fields = "token=VPGBCERPAARKAURMZUOFVFSJCADQPRRKYXVXJDPHWRNKKRKUEZMMCHAWILLPGMVQ&source=google_shopping&country=us&topic=product_and_offers&key=gtin&values=" + barcode
         initialRequest.httpBody = fields.data(using: String.Encoding.utf8)
         initialRequest.httpMethod = "POST"
         let initialTask = initialSession.dataTask(with: initialRequest as URLRequest) { (data, response, error) in
@@ -68,8 +68,7 @@ class PriceFinder: NSObject {
     }
     //the function that I'm using to check if the job is done running and ready to return
     func checkStatus(_ id: String, baseUrl: String, barcode: String, itemName: String){ //must run this to make sure the job has finished running in order to get the data
-//        var count = 0
-        let token = "?token=IZSVNVFBCNHRBVHLOVVECMFFEYEFVFWQKSXZOVWIYYZOLEUJUQZPEKVWIJHXFPMB"
+        let token = "?token=VPGBCERPAARKAURMZUOFVFSJCADQPRRKYXVXJDPHWRNKKRKUEZMMCHAWILLPGMVQ"
         let statusURL = URL(string: baseUrl + id + token)
         let statusSession = URLSession.shared
         let statusTask = statusSession.dataTask(with: statusURL!) { (data, response, error) in
@@ -85,11 +84,13 @@ class PriceFinder: NSObject {
                     }
                 }catch{
                     print("Error checkStatus")
-                    self.getBestPrices(barcode, itemName: itemName )
+                    self.checkStatus(id, baseUrl: baseUrl, barcode: barcode, itemName: itemName)
+                    print("after call")
                 }
             }
         }
         statusTask.resume()
+        
     }
     
     //this function gets the JSON with the data
@@ -103,7 +104,7 @@ class PriceFinder: NSObject {
                 self.sent = true
             }
         }else{
-            let token = "?token=IZSVNVFBCNHRBVHLOVVECMFFEYEFVFWQKSXZOVWIYYZOLEUJUQZPEKVWIJHXFPMB"
+            let token = "?token=VPGBCERPAARKAURMZUOFVFSJCADQPRRKYXVXJDPHWRNKKRKUEZMMCHAWILLPGMVQ"
             let downloadURL = URL(string: baseUrl + id + "/download.json" + token)
             let jsonSession = URLSession.shared
             let jsonTask = jsonSession.dataTask(with: downloadURL!) { (data, response, error) in
