@@ -25,9 +25,6 @@ struct InfoStruct {
 }
 
 class ItemViewController: UITableViewController {
-    
-
-    
 
     var priceArray: [String] = [String]() {
         didSet {
@@ -41,12 +38,12 @@ class ItemViewController: UITableViewController {
                 maxItems = (priceArray.count / 3)
             }
             while i < 1 + maxItems*3 {
-                let infoStruct = InfoStruct(company: priceArray[i] + ": $", price: priceArray[i + 1], url: priceArray[i + 2])
+                let infoStruct = InfoStruct(company: priceArray[i] + ": ", price: "$" + priceArray[i + 1], url: priceArray[i + 2])
                 firstSet.append(infoStruct)
                 i = i + 3
             }
             items.append(firstSet)
-            print(keywordString!)
+//            print(keywordString!)
             var placeholderArray = [InfoStruct]()
             for x in keywordString! {
                 print(x)

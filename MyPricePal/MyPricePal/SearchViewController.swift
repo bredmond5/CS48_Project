@@ -15,7 +15,7 @@ protocol SearchViewControllerDismissalDelegate: class {
 }
 
 protocol SearchRequestedDelegate: class {
-    func searchRequested(_ item: String)
+    func searchRequested(_ barcodeString: String, _ itemN: String, _ keywordString: [String])
 }
 
 //SearchViewController handles showing the user their recent searches and sending items
@@ -26,7 +26,7 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
     public weak var searchRequestedDelegate: SearchRequestedDelegate?
     
     //These are shown as the items in the table. Defaults to zero items.
-    var items: [String] = []
+    var items: [(barcodeString: String, itemN: String, keyWordString: [String])] = []
     
     var maxItems = 11 //Maximum amount of items shown
     
@@ -42,7 +42,7 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
         return label
     }()
     
-    func returnNumItems() -> Int{ return items.count }
+    func returnNumItems() -> Int{return items.count}
     
     @objc func dismissalAction(sender: Any) {
         dismissalDelegate?.searchViewDidDismiss(self)
@@ -56,14 +56,21 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
     }
     
     //Function called by MainViewController to give the scanned item.
-    public func giveItemScanned(_ item: String) {
-        if let index = items.firstIndex(of: item) {
+    public func giveItemScanned(_ barcodeString: String, _ itemN: String, _ keywordString: [String]) {
+        var index = -1
+        for i in 0..<items.count {
+            if items[i].barcodeString == barcodeString {
+                index = i
+            }
+        }
+        
+        if index != -1 {
             items.remove(at: index)
             let deletionIndexPath = IndexPath(item: index, section: 0)
             tableView.deleteRows(at: [deletionIndexPath], with: .automatic)
         }
         
-        items.insert(item, at: 0)
+        items.insert((barcodeString, itemN, keywordString), at: 0)
         resizeTable()
        
         if(items.count == maxItems + 1) {
@@ -86,20 +93,12 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
         tableView.register(SearchViewHeader.self, forHeaderFooterViewReuseIdentifier: "headerId")
         
         tableView.sectionHeaderHeight = 50
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Insert", style: .plain, target: self, action: #selector(insert(sender:)))
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchRequestedDelegate?.searchRequested(searchBar.text!)
-        giveItemScanned(searchBar.text!)
+ //       searchRequestedDelegate?.searchRequested(searchBar.text!, "", [])
+   //     giveItemScanned(searchBar.text!, "")
         searchBar.text = ""
-    }
-    
-    @objc func insert(sender: UIBarButtonItem) {
-        items.append("Item \(items.count + 1)")
-        resizeTable()
-        tableView.reloadData()
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -108,7 +107,8 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let itemCell = tableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath) as! SearchViewItemCell
-        itemCell.nameLabel.text = items[indexPath.row]
+        itemCell.nameLabel.text = items[indexPath.row].itemN
+        itemCell.barcodeString = items[indexPath.row].barcodeString
         itemCell.searchViewController = self
         return itemCell
     }
@@ -120,8 +120,7 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        giveItemScanned(items[indexPath.row])
-        searchRequestedDelegate?.searchRequested(items[indexPath.row])
+        searchRequestedDelegate?.searchRequested(items[indexPath.row].barcodeString, items[indexPath.row].itemN, items[indexPath.row].keyWordString)
     }
     
     func deleteCell(cell: UITableViewCell) {
@@ -173,6 +172,9 @@ class SearchViewHeader: UITableViewHeaderFooterView {
 class SearchViewItemCell: UITableViewCell {
     
     var searchViewController: SearchViewController?
+    
+    var barcodeString: String?
+    var keywordString: [String]?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
