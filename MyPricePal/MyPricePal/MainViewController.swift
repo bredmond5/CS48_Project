@@ -217,7 +217,7 @@ class MainViewController: UINavigationController {
     func setPriceFinderAndVCs(_ itemN: String, _ barcodeString: String, _ keywordString: [String]) {
         let priceFinder = PriceFinder()
         priceFinder.priceDelegate = self
-        priceFinder.getBestPrices(barcodeString)
+        priceFinder.getBestPrices(barcodeString, itemName: itemN)
         initializeItemVC(itemN, barcodeString, keywordString, shouldPush: false)
         
         self.searchVC?.giveItemScanned(barcodeString, itemN, keywordString)
