@@ -14,6 +14,7 @@ import Foundation
 import AVFoundation
 import SafariServices
 
+
 //The MainViewController handles switching between the other view controllers. It does
 //not have any views of its own as it is a UINavigationController.
 class MainViewController: UINavigationController {
@@ -37,13 +38,21 @@ class MainViewController: UINavigationController {
         searchVC?.searchRequestedDelegate = self
         
         //initialize barcodeVC and send delegates.
+        
+        
         let barcodeVC = topViewController as! BarcodeScannerViewController
         barcodeVC.codeDelegate = self
         barcodeVC.errorDelegate = self
         barcodeVC.dismissalDelegate = self
         barcodeVC.navigationItem.title = "Scan Barcode" //Set the title of the BarcodeVC
         barcodeVC.isOneTimeSearch = true //So that the barcodeScanner doesnt keep scanning
+        
+        
+        
         barcodeVC.cameraViewController.showsCameraButton = true //for front facing camera
+        
+        
+
         
         //Give the barcodeVC the search button
         let searchBarButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchAction(sender:)))
@@ -164,15 +173,18 @@ class MainViewController: UINavigationController {
             }))
             
             alert.addAction(UIAlertAction(title: "No", style: UIAlertAction.Style.cancel, handler: {action in
-                barcodeVC.reset(animated: true)
+                (barcodeVC.reset(animated: true),barcodeVC.navigationItem.rightBarButtonItem = nil)
             }))
             
             barcodeVC.present(alert, animated: true)
-        }else{
+        }
+        
+        else{
             self.pushViewController(self.itemVC!, animated: true)
         }
     }
         
+
         
         //Shows that the firebase could not find the barcodestring and sends the user back to scanning
     func alertButtonError(_ barcodeNum: String, _ barcodeVC: BarcodeScannerViewController) {
@@ -182,7 +194,7 @@ class MainViewController: UINavigationController {
         }))
         
         alert.addAction(UIAlertAction(title: "Try Again", style: UIAlertAction.Style.default, handler: {action in
-            barcodeVC.reset()
+            self.resetBarcodeVC()
         }))
         
         barcodeVC.present(alert, animated: true)
@@ -220,7 +232,7 @@ class MainViewController: UINavigationController {
     func setPriceFinderAndVCs(_ itemN: String, _ barcodeString: String, _ keywordString: [String]) {
         let priceFinder = PriceFinder()
         priceFinder.priceDelegate = self
-        priceFinder.getBestPrices(barcodeString)
+        priceFinder.getBestPrices(barcodeString, itemName: itemN)
         initializeItemVC(itemN, barcodeString, keywordString, shouldPush: false)
         
         self.searchVC?.giveItemScanned(barcodeString, itemN, keywordString)
@@ -255,6 +267,19 @@ class MainViewController: UINavigationController {
     @objc func analyticsAction(_ sender: Any) {
         
     }
+  
+    @objc func stopScanning(_ sender: Any) {
+        resetBarcodeVC()
+    }
+    
+    var flag = true
+    
+    func resetBarcodeVC() {
+        flag = false
+        barcodeVC?.dismiss(animated: true, completion: nil)
+        barcodeVC?.reset(animated: true)
+        barcodeVC?.navigationItem.rightBarButtonItem = nil
+    }
 }
 
 //MARK: Extensions for Delegates
@@ -265,6 +290,10 @@ extension MainViewController: BarcodeScannerCodeDelegate {
 
         NetworkManager.isReachable { networkManagerInstance in
            self.barcodeVC = controller
+            
+            controller.navigationItem.rightBarButtonItem =
+                UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(self.stopScanning(_:)))
+            
             self.getItemName(code, controller)
         }
         
@@ -298,7 +327,7 @@ extension MainViewController: ItemViewDismissalDelegate {
         if topViewController is BarcodeScannerViewController
         {
             let barcodeVC = topViewController as! BarcodeScannerViewController
-            barcodeVC.reset(animated: true)
+            resetBarcodeVC()
         }
         
     }
@@ -343,8 +372,13 @@ extension MainViewController: PriceFinderDelegate {
         DispatchQueue.main.async {
        
             self.itemVC?.priceArray = prices
-            
+            if(self.flag){
             self.showAlertButtonTapped(self.itemVC!.itemN!, self.itemVC!.barcodeNum!, self.barcodeVC!)
+            }
+            else{
+                self.flag = true
+                
+            }
         }
     }
 }
