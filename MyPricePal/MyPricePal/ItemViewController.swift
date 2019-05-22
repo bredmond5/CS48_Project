@@ -31,7 +31,6 @@ class ItemViewController: UITableViewController {
             var firstSet = [InfoStruct]()
             let google = InfoStruct(company: "Google Shopping", price: "", url: priceArray[0])
             firstSet.append(google)
-            
             var maxItems = 6
             var i = 1
             if(priceArray.count < 1 + maxItems*3) {
@@ -47,6 +46,7 @@ class ItemViewController: UITableViewController {
             var placeholderArray = [InfoStruct]()
             for x in keywordString! {
                 print(x)
+                selected.append(false)
                 let placeholder = InfoStruct(company: x, price: "0", url: "http://www.engrish.com/")
                 placeholderArray.append(placeholder)
             }
@@ -64,9 +64,8 @@ class ItemViewController: UITableViewController {
 
     public var barcodeNum: String?
     public var keywordString: [String]?
-    
+    public var selected: [Bool] = []
     var itemN: String?
-
     var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 15)
@@ -88,6 +87,7 @@ class ItemViewController: UITableViewController {
         tableView.register(ItemViewHeader.self, forHeaderFooterViewReuseIdentifier: "itemHeaderId")
         
         tableView.sectionHeaderHeight = 50
+        tableView.allowsMultipleSelection = true
         view.backgroundColor = .white
         let backBarButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissalAction(sender:)))
         navigationItem.leftBarButtonItem = backBarButton
@@ -106,7 +106,20 @@ class ItemViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! ItemViewItemCell
-        urlDelegate?.showSafariVC(cell.url!)
+        if(indexPath.section == 0){
+            urlDelegate?.showSafariVC(cell.url!)
+        }
+        else{
+            var selectedCell:UITableViewCell = tableView.cellForRow(at: indexPath)!
+            selectedCell.contentView.backgroundColor = UIColor.blue
+            selected[indexPath.row] = true
+
+        }
+    }
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath){
+        var cellToDeselect:UITableViewCell = tableView.cellForRow(at: indexPath)!
+        cellToDeselect.contentView.backgroundColor = UIColor.white
+        selected[indexPath.row] = false
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -141,6 +154,7 @@ class ItemViewController: UITableViewController {
 }
 
 class ItemViewHeader: UITableViewHeaderFooterView {
+
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         setupViews()
@@ -179,7 +193,6 @@ class ItemViewItemCell: UITableViewCell {
     var itemViewController: ItemViewController?
     
     var url: String?
-    
     var mainImageView : UIImageView = {
         var imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 20))
         imageView.image = UIImage(named: "imageC.jpg")
