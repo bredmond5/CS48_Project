@@ -170,11 +170,13 @@ class MainViewController: UINavigationController {
             }))
             
             alert.addAction(UIAlertAction(title: "No", style: UIAlertAction.Style.cancel, handler: {action in
-                barcodeVC.reset(animated: true)
+                (barcodeVC.reset(animated: true),barcodeVC.navigationItem.rightBarButtonItem = nil)
             }))
             
             barcodeVC.present(alert, animated: true)
-        }else{
+        }
+        
+        else{
             self.pushViewController(self.itemVC!, animated: true)
         }
     }
@@ -263,7 +265,11 @@ class MainViewController: UINavigationController {
         resetBarcodeVC()
     }
     
+    var flag = true
+    
     func resetBarcodeVC() {
+        flag = false
+        barcodeVC?.dismiss(animated: true, completion: nil)
         barcodeVC?.reset(animated: true)
         barcodeVC?.navigationItem.rightBarButtonItem = nil
     }
@@ -359,8 +365,13 @@ extension MainViewController: PriceFinderDelegate {
         DispatchQueue.main.async {
        
             self.itemVC?.priceArray = prices
-            
+            if(self.flag){
             self.showAlertButtonTapped(self.itemVC!.itemN!, self.itemVC!.barcodeNum!, self.barcodeVC!)
+            }
+            else{
+                self.flag = true
+                
+            }
         }
     }
 }
