@@ -7,10 +7,15 @@ class TutorialPageController: UIPageViewController, UIPageViewControllerDataSour
     var pages = [UIViewController]()
     let pageControl = UIPageControl()
     
-    var textView: UITextView = {
-        let textView = UITextView(frame: .zero)
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        return textView
+    var titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Tutorial"
+        label.font = UIFont.boldSystemFont(ofSize: 17)
+        label.numberOfLines = 1
+        label.textAlignment = .center
+        label.textColor = .black
+        label.sizeToFit()
+        return label
     }()
     
     override init(transitionStyle style: UIPageViewController.TransitionStyle, navigationOrientation: UIPageViewController.NavigationOrientation, options: [UIPageViewController.OptionsKey : Any]? = nil) {
@@ -67,6 +72,8 @@ class TutorialPageController: UIPageViewController, UIPageViewControllerDataSour
         self.pageControl.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         
          navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(donePressed(_:)))
+        
+        navigationItem.titleView = titleLabel
     }
     
     
@@ -91,7 +98,6 @@ class TutorialPageController: UIPageViewController, UIPageViewControllerDataSour
             guard viewControllerIndex < pages.count - 1 else {
                 return nil
             }
-            
             return pages[viewControllerIndex + 1]
         }
         return nil

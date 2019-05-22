@@ -46,7 +46,10 @@ class MainViewController: UINavigationController {
         barcodeVC.cameraViewController.showsCameraButton = true //for front facing camera
         
         //Give the barcodeVC the search button
-        barcodeVC.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchAction(sender:)))
+        let searchBarButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchAction(sender:)))
+        let analyticsBarButton = UIBarButtonItem(title: "Graph", style: .plain, target: self, action: #selector(analyticsAction(_:)))
+        
+        barcodeVC.navigationItem.leftBarButtonItems = [searchBarButton, analyticsBarButton]
         
     }
     struct responseJSON: Decodable{
@@ -247,6 +250,10 @@ class MainViewController: UINavigationController {
     //Function for if the user presses the search button on the barcodeVC
     @objc func searchAction(sender: Any) {
         pushViewController(searchVC!, animated: true)
+    }
+    
+    @objc func analyticsAction(_ sender: Any) {
+        
     }
 }
 

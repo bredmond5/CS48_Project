@@ -33,8 +33,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         //Sets the window and mainviewcontroller programatically.
-      
-      
         FirebaseApp.configure();
         return true
     }
