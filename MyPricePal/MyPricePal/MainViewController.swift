@@ -269,14 +269,14 @@ class MainViewController: UINavigationController {
     }
   
     @objc func stopScanning(_ sender: Any) {
+        flag = false
         resetBarcodeVC()
     }
     
     var flag = true
     
     func resetBarcodeVC() {
-        flag = false
-        barcodeVC?.dismiss(animated: true, completion: nil)
+
         barcodeVC?.reset(animated: true)
         barcodeVC?.navigationItem.rightBarButtonItem = nil
     }
@@ -375,10 +375,10 @@ extension MainViewController: PriceFinderDelegate {
             if(self.flag){
             self.showAlertButtonTapped(self.itemVC!.itemN!, self.itemVC!.barcodeNum!, self.barcodeVC!)
             }
-            else{
+            //else{
                 self.flag = true
                 
-            }
+            //}
         }
     }
 }
