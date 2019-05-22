@@ -55,7 +55,10 @@ class MainViewController: UINavigationController {
 
         
         //Give the barcodeVC the search button
-        barcodeVC.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchAction(sender:)))
+        let searchBarButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchAction(sender:)))
+        let analyticsBarButton = UIBarButtonItem(title: "Graph", style: .plain, target: self, action: #selector(analyticsAction(_:)))
+        
+        barcodeVC.navigationItem.leftBarButtonItems = [searchBarButton, analyticsBarButton]
         
     }
     struct responseJSON: Decodable{
@@ -261,6 +264,10 @@ class MainViewController: UINavigationController {
         pushViewController(searchVC!, animated: true)
     }
     
+    @objc func analyticsAction(_ sender: Any) {
+        
+    }
+  
     @objc func stopScanning(_ sender: Any) {
         resetBarcodeVC()
     }

@@ -80,17 +80,42 @@ class ItemViewController: UITableViewController {
         dismissalDelegate?.itemViewDidDismiss(self)
     }
     
+//    @objc func refreshAction(_ sender: Any) {
+//        //Get the new stuff with the new keywords
+//        //then:
+//
+//        tableView.deleteRows(at: <#T##[IndexPath]#>, with: <#T##UITableView.RowAnimation#>)
+//
+//        var indexPaths = [NSIndexPath]()
+//        for i in 0..<items[1].count {
+//            indexPaths.append(NSIndexPath(row: i, section: 1))
+//        }
+//
+//        var bottomHalfIndexPaths = [NSIndexPath]()
+//        for _ in  0...indexPaths.count / 2 - 1 {
+//            bottomHalfIndexPaths.append(indexPath.removeLast())
+//        }
+//
+//        tableView.beginUpdates()
+//        tableView.insertRows(at: indexPaths, with: .right)
+//        tableView.insertRows(at: bottomHalfIndexPaths, with: .left)
+//        tableview.endUpdates()
+//    }
+    
     
     override func loadView() {
         super.loadView()
         tableView.register(ItemViewItemCell.self, forCellReuseIdentifier: "itemCellId")
         tableView.register(ItemViewHeader.self, forHeaderFooterViewReuseIdentifier: "itemHeaderId")
+        tableView.register(SecondHeader.self, forHeaderFooterViewReuseIdentifier: "secondHeaderId")
         
         tableView.sectionHeaderHeight = 50
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissalAction(sender:)))
+      
         tableView.allowsMultipleSelection = true
         view.backgroundColor = .white
-        let backBarButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissalAction(sender:)))
-        navigationItem.leftBarButtonItem = backBarButton
+        
         titleLabel.text = itemN
         titleLabel.adjustsFontSizeToFitWidth = true
 //        activate(
@@ -129,6 +154,7 @@ class ItemViewController: UITableViewController {
         itemCell.price.text = items[indexPath.section][indexPath.row].price
         itemCell.url = items[indexPath.section][indexPath.row].url
         itemCell.contentMode = .scaleAspectFit
+//        itemCell.backgroundColor = .black
         itemCell.itemViewController = self
         
         itemCell.setupViews()
@@ -142,10 +168,17 @@ class ItemViewController: UITableViewController {
         }
     }
     
+    
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "itemHeaderId") as! ItemViewHeader
-        header.nameLabel.text = sections[section]
-        return header
+        if(section == 0) {
+            let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "itemHeaderId") as! ItemViewHeader
+            header.nameLabel.text = sections[0]
+            return header
+        }else{
+            let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "secondHeaderId") as! SecondHeader
+            header.nameLabel.text = sections[1]
+            return header
+        }
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -158,7 +191,6 @@ class ItemViewHeader: UITableViewHeaderFooterView {
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         setupViews()
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -188,6 +220,73 @@ class ItemViewHeader: UITableViewHeaderFooterView {
     }
 }
 
+class SecondHeader: ItemViewHeader {
+    
+    @objc func amazonAction(_ sender: UIButton) {
+        //open up amazon
+        print("amazonAction pressed")
+    }
+    
+    @objc func googleShoppingAction(_ sender: UIButton) {
+        //open up google
+        print("googleShoppingActionPressed")
+    }
+    
+    override init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
+        layoutViews()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been initialized")
+    }
+    
+    let label: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.text = "Shops: "
+        label.sizeToFit()
+        label.numberOfLines = 2
+        label.font = UIFont.boldSystemFont(ofSize: 15)
+        label.adjustsFontSizeToFitWidth = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let amazonButton: UIButton = {
+        let button = UIButton(frame: .zero)
+        button.titleLabel?.text = "Amazon"
+        button.addTarget(self, action: #selector(amazonAction(_:)), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    let googleShoppingButton: UIButton = {
+        let button = UIButton(frame: .zero)
+        button.titleLabel?.text = "Google Shopping"
+        button.addTarget(self, action: #selector(googleShoppingAction(_:)), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    func layoutViews() {
+        addSubview(label)
+        addSubview(amazonButton)
+        addSubview(googleShoppingButton)
+        
+        activate(
+           label.anchor.top.equal.to(nameLabel.anchor.bottom).constant(10),
+           label.anchor.left.equal.to(nameLabel.anchor.left),
+           
+           amazonButton.anchor.centerY.equal.to(label.anchor.centerY),
+           amazonButton.anchor.left.equal.to(label.anchor.right).constant(15),
+           
+           googleShoppingButton.anchor.centerY.equal.to(label.anchor.centerY),
+           googleShoppingButton.anchor.left.equal.to(amazonButton.anchor.left).constant(15)
+        )
+    }
+    
+}
+
 class ItemViewItemCell: UITableViewCell {
     
     var itemViewController: ItemViewController?
@@ -202,7 +301,6 @@ class ItemViewItemCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
     }
     
 //    var logo: UIImageView = {
@@ -231,25 +329,13 @@ class ItemViewItemCell: UITableViewCell {
         return label
     }()
     
-//    let actionButton: UIButton = {
-//        let button = UIButton(type: .system)
-//        button.setTitle("Delete", for: .normal)
-//        button.translatesAutoresizingMaskIntoConstraints = false
-//        return button
-//    }()
-    
     func setupViews() {
-//        addSubview(actionButton)
         addSubview(company)
         addSubview(price)
         
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[v0]-8-[v1(40)]-8-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": company, "v1": price]))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[v0]-8-[v1(60)]-8-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": company, "v1": price]))
         
         NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[v0]-20-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": company]))
         NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[v0]-20-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": price]))
     }
-    
-//    @objc func handleAction(sender: UIButton) {
-//        itemViewController?.deleteCell(cell: self)
-//    }
 }
