@@ -111,7 +111,7 @@ class ItemViewController: UITableViewController {
         }
         else{
             var selectedCell:UITableViewCell = tableView.cellForRow(at: indexPath)!
-            selectedCell.contentView.backgroundColor = UIColor.blue
+            selectedCell.contentView.backgroundColor = UIColor.cyan
             selected[indexPath.row] = true
 
         }
