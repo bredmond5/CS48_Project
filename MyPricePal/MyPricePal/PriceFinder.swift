@@ -68,7 +68,6 @@ class PriceFinder: NSObject {
     }
     //the function that I'm using to check if the job is done running and ready to return
     func checkStatus(_ id: String, baseUrl: String, barcode: String, itemName: String){ //must run this to make sure the job has finished running in order to get the data
-//        var count = 0
         let token = "?token=VPGBCERPAARKAURMZUOFVFSJCADQPRRKYXVXJDPHWRNKKRKUEZMMCHAWILLPGMVQ"
         let statusURL = URL(string: baseUrl + id + token)
         let statusSession = URLSession.shared
@@ -85,11 +84,13 @@ class PriceFinder: NSObject {
                     }
                 }catch{
                     print("Error checkStatus")
-                    self.getBestPrices(barcode, itemName: itemName )
+                    self.checkStatus(id, baseUrl: baseUrl, barcode: barcode, itemName: itemName)
+                    print("after call")
                 }
             }
         }
         statusTask.resume()
+        
     }
     
     //this function gets the JSON with the data
