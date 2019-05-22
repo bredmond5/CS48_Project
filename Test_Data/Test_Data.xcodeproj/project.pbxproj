@@ -15,6 +15,7 @@
 		9A2E6812228FAE590096049F /* Test_DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2E6811228FAE590096049F /* Test_DataTests.swift */; };
 		9A2E681D228FAE590096049F /* Test_DataUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2E681C228FAE590096049F /* Test_DataUITests.swift */; };
 		9A2E682D228FAE770096049F /* Analytics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A2E682B228FAE770096049F /* Analytics.cpp */; };
+		9A2E6830229088150096049F /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A2E682F229088150096049F /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,10 +49,11 @@
 		9A2E6818228FAE590096049F /* Test_DataUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Test_DataUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A2E681C228FAE590096049F /* Test_DataUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test_DataUITests.swift; sourceTree = "<group>"; };
 		9A2E681E228FAE590096049F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9A2E682A228FAE760096049F /* Test_Data-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Test_Data-Bridging-Header.h"; sourceTree = "<group>"; };
+		9A2E682A228FAE760096049F /* Test_Data-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Test_Data-Bridging-Header.h"; path = "Test_DataTests/Test_Data-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		9A2E682B228FAE770096049F /* Analytics.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Analytics.cpp; sourceTree = "<group>"; };
 		9A2E682C228FAE770096049F /* Analytics.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Analytics.hpp; sourceTree = "<group>"; };
 		9A2E682E228FAFD90096049F /* Analytics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Analytics.h; sourceTree = "<group>"; };
+		9A2E682F229088150096049F /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +84,7 @@
 		9A2E67F0228FAE570096049F = {
 			isa = PBXGroup;
 			children = (
+				9A2E682F229088150096049F /* Default-568h@2x.png */,
 				9A2E67FB228FAE570096049F /* Test_Data */,
 				9A2E6810228FAE590096049F /* Test_DataTests */,
 				9A2E681B228FAE590096049F /* Test_DataUITests */,
@@ -240,6 +243,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9A2E6807228FAE590096049F /* LaunchScreen.storyboard in Resources */,
+				9A2E6830229088150096049F /* Default-568h@2x.png in Resources */,
 				9A2E6804228FAE590096049F /* Assets.xcassets in Resources */,
 				9A2E6802228FAE570096049F /* Main.storyboard in Resources */,
 			);
