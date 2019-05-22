@@ -9,6 +9,7 @@
 import UIKit
 import Foundation
 import Anchors
+import SafariServices
 
 protocol ItemViewDismissalDelegate : class {
     func itemViewDidDismiss(_ controller: ItemViewController)
@@ -46,8 +47,7 @@ class ItemViewController: UITableViewController {
             var placeholderArray = [InfoStruct]()
             for x in keywordString! {
                 print(x)
-                selected.append(false)
-                let placeholder = InfoStruct(company: x, price: "0", url: "http://www.engrish.com/")
+                let placeholder = InfoStruct(company: x, price: "", url: "")
                 placeholderArray.append(placeholder)
             }
             items.append(placeholderArray)
@@ -64,7 +64,6 @@ class ItemViewController: UITableViewController {
 
     public var barcodeNum: String?
     public var keywordString: [String]?
-    public var selected: [Bool] = []
     var itemN: String?
     var titleLabel: UILabel = {
         let label = UILabel()
@@ -135,16 +134,16 @@ class ItemViewController: UITableViewController {
             urlDelegate?.showSafariVC(cell.url!)
         }
         else{
-            var selectedCell:UITableViewCell = tableView.cellForRow(at: indexPath)!
+            let selectedCell:ItemViewItemCell = tableView.cellForRow(at: indexPath)! as! ItemViewItemCell
             selectedCell.contentView.backgroundColor = UIColor.cyan
-            selected[indexPath.row] = true
+            selectedCell.select = true
 
         }
     }
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath){
-        var cellToDeselect:UITableViewCell = tableView.cellForRow(at: indexPath)!
+        var cellToDeselect:ItemViewItemCell = tableView.cellForRow(at: indexPath)! as! ItemViewItemCell
         cellToDeselect.contentView.backgroundColor = UIColor.white
-        selected[indexPath.row] = false
+        cellToDeselect.select = false
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -177,13 +176,30 @@ class ItemViewController: UITableViewController {
         }else{
             let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "secondHeaderId") as! SecondHeader
             header.nameLabel.text = sections[1]
+            header.itemVC = self
             return header
         }
     }
-    
+    func getKeyWordsSelected() -> String{
+        var fin: String = ""
+        for i in 0..<items[1].count{
+            let indexPath = IndexPath(row: i, section: 1)
+            let cell = tableView.cellForRow(at: indexPath)
+            if(cell?.isSelected == true){
+                if(i==0){
+                    fin = keywordString![i]
+                }else{
+                    fin+="+"
+                    fin = keywordString![i]
+                }
+            }
+        }
+        return fin
+    }
     override func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
+    
 }
 
 class ItemViewHeader: UITableViewHeaderFooterView {
@@ -221,14 +237,25 @@ class ItemViewHeader: UITableViewHeaderFooterView {
 }
 
 class SecondHeader: ItemViewHeader {
-    
+    public weak var itemVC: ItemViewController?
     @objc func amazonAction(_ sender: UIButton) {
-        //open up amazon
+        let keywords = itemVC?.getKeyWordsSelected()
+        let urlBase = "https://www.amazon.com/s?k="
+        let urlEnd = "&ref=nb_sb_noss_2"
+        let url1 = urlBase + keywords! + urlEnd
+        
+        itemVC?.urlDelegate?.showSafariVC(url1)
         print("amazonAction pressed")
     }
     
     @objc func googleShoppingAction(_ sender: UIButton) {
-        //open up google
+        
+        let keywords = itemVC?.getKeyWordsSelected()
+        let urlBase = "https://www.google.com/search?tbm=shop&hl=en&source=hp&biw=&bih=&q="
+        let urlMiddle = "&oq="
+        let urlEnd = "&gs_l=products-cc.3..0l10.1951.3368.0.3664.11.5.0.6.6.0.72.331.5.5.0....0...1ac.1.34.products-cc..0.11.350.diyOR4lqfyQ"
+        let url = urlBase + keywords! + urlMiddle + keywords! + urlEnd
+        itemVC?.urlDelegate?.showSafariVC(url)
         print("googleShoppingActionPressed")
     }
     
@@ -290,7 +317,7 @@ class SecondHeader: ItemViewHeader {
 class ItemViewItemCell: UITableViewCell {
     
     var itemViewController: ItemViewController?
-    
+    var select: Bool = false
     var url: String?
     var mainImageView : UIImageView = {
         var imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 20))
