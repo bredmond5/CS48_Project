@@ -15,8 +15,9 @@ class SwiftsChartsViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
 //        add_products(Int8("Lays")!)
-//        add_products(Int8("Apple")!)
-//        add_products(Int8("pear")!)
+        add_products(UnsafeMutablePointer<Int8>?)
+        //add_products("Apple")
+      //  add_products(UnsafeMutablePointer<Int8>?("pear")!)
 //        print_elements()
         getData(30, 25, 38)
         let average = (return_products_scanned()+return_products_searched()+return_products_added()/3)

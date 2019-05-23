@@ -17,14 +17,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        //Sets the window and mainviewcontroller programatically.
-        
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
         
-        let barcodeVC = BarcodeScannerViewController()
-        window?.rootViewController = MainViewController(rootViewController: barcodeVC)
-
+        let defaults = UserDefaults.standard
+        if defaults.object(forKey: "isFirstTime") == nil {
+            defaults.set("No", forKey: "isFirstTime")
+            defaults.synchronize()
+            
+            let tutorialVC = TutorialPageController()
+            window?.rootViewController = UINavigationController(rootViewController: tutorialVC)
+        }else{
+            let barcodeVC = BarcodeScannerViewController()
+            window?.rootViewController = MainViewController(rootViewController: barcodeVC)
+        }
+        
+        //Sets the window and mainviewcontroller programatically.
         FirebaseApp.configure();
         return true
     }

@@ -13,7 +13,7 @@ using namespace std;
 double products_scanned = 0.0;
 double products_added = 0.0;
 double products_searched = 0.0;
-string product_name[100];
+char* product_name[100];
 int count_product = 0;
     void getData(int products_scanned1, int products_added2 , int products_searched3){
         
@@ -48,7 +48,7 @@ int count_product = 0;
     double return_products_added(){
         return products_added;
     }
-    void add_products(char s){
+    void add_products(char* s){
         product_name[count_product] = s;
     }
 //    void print_elements(){

@@ -23,7 +23,7 @@ extern "C" {
    double return_products_scanned();
     double return_products_searched();
     double return_products_added();
-    void add_products(char s);
+    void add_products(char* s);
     void print_elements();
     //std::vector<std::string> return_vector();
 #ifdef __cplusplus

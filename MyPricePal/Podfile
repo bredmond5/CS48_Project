@@ -1,5 +1,5 @@
 # Uncomment the next line to define a global platform for your project
- platform :ios, '9.0'
+platform :ios, '9.0'
 
 target 'MyPricePal' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
@@ -15,15 +15,18 @@ pod 'Firebase/Database'
 pod 'FirebaseAnalytics'
 pod 'GoogleUtilities'
 pod 'GoogleAppMeasurement'
+<<<<<<< HEAD
 pod 'SwiftSoup'
 
 
 end
+=======
+pod 'ReachabilitySwift'
+pod 'Alamofire'
+>>>>>>> c277e16e19dccc2eb5d4005c6cfa231b6509bf06
 
 target 'MyPricePalTests' do
-       inherit! :search_paths
-       pod 'Firebase'
+    inherit! :search_paths
 
-
-
+    end
 end
