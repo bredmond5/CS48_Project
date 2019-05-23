@@ -18,7 +18,7 @@ import SafariServices
 //The MainViewController handles switching between the other view controllers. It does
 //not have any views of its own as it is a UINavigationController.
 class MainViewController: UINavigationController {
-
+    
     //The controller where all the barcodes searched will show up
     var searchVC: SearchViewController?
     
