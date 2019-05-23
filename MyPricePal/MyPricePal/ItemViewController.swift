@@ -44,17 +44,16 @@ class ItemViewController: UITableViewController {
             }
             items.append(firstSet)
 //            print(keywordString!)
-            var placeholderArray = [InfoStruct]()
+            var keywordArray = [InfoStruct]()
             for x in keywordString! {
-                print(x)
-                let placeholder = InfoStruct(company: x, price: "", url: "")
-                placeholderArray.append(placeholder)
+                let keywordStruct = InfoStruct(company: x, price: "", url: "")
+                keywordArray.append(keywordStruct)
             }
-            items.append(placeholderArray)
+            items.append(keywordArray)
         }
     }
     
-    let sections = ["Cheapest Deals", "Cheapest Deals For Similar Items"]
+    let sections = ["Cheapest Deals By Exact Item", "Select Keywords then Search by Shop"]
     
     var items = [[InfoStruct]]()
     
@@ -68,9 +67,11 @@ class ItemViewController: UITableViewController {
     var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 15)
+        label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 1
         label.textAlignment = .center
         label.textColor = .black
+        label.numberOfLines = 2
         label.sizeToFit()
         return label
     }()
@@ -79,48 +80,24 @@ class ItemViewController: UITableViewController {
         dismissalDelegate?.itemViewDidDismiss(self)
     }
     
-//    @objc func refreshAction(_ sender: Any) {
-//        //Get the new stuff with the new keywords
-//        //then:
-//
-//        tableView.deleteRows(at: <#T##[IndexPath]#>, with: <#T##UITableView.RowAnimation#>)
-//
-//        var indexPaths = [NSIndexPath]()
-//        for i in 0..<items[1].count {
-//            indexPaths.append(NSIndexPath(row: i, section: 1))
-//        }
-//
-//        var bottomHalfIndexPaths = [NSIndexPath]()
-//        for _ in  0...indexPaths.count / 2 - 1 {
-//            bottomHalfIndexPaths.append(indexPath.removeLast())
-//        }
-//
-//        tableView.beginUpdates()
-//        tableView.insertRows(at: indexPaths, with: .right)
-//        tableView.insertRows(at: bottomHalfIndexPaths, with: .left)
-//        tableview.endUpdates()
-//    }
-    
-    
     override func loadView() {
         super.loadView()
+        view.backgroundColor = .white
+
         tableView.register(ItemViewItemCell.self, forCellReuseIdentifier: "itemCellId")
         tableView.register(ItemViewHeader.self, forHeaderFooterViewReuseIdentifier: "itemHeaderId")
         tableView.register(SecondHeader.self, forHeaderFooterViewReuseIdentifier: "secondHeaderId")
         
-        tableView.sectionHeaderHeight = 50
-
+//        tableView.estimatedSectionHeaderHeight = 75
+//        tableView.sectionHeaderHeight = UITableView.automaticDimension
+//
+        tableView.sectionHeaderHeight = 60
+        
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissalAction(sender:)))
       
         tableView.allowsMultipleSelection = true
-        view.backgroundColor = .white
         
         titleLabel.text = itemN
-        titleLabel.adjustsFontSizeToFitWidth = true
-//        activate(
-//        titleLabel.anchor.right.constant(30)
-//        )
-        titleLabel.numberOfLines = 2
         navigationItem.titleView = titleLabel
     }
     
@@ -137,11 +114,11 @@ class ItemViewController: UITableViewController {
             let selectedCell:ItemViewItemCell = tableView.cellForRow(at: indexPath)! as! ItemViewItemCell
             selectedCell.contentView.backgroundColor = UIColor.cyan
             selectedCell.select = true
-
         }
     }
+    
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath){
-        var cellToDeselect:ItemViewItemCell = tableView.cellForRow(at: indexPath)! as! ItemViewItemCell
+        let cellToDeselect = tableView.cellForRow(at: indexPath)! as! ItemViewItemCell
         cellToDeselect.contentView.backgroundColor = UIColor.white
         cellToDeselect.select = false
     }
@@ -180,6 +157,7 @@ class ItemViewController: UITableViewController {
             return header
         }
     }
+    
     func getKeyWordsSelected() -> String{
         var fin: String = ""
         for i in 0..<items[1].count{
@@ -190,7 +168,7 @@ class ItemViewController: UITableViewController {
                     fin = keywordString![i]
                 }else{
                     fin+="+"
-                    fin = keywordString![i]
+                    fin += keywordString![i]
                 }
             }
         }
@@ -217,7 +195,6 @@ class ItemViewHeader: UITableViewHeaderFooterView {
         let label = UILabel()
         label.text = ""
         label.sizeToFit()
-        label.numberOfLines = 2
         label.font = UIFont.boldSystemFont(ofSize: 15)
         label.adjustsFontSizeToFitWidth = true
     
@@ -230,14 +207,16 @@ class ItemViewHeader: UITableViewHeaderFooterView {
         activate(
            nameLabel.anchor.left.constant(16),
            nameLabel.anchor.right.constant(16),
-           nameLabel.anchor.centerY,
-           nameLabel.anchor.size
+           nameLabel.anchor.size,
+           nameLabel.anchor.bottom.constant(5),
+           nameLabel.anchor.top.constant(5)
         )
     }
 }
 
-class SecondHeader: ItemViewHeader {
+class SecondHeader: UITableViewHeaderFooterView {
     public weak var itemVC: ItemViewController?
+
     @objc func amazonAction(_ sender: UIButton) {
         let keywords = itemVC?.getKeyWordsSelected()
         let urlBase = "https://www.amazon.com/s?k="
@@ -245,7 +224,6 @@ class SecondHeader: ItemViewHeader {
         let url1 = urlBase + keywords! + urlEnd
         
         itemVC?.urlDelegate?.showSafariVC(url1)
-        print("amazonAction pressed")
     }
     
     @objc func googleShoppingAction(_ sender: UIButton) {
@@ -256,7 +234,6 @@ class SecondHeader: ItemViewHeader {
         let urlEnd = "&gs_l=products-cc.3..0l10.1951.3368.0.3664.11.5.0.6.6.0.72.331.5.5.0....0...1ac.1.34.products-cc..0.11.350.diyOR4lqfyQ"
         let url = urlBase + keywords! + urlMiddle + keywords! + urlEnd
         itemVC?.urlDelegate?.showSafariVC(url)
-        print("googleShoppingActionPressed")
     }
     
     override init(reuseIdentifier: String?) {
@@ -268,11 +245,21 @@ class SecondHeader: ItemViewHeader {
         fatalError("init(coder:) has not been initialized")
     }
     
-    let label: UILabel = {
+    let nameLabel: UILabel = {
+        let label = UILabel()
+        label.text = ""
+        label.sizeToFit()
+        label.font = UIFont.boldSystemFont(ofSize: 15)
+        label.adjustsFontSizeToFitWidth = true
+        
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let shopsLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.text = "Shops: "
         label.sizeToFit()
-        label.numberOfLines = 2
         label.font = UIFont.boldSystemFont(ofSize: 15)
         label.adjustsFontSizeToFitWidth = true
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -280,35 +267,46 @@ class SecondHeader: ItemViewHeader {
     }()
     
     let amazonButton: UIButton = {
-        let button = UIButton(frame: .zero)
-        button.titleLabel?.text = "Amazon"
+        let button = UIButton(type: .system)
+        button.setTitle("Amazon", for: .normal)
         button.addTarget(self, action: #selector(amazonAction(_:)), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
     let googleShoppingButton: UIButton = {
-        let button = UIButton(frame: .zero)
-        button.titleLabel?.text = "Google Shopping"
+        let button = UIButton(type: .system)
+        button.setTitle("Google Shopping", for: .normal)
         button.addTarget(self, action: #selector(googleShoppingAction(_:)), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
     func layoutViews() {
-        addSubview(label)
+        addSubview(nameLabel)
+        addSubview(shopsLabel)
         addSubview(amazonButton)
         addSubview(googleShoppingButton)
         
+//        let layoutGuide = UILayoutGuide()
+        
         activate(
-           label.anchor.top.equal.to(nameLabel.anchor.bottom).constant(10),
-           label.anchor.left.equal.to(nameLabel.anchor.left),
+            
+            nameLabel.anchor.top.constant(5),
+            nameLabel.anchor.left.constant(16),
+            nameLabel.anchor.right.constant(16),
+            nameLabel.anchor.bottom.equal.to(shopsLabel.anchor.top).constant(5),
+            
+           shopsLabel.anchor.left.equal.to(nameLabel.anchor.left),
+           shopsLabel.anchor.bottom.constant(5),
            
-           amazonButton.anchor.centerY.equal.to(label.anchor.centerY),
-           amazonButton.anchor.left.equal.to(label.anchor.right).constant(15),
+           amazonButton.anchor.centerY.equal.to(shopsLabel.anchor.centerY),
+           amazonButton.anchor.left.equal.to(shopsLabel.anchor.right).constant(16),
+//           amazonButton.anchor.size.equal.to(shopsLabel.anchor.size),
            
-           googleShoppingButton.anchor.centerY.equal.to(label.anchor.centerY),
-           googleShoppingButton.anchor.left.equal.to(amazonButton.anchor.left).constant(15)
+           googleShoppingButton.anchor.centerY.equal.to(shopsLabel.anchor.centerY),
+           googleShoppingButton.anchor.left.equal.to(amazonButton.anchor.right).constant(16)
+//           googleShoppingButton.anchor.size.equal.to(amazonButton.anchor.size)
         )
     }
     

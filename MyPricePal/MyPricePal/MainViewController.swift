@@ -276,7 +276,6 @@ class MainViewController: UINavigationController {
     var flag = true
     
     func resetBarcodeVC() {
-
         barcodeVC?.reset(animated: true)
         barcodeVC?.navigationItem.rightBarButtonItem = nil
     }
@@ -326,7 +325,7 @@ extension MainViewController: ItemViewDismissalDelegate {
         //we have to check if the barcodeVC sent it and if so reset the barcodeVC
         if topViewController is BarcodeScannerViewController
         {
-            let barcodeVC = topViewController as! BarcodeScannerViewController
+            self.barcodeVC = topViewController as! BarcodeScannerViewController
             resetBarcodeVC()
         }
         
@@ -350,6 +349,7 @@ extension MainViewController: SearchRequestedDelegate {
 extension MainViewController: ItemViewURLDelegate {
     func showSafariVC(_ url: String) {
         guard let url = URL(string: url)else{
+            print("here")
             return
         }
         let safariVC = SFSafariViewController(url: url)
