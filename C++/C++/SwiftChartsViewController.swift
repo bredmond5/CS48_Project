@@ -18,8 +18,14 @@ class SwiftsChartsViewController: UIViewController{
       //  add_products(UnsafeMutablePointer<Int8>?)
         add_products("Apple")
       //  add_products(UnsafeMutablePointer<Int8>?("pear")!)
-//        print_elements()
         getData(30, 25, 38)
+        func getPersonName() -> UnsafePointer<Int8>{
+        let cstr = getPersonName()
+            
+            let name = String.fromCString(cstr)
+        //free(UnsafeMutablePointer(cstr))
+        
+            print(name)}
         let average = (return_products_scanned()+return_products_searched()+return_products_added()/3)
         let chartConfig = BarsChartConfig(valsAxisConfig: ChartAxisConfig(from:0,to:average,by:5))
 
@@ -33,6 +39,16 @@ class SwiftsChartsViewController: UIViewController{
         color: UIColor.red, barWidth: 60)
         self.view.addSubview(chart.view)
         self.chartView = chart
+    }
+    func storeData(){
+        UserDefaults.standard.set(return_products_scanned(),forKey: "scanned")
+        //defaults?.synchronize()
+    }
+    func getData1(){
+        let data = UserDefaults.value(forKey: "scanned")
+        var x = return_products_scanned()
+        x = data as! Double
+        set_scanned(x)
     }
 }
 

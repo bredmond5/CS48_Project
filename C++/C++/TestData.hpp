@@ -10,7 +10,7 @@
 #define TestData_hpp
 
 #include <stdio.h>
-#include <string>
+
 //#include <vector>
 #ifdef __cplusplus
 extern "C" {
@@ -23,8 +23,10 @@ extern "C" {
    double return_products_scanned();
     double return_products_searched();
     double return_products_added();
-    void add_products(string s);
+    void add_products(const char *s);
     void print_elements();
+    void set_scanned(double s);
+    const char *getPersonName(void);
     //std::vector<std::string> return_vector();
 #ifdef __cplusplus
 }
