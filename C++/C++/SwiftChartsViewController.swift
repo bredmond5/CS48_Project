@@ -15,8 +15,8 @@ class SwiftsChartsViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
 //        add_products(Int8("Lays")!)
-        add_products(UnsafeMutablePointer<Int8>?)
-        //add_products("Apple")
+      //  add_products(UnsafeMutablePointer<Int8>?)
+        add_products("Apple")
       //  add_products(UnsafeMutablePointer<Int8>?("pear")!)
 //        print_elements()
         getData(30, 25, 38)

@@ -18,7 +18,7 @@ import SafariServices
 //The MainViewController handles switching between the other view controllers. It does
 //not have any views of its own as it is a UINavigationController.
 class MainViewController: UINavigationController {
-
+    
     //The controller where all the barcodes searched will show up
     var searchVC: SearchViewController?
     
@@ -275,14 +275,13 @@ class MainViewController: UINavigationController {
     }
   
     @objc func stopScanning(_ sender: Any) {
+        flag = false
         resetBarcodeVC()
     }
     
     var flag = true
     
     func resetBarcodeVC() {
-        flag = false
-        barcodeVC?.dismiss(animated: true, completion: nil)
         barcodeVC?.reset(animated: true)
         barcodeVC?.navigationItem.rightBarButtonItem = nil
     }
@@ -332,7 +331,7 @@ extension MainViewController: ItemViewDismissalDelegate {
         //we have to check if the barcodeVC sent it and if so reset the barcodeVC
         if topViewController is BarcodeScannerViewController
         {
-            let barcodeVC = topViewController as! BarcodeScannerViewController
+            self.barcodeVC = topViewController as! BarcodeScannerViewController
             resetBarcodeVC()
         }
         
@@ -356,6 +355,7 @@ extension MainViewController: SearchRequestedDelegate {
 extension MainViewController: ItemViewURLDelegate {
     func showSafariVC(_ url: String) {
         guard let url = URL(string: url)else{
+            print("here")
             return
         }
         let safariVC = SFSafariViewController(url: url)
@@ -381,10 +381,10 @@ extension MainViewController: PriceFinderDelegate {
             if(self.flag){
             self.showAlertButtonTapped(self.itemVC!.itemN!, self.itemVC!.barcodeNum!, self.barcodeVC!)
             }
-            else{
+            //else{
                 self.flag = true
                 
-            }
+            //}
         }
     }
 }

@@ -9,6 +9,8 @@
 import UIKit
 import Foundation
 import Anchors
+import SafariServices
+
 
 protocol ItemViewDismissalDelegate : class {
     func itemViewDidDismiss(_ controller: ItemViewController)
@@ -43,18 +45,16 @@ class ItemViewController: UITableViewController {
             }
             items.append(firstSet)
 //            print(keywordString!)
-            var placeholderArray = [InfoStruct]()
+            var keywordArray = [InfoStruct]()
             for x in keywordString! {
-                print(x)
-                selected.append(false)
-                let placeholder = InfoStruct(company: x, price: "0", url: "http://www.engrish.com/")
-                placeholderArray.append(placeholder)
+                let keywordStruct = InfoStruct(company: x, price: "", url: "")
+                keywordArray.append(keywordStruct)
             }
-            items.append(placeholderArray)
+            items.append(keywordArray)
         }
     }
     
-    let sections = ["Cheapest Deals", "Cheapest Deals For Similar Items"]
+    let sections = ["Cheapest Deals By Exact Item", "Select Keywords then Search by Shop"]
     
     var items = [[InfoStruct]]()
     
@@ -81,15 +81,16 @@ class ItemViewController: UITableViewController {
 
     public var barcodeNum: String?
     public var keywordString: [String]?
-    public var selected: [Bool] = []
     var itemN: String?
 >>>>>>> c277e16e19dccc2eb5d4005c6cfa231b6509bf06
     var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 15)
+        label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 1
         label.textAlignment = .center
-        label.textColor = .black
+        label.textColor = .white
+        label.numberOfLines = 2
         label.sizeToFit()
         return label
     }()
@@ -98,48 +99,24 @@ class ItemViewController: UITableViewController {
         dismissalDelegate?.itemViewDidDismiss(self)
     }
     
-//    @objc func refreshAction(_ sender: Any) {
-//        //Get the new stuff with the new keywords
-//        //then:
-//
-//        tableView.deleteRows(at: <#T##[IndexPath]#>, with: <#T##UITableView.RowAnimation#>)
-//
-//        var indexPaths = [NSIndexPath]()
-//        for i in 0..<items[1].count {
-//            indexPaths.append(NSIndexPath(row: i, section: 1))
-//        }
-//
-//        var bottomHalfIndexPaths = [NSIndexPath]()
-//        for _ in  0...indexPaths.count / 2 - 1 {
-//            bottomHalfIndexPaths.append(indexPath.removeLast())
-//        }
-//
-//        tableView.beginUpdates()
-//        tableView.insertRows(at: indexPaths, with: .right)
-//        tableView.insertRows(at: bottomHalfIndexPaths, with: .left)
-//        tableview.endUpdates()
-//    }
-    
-    
     override func loadView() {
         super.loadView()
+        view.backgroundColor = .white
+
         tableView.register(ItemViewItemCell.self, forCellReuseIdentifier: "itemCellId")
         tableView.register(ItemViewHeader.self, forHeaderFooterViewReuseIdentifier: "itemHeaderId")
         tableView.register(SecondHeader.self, forHeaderFooterViewReuseIdentifier: "secondHeaderId")
         
-        tableView.sectionHeaderHeight = 50
-
+//        tableView.estimatedSectionHeaderHeight = 75
+//        tableView.sectionHeaderHeight = UITableView.automaticDimension
+//
+        tableView.sectionHeaderHeight = 60
+        
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissalAction(sender:)))
       
         tableView.allowsMultipleSelection = true
-        view.backgroundColor = .white
         
         titleLabel.text = itemN
-        titleLabel.adjustsFontSizeToFitWidth = true
-//        activate(
-//        titleLabel.anchor.right.constant(30)
-//        )
-        titleLabel.numberOfLines = 2
         navigationItem.titleView = titleLabel
     }
 //    class SAButton: UIButton {
@@ -201,16 +178,16 @@ class ItemViewController: UITableViewController {
             urlDelegate?.showSafariVC(cell.url!)
         }
         else{
-            var selectedCell:UITableViewCell = tableView.cellForRow(at: indexPath)!
-            selectedCell.contentView.backgroundColor = UIColor.cyan
-            selected[indexPath.row] = true
-
+            let selectedCell:ItemViewItemCell = tableView.cellForRow(at: indexPath)! as! ItemViewItemCell
+            selectedCell.contentView.backgroundColor = UIColor.gray
+            selectedCell.select = true
         }
     }
+    
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath){
-        var cellToDeselect:UITableViewCell = tableView.cellForRow(at: indexPath)!
+        let cellToDeselect = tableView.cellForRow(at: indexPath)! as! ItemViewItemCell
         cellToDeselect.contentView.backgroundColor = UIColor.white
-        selected[indexPath.row] = false
+        cellToDeselect.select = false
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -243,13 +220,31 @@ class ItemViewController: UITableViewController {
         }else{
             let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "secondHeaderId") as! SecondHeader
             header.nameLabel.text = sections[1]
+            header.itemVC = self
             return header
         }
     }
     
+    func getKeyWordsSelected() -> String{
+        var fin: String = ""
+        for i in 0..<items[1].count{
+            let indexPath = IndexPath(row: i, section: 1)
+            let cell = tableView.cellForRow(at: indexPath)
+            if(cell?.isSelected == true){
+                if(i==0){
+                    fin = keywordString![i]
+                }else{
+                    fin+="+"
+                    fin += keywordString![i]
+                }
+            }
+        }
+        return fin
+    }
     override func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
+    
 }
 
 class ItemViewHeader: UITableViewHeaderFooterView {
@@ -267,7 +262,6 @@ class ItemViewHeader: UITableViewHeaderFooterView {
         let label = UILabel()
         label.text = ""
         label.sizeToFit()
-        label.numberOfLines = 2
         label.font = UIFont.boldSystemFont(ofSize: 15)
         label.adjustsFontSizeToFitWidth = true
     
@@ -280,22 +274,33 @@ class ItemViewHeader: UITableViewHeaderFooterView {
         activate(
            nameLabel.anchor.left.constant(16),
            nameLabel.anchor.right.constant(16),
-           nameLabel.anchor.centerY,
-           nameLabel.anchor.size
+           nameLabel.anchor.size,
+           nameLabel.anchor.bottom.constant(5),
+           nameLabel.anchor.top.constant(5)
         )
     }
 }
 
-class SecondHeader: ItemViewHeader {
-    
+class SecondHeader: UITableViewHeaderFooterView {
+    public weak var itemVC: ItemViewController?
+
     @objc func amazonAction(_ sender: UIButton) {
-        //open up amazon
-        print("amazonAction pressed")
+        let keywords = itemVC?.getKeyWordsSelected()
+        let urlBase = "https://www.amazon.com/s?k="
+        let urlEnd = "&ref=nb_sb_noss_2"
+        let url1 = urlBase + keywords! + urlEnd
+        
+        itemVC?.urlDelegate?.showSafariVC(url1)
     }
     
     @objc func googleShoppingAction(_ sender: UIButton) {
-        //open up google
-        print("googleShoppingActionPressed")
+        
+        let keywords = itemVC?.getKeyWordsSelected()
+        let urlBase = "https://www.google.com/search?tbm=shop&hl=en&source=hp&biw=&bih=&q="
+        let urlMiddle = "&oq="
+        let urlEnd = "&gs_l=products-cc.3..0l10.1951.3368.0.3664.11.5.0.6.6.0.72.331.5.5.0....0...1ac.1.34.products-cc..0.11.350.diyOR4lqfyQ"
+        let url = urlBase + keywords! + urlMiddle + keywords! + urlEnd
+        itemVC?.urlDelegate?.showSafariVC(url)
     }
     
     override init(reuseIdentifier: String?) {
@@ -307,11 +312,21 @@ class SecondHeader: ItemViewHeader {
         fatalError("init(coder:) has not been initialized")
     }
     
-    let label: UILabel = {
+    let nameLabel: UILabel = {
+        let label = UILabel()
+        label.text = ""
+        label.sizeToFit()
+        label.font = UIFont.boldSystemFont(ofSize: 15)
+        label.adjustsFontSizeToFitWidth = true
+        
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let shopsLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.text = "Shops: "
         label.sizeToFit()
-        label.numberOfLines = 2
         label.font = UIFont.boldSystemFont(ofSize: 15)
         label.adjustsFontSizeToFitWidth = true
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -319,35 +334,48 @@ class SecondHeader: ItemViewHeader {
     }()
     
     let amazonButton: UIButton = {
-        let button = UIButton(frame: .zero)
-        button.titleLabel?.text = "Amazon"
+        let button = UIButton(type: .system)
+        button.setTitleColor(UIColor(red: 189/255.0, green: 66/255.0, blue: 74/255.0, alpha: 1), for: .normal)
+        button.setTitle("Amazon", for: .normal)
         button.addTarget(self, action: #selector(amazonAction(_:)), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
     let googleShoppingButton: UIButton = {
-        let button = UIButton(frame: .zero)
-        button.titleLabel?.text = "Google Shopping"
+        let button = UIButton(type: .system)
+        button.setTitleColor(UIColor(red: 189/255.0, green: 66/255.0, blue: 74/255.0, alpha: 1), for: .normal)
+        button.setTitle("Google Shopping", for: .normal)
         button.addTarget(self, action: #selector(googleShoppingAction(_:)), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
     func layoutViews() {
-        addSubview(label)
+        addSubview(nameLabel)
+        addSubview(shopsLabel)
         addSubview(amazonButton)
         addSubview(googleShoppingButton)
         
+//        let layoutGuide = UILayoutGuide()
+        
         activate(
-           label.anchor.top.equal.to(nameLabel.anchor.bottom).constant(10),
-           label.anchor.left.equal.to(nameLabel.anchor.left),
+            
+            nameLabel.anchor.top.constant(5),
+            nameLabel.anchor.left.constant(16),
+            nameLabel.anchor.right.constant(16),
+            nameLabel.anchor.bottom.equal.to(shopsLabel.anchor.top).constant(5),
+            
+           shopsLabel.anchor.left.equal.to(nameLabel.anchor.left),
+           shopsLabel.anchor.bottom.constant(5),
            
-           amazonButton.anchor.centerY.equal.to(label.anchor.centerY),
-           amazonButton.anchor.left.equal.to(label.anchor.right).constant(15),
+           amazonButton.anchor.centerY.equal.to(shopsLabel.anchor.centerY),
+           amazonButton.anchor.left.equal.to(shopsLabel.anchor.right).constant(16),
+//           amazonButton.anchor.size.equal.to(shopsLabel.anchor.size),
            
-           googleShoppingButton.anchor.centerY.equal.to(label.anchor.centerY),
-           googleShoppingButton.anchor.left.equal.to(amazonButton.anchor.left).constant(15)
+           googleShoppingButton.anchor.centerY.equal.to(shopsLabel.anchor.centerY),
+           googleShoppingButton.anchor.left.equal.to(amazonButton.anchor.right).constant(16)
+//           googleShoppingButton.anchor.size.equal.to(amazonButton.anchor.size)
         )
     }
     
@@ -356,7 +384,7 @@ class SecondHeader: ItemViewHeader {
 class ItemViewItemCell: UITableViewCell {
     
     var itemViewController: ItemViewController?
-    
+    var select: Bool = false
     var url: String?
     var mainImageView : UIImageView = {
         var imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 20))

@@ -37,7 +37,7 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
         label.font = UIFont.boldSystemFont(ofSize: 17)
         label.numberOfLines = 1
         label.textAlignment = .center
-        label.textColor = .black
+        label.textColor = .white
         label.sizeToFit()
         return label
     }()
@@ -195,6 +195,7 @@ class SearchViewItemCell: UITableViewCell {
     
     let actionButton: UIButton = {
         let button = UIButton(type: .system)
+        button.setTitleColor(UIColor(red: 189/255.0, green: 66/255.0, blue: 74/255.0, alpha: 1), for: .normal)
         button.setTitle("Delete", for: .normal)
         
         button.translatesAutoresizingMaskIntoConstraints = false
