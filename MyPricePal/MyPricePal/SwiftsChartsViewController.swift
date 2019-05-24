@@ -28,21 +28,6 @@ class SwiftsChartsViewController: UIViewController{
 //            setData(Int32(return_products_scanned()),Int32(return_products_searched()) , Int32(z))
 //        }
         
-//        var titleLabel: UILabel = {
-//            let label = UILabel()
-//            label.text = "User Statistics"
-//            label.font = UIFont.boldSystemFont(ofSize: 36)
-//            label.numberOfLines = 1
-//            label.textAlignment = .center
-//            label.textColor = .red
-//            label.sizeToFit()
-//            return label
-//        }()
-//        override func loadView() {
-//            super.loadView()
-//            view.backgroundColor = .white
-//            navigationItem.titleView = titleLabel
-//        }
         
         
         //        add_products(Int8("Lays")!)
@@ -60,7 +45,7 @@ class SwiftsChartsViewController: UIViewController{
         let frame = CGRect(x: 5, y: 90, width: self.view.frame.width, height: 450)
        // getData(30, 25, 38)
 
-        let chart = BarsChart(frame: frame, chartConfig: chartConfig, xTitle: "Products", yTitle: "Number of Scans per Session", bars: [                                                                             ("Scanned",return_products_scanned()),("URL Clicked",return_url()),("Inputed",return_products_added()),],
+        let chart = BarsChart(frame: frame, chartConfig: chartConfig, xTitle: "User Actions within app", yTitle: "Number of Scans per Session", bars: [                                                                             ("Scanned",return_products_scanned()),("URL's Clicked",return_url()),("Inputed",return_products_added()),],
                               
                               color: UIColor.black, barWidth: 60)
         self.view.addSubview(chart.view)
