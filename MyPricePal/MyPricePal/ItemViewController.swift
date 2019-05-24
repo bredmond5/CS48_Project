@@ -71,7 +71,7 @@ class ItemViewController: UITableViewController {
         label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 1
         label.textAlignment = .center
-        label.textColor = .black
+        label.textColor = .white
         label.numberOfLines = 2
         label.sizeToFit()
         return label
@@ -113,7 +113,7 @@ class ItemViewController: UITableViewController {
         }
         else{
             let selectedCell:ItemViewItemCell = tableView.cellForRow(at: indexPath)! as! ItemViewItemCell
-            selectedCell.contentView.backgroundColor = UIColor.cyan
+            selectedCell.contentView.backgroundColor = UIColor.gray
             selectedCell.select = true
         }
     }
@@ -154,6 +154,7 @@ class ItemViewController: UITableViewController {
         }else{
             let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "secondHeaderId") as! SecondHeader
             header.nameLabel.text = sections[1]
+            header.tintColor = UIColor(red: 189/255.0, green: 66/255.0, blue: 74/255.0, alpha: 1)
             header.itemVC = self
             return header
         }
