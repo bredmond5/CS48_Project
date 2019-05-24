@@ -26,6 +26,7 @@
 		36A59425227C0384009C4F18 /* test1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A59424227C0384009C4F18 /* test1.swift */; };
 		464484AC19DF04357144D9F5 /* Pods_MyPricePal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 902B3D5B3841F2C2786D54E2 /* Pods_MyPricePal.framework */; };
 		6379BA44228E22640067900A /* PriceFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6379BA43228E22640067900A /* PriceFinder.swift */; };
+		9A0556A0229884E200925630 /* SwiftChartsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A05569F229884E200925630 /* SwiftChartsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +65,7 @@
 		6379BA43228E22640067900A /* PriceFinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceFinder.swift; sourceTree = "<group>"; };
 		6A3EA4299ABFDDB60D9CEB97 /* Pods-MyPricePalTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyPricePalTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MyPricePalTests/Pods-MyPricePalTests.debug.xcconfig"; sourceTree = "<group>"; };
 		902B3D5B3841F2C2786D54E2 /* Pods_MyPricePal.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyPricePal.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9A05569F229884E200925630 /* SwiftChartsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftChartsViewController.swift; sourceTree = "<group>"; };
 		C2E7D8D56561BAB2AF97C0FE /* Pods-MyPricePal.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyPricePal.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MyPricePal/Pods-MyPricePal.debug.xcconfig"; sourceTree = "<group>"; };
 		D74A20A4BE5DDE699D67F1C4 /* Pods-MyPricePalTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyPricePalTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MyPricePalTests/Pods-MyPricePalTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -115,6 +117,7 @@
 			children = (
 				358AB523226590FA00E9C1E7 /* AppDelegate.swift */,
 				358AB525226590FA00E9C1E7 /* MainViewController.swift */,
+				9A05569F229884E200925630 /* SwiftChartsViewController.swift */,
 				35E42FB0228E168C00BD9EB4 /* NetworkManager.swift */,
 				36085820228E4ACB00DFF9B9 /* GoogleService-Info.plist */,
 				358AB527226590FA00E9C1E7 /* Main.storyboard */,
@@ -355,6 +358,7 @@
 				35E42FB1228E168C00BD9EB4 /* NetworkManager.swift in Sources */,
 				358AB526226590FA00E9C1E7 /* MainViewController.swift in Sources */,
 				3513A58C2290C7C3005E2A7B /* TutorialVC1.swift in Sources */,
+				9A0556A0229884E200925630 /* SwiftChartsViewController.swift in Sources */,
 				358AB524226590FA00E9C1E7 /* AppDelegate.swift in Sources */,
 				36A593D92273F26F009C4F18 /* SearchViewController.swift in Sources */,
 				3513A58A2290C79D005E2A7B /* TutorialPageController.swift in Sources */,
