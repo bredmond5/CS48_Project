@@ -154,7 +154,6 @@ class ItemViewController: UITableViewController {
         }else{
             let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "secondHeaderId") as! SecondHeader
             header.nameLabel.text = sections[1]
-            header.tintColor = UIColor(red: 189/255.0, green: 66/255.0, blue: 74/255.0, alpha: 1)
             header.itemVC = self
             return header
         }
@@ -270,6 +269,7 @@ class SecondHeader: UITableViewHeaderFooterView {
     
     let amazonButton: UIButton = {
         let button = UIButton(type: .system)
+        button.setTitleColor(UIColor(red: 189/255.0, green: 66/255.0, blue: 74/255.0, alpha: 1), for: .normal)
         button.setTitle("Amazon", for: .normal)
         button.addTarget(self, action: #selector(amazonAction(_:)), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -278,6 +278,7 @@ class SecondHeader: UITableViewHeaderFooterView {
     
     let googleShoppingButton: UIButton = {
         let button = UIButton(type: .system)
+        button.setTitleColor(UIColor(red: 189/255.0, green: 66/255.0, blue: 74/255.0, alpha: 1), for: .normal)
         button.setTitle("Google Shopping", for: .normal)
         button.addTarget(self, action: #selector(googleShoppingAction(_:)), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
