@@ -71,7 +71,7 @@ class ItemViewController: UITableViewController {
         label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 1
         label.textAlignment = .center
-        label.textColor = .black
+        label.textColor = .white
         label.numberOfLines = 2
         label.sizeToFit()
         return label
@@ -113,7 +113,7 @@ class ItemViewController: UITableViewController {
         }
         else{
             let selectedCell:ItemViewItemCell = tableView.cellForRow(at: indexPath)! as! ItemViewItemCell
-            selectedCell.contentView.backgroundColor = UIColor.cyan
+            selectedCell.contentView.backgroundColor = UIColor.gray
             selectedCell.select = true
         }
     }
@@ -269,6 +269,7 @@ class SecondHeader: UITableViewHeaderFooterView {
     
     let amazonButton: UIButton = {
         let button = UIButton(type: .system)
+        button.setTitleColor(UIColor(red: 189/255.0, green: 66/255.0, blue: 74/255.0, alpha: 1), for: .normal)
         button.setTitle("Amazon", for: .normal)
         button.addTarget(self, action: #selector(amazonAction(_:)), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -277,6 +278,7 @@ class SecondHeader: UITableViewHeaderFooterView {
     
     let googleShoppingButton: UIButton = {
         let button = UIButton(type: .system)
+        button.setTitleColor(UIColor(red: 189/255.0, green: 66/255.0, blue: 74/255.0, alpha: 1), for: .normal)
         button.setTitle("Google Shopping", for: .normal)
         button.addTarget(self, action: #selector(googleShoppingAction(_:)), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
