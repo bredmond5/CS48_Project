@@ -17,6 +17,7 @@ pod 'GoogleUtilities'
 pod 'GoogleAppMeasurement'
 pod 'ReachabilitySwift'
 pod 'Alamofire'
+pod 'SwiftCharts', '~> 0.6.1'
 
 target 'MyPricePalTests' do
     inherit! :search_paths
