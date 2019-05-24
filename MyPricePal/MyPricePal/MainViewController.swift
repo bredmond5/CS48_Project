@@ -28,6 +28,10 @@ class MainViewController: UINavigationController {
     //The controller that handles scanning the barcode.
     var barcodeVC: BarcodeScannerViewController?
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     //Here we set up all of the view controllers and their delegates.
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -46,6 +50,11 @@ class MainViewController: UINavigationController {
         barcodeVC.dismissalDelegate = self
         barcodeVC.navigationItem.title = "Scan Barcode" //Set the title of the BarcodeVC
         barcodeVC.isOneTimeSearch = true //So that the barcodeScanner doesnt keep scanning
+        barcodeVC.messageViewController.view.backgroundColor = .black
+        barcodeVC.messageViewController.textLabel.superview?.backgroundColor = .black
+        barcodeVC.messageViewController.imageView.backgroundColor = .white
+        barcodeVC.messageViewController.textLabel.textColor = .white
+        barcodeVC.messageViewController.borderView.layer.borderColor = UIColor.white.cgColor
         
         
         
@@ -349,7 +358,6 @@ extension MainViewController: SearchRequestedDelegate {
 extension MainViewController: ItemViewURLDelegate {
     func showSafariVC(_ url: String) {
         guard let url = URL(string: url)else{
-            print("here")
             return
         }
         let safariVC = SFSafariViewController(url: url)

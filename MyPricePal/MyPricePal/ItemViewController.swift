@@ -54,7 +54,7 @@ class ItemViewController: UITableViewController {
         }
     }
     
-    let sections = ["Cheapest Deals By Exact Item", "Select Keywords then Search by Shop"]
+    let sections = ["Cheapest Deals For Your Item: ", "Select Keywords then Search by Shop: "]
     
     var items = [[InfoStruct]]()
     
