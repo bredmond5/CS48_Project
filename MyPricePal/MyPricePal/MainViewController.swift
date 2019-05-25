@@ -265,8 +265,8 @@ class MainViewController: UINavigationController {
     }
     
     @objc func analyticsAction(_ sender: Any) {     
-       let swiftcharts = SwiftsChartsViewController()
-        present(swiftcharts, animated: true, completion: nil)
+//       let swiftcharts = SwiftsChartsViewController()
+//        present(swiftcharts, animated: true, completion: nil)
         
     }
   

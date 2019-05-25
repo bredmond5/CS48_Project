@@ -12,9 +12,6 @@
 extern "C" {
 #endif
     float Data();
-    //    double products_scanned;
-    //    double products_added;
-    //    double products_searched ;
     void setData(double products_scanned, double items_inputed, double products_searched);
     void set_searched(double s);
     void set_scanned(double s);
