@@ -264,7 +264,7 @@ class MainViewController: UINavigationController {
         pushViewController(searchVC!, animated: true)
     }
     
-    @objc func analyticsAction(_ sender: Any) {     
+    @objc func analyticsAction(_ sender: Any) {
        let swiftcharts = SwiftsChartsViewController()
         present(swiftcharts, animated: true, completion: nil)
         

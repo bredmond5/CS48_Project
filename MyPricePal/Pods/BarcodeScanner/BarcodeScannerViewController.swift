@@ -2,7 +2,6 @@ import UIKit
 import AVFoundation
 
 // MARK: - Delegates
-
 /// Delegate to handle the captured code.
 public protocol BarcodeScannerCodeDelegate: class {
     func scanner(
@@ -23,7 +22,6 @@ public protocol BarcodeScannerDismissalDelegate: class {
 }
 
 // MARK: - Controller
-
 /**
  Barcode scanner controller with 4 sates:
  - Scanning mode
@@ -35,7 +33,6 @@ open class BarcodeScannerViewController: UIViewController {
     private static let footerHeight: CGFloat = 75
     
     // MARK: - Public properties
-    
     /// Delegate to handle the captured code.
     public weak var codeDelegate: BarcodeScannerCodeDelegate?
     /// Delegate to report errors.
@@ -43,11 +40,11 @@ open class BarcodeScannerViewController: UIViewController {
     /// Delegate to dismiss barcode scanner when the close button has been pressed.
     public weak var dismissalDelegate: BarcodeScannerDismissalDelegate?
     
-    /// When the flag is set to true controller returns a captured code
+    /// When the flag is set to `true` controller returns a captured code
     /// and waits for the next reset action.
     public var isOneTimeSearch = true
     
-    /// AVCaptureMetadataOutput metadata object types.
+    /// `AVCaptureMetadataOutput` metadata object types.
     public var metadata = AVMetadataObject.ObjectType.barcodeScannerMetadata {
         didSet {
             cameraViewController.metadata = metadata
@@ -55,7 +52,6 @@ open class BarcodeScannerViewController: UIViewController {
     }
     
     // MARK: - Private properties
-    
     /// Flag to lock session from capturing.
     private var locked = false
     /// Flag to check if layout constraints has been activated.
@@ -64,7 +60,6 @@ open class BarcodeScannerViewController: UIViewController {
     private var isVisible = false
     
     // MARK: - UI
-    
     // Title label and close button.
     public private(set) lazy var headerViewController: HeaderViewController = .init()
     /// Information view with description label.
@@ -89,7 +84,6 @@ open class BarcodeScannerViewController: UIViewController {
     }
     
     // MARK: - View lifecycle
-    
     open override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.black
@@ -117,12 +111,12 @@ open class BarcodeScannerViewController: UIViewController {
     }
     
     // MARK: - State handling
-    
     /**
      Shows error message and goes back to the scanning mode.
      - Parameter errorMessage: Error message that overrides the message from the config.
      */
     public func resetWithError(message: String? = nil) {
+        print("yo")
         status = Status(state: .notFound, text: message)
     }
     
@@ -191,10 +185,9 @@ open class BarcodeScannerViewController: UIViewController {
     }
     
     // MARK: - Animations
-    
     /**
      Simulates flash animation.
-     - Parameter processing: Flag to set the current state to .processing.
+     - Parameter processing: Flag to set the current state to `.processing`.
      */
     private func animateFlash(whenProcessing: Bool = false) {
         let flashView = UIView(frame: view.bounds)
@@ -220,7 +213,6 @@ open class BarcodeScannerViewController: UIViewController {
 }
 
 // MARK: - Layout
-
 private extension BarcodeScannerViewController {
     private func setupCameraConstraints() {
         guard !constraintsActivated else {
@@ -279,7 +271,6 @@ private extension BarcodeScannerViewController {
 }
 
 // MARK: - HeaderViewControllerDelegate
-
 extension BarcodeScannerViewController: HeaderViewControllerDelegate {
     func headerViewControllerDidTapCloseButton(_ controller: HeaderViewController) {
         dismissalDelegate?.scannerDidDismiss(self)
@@ -287,7 +278,6 @@ extension BarcodeScannerViewController: HeaderViewControllerDelegate {
 }
 
 // MARK: - CameraViewControllerDelegate
-
 extension BarcodeScannerViewController: CameraViewControllerDelegate {
     func cameraViewControllerDidSetupCaptureSession(_ controller: CameraViewController) {
         status = Status(state: .scanning)
@@ -332,7 +322,6 @@ extension BarcodeScannerViewController: CameraViewControllerDelegate {
             code = String(code.dropFirst())
             rawType = AVMetadataObject.ObjectType.upca.rawValue
         }
-        
         codeDelegate?.scanner(self, didCaptureCode: code, type: rawType)
         animateFlash(whenProcessing: isOneTimeSearch)
     }
