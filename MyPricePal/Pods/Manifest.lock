@@ -77,6 +77,7 @@ PODS:
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
   - ReachabilitySwift (4.3.1)
+  - SwiftCharts (0.6.5)
   - SwiftLint (0.31.0)
 
 DEPENDENCIES:
@@ -89,6 +90,7 @@ DEPENDENCIES:
   - GoogleAppMeasurement
   - GoogleUtilities
   - ReachabilitySwift
+  - SwiftCharts (~> 0.6.1)
   - SwiftLint
 
 SPEC REPOS:
@@ -107,6 +109,7 @@ SPEC REPOS:
     - leveldb-library
     - nanopb
     - ReachabilitySwift
+    - SwiftCharts
     - SwiftLint
 
 SPEC CHECKSUMS:
@@ -124,8 +127,9 @@ SPEC CHECKSUMS:
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   ReachabilitySwift: 4032e2f59586e11e3b0ebe15b167abdd587a388b
+  SwiftCharts: 2e755ea292f0b87d3e4b2c1eb5afc080a20cdc15
   SwiftLint: 7a0227733d786395817373b2d0ca799fd0093ff3
 
-PODFILE CHECKSUM: 2321cd9cdb1fa17ed63cf65c006ecc8e6d94312f
+PODFILE CHECKSUM: 63dc80a704b8e07203755b5d1721662119de9549
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.6.2

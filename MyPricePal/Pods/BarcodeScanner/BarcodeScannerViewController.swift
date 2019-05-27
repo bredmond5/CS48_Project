@@ -1,3 +1,10 @@
+//
+//  BarcodeScannerViewController.swift
+//  BarcodeScanner
+//
+//  Created by Sai Kathika on 5/27/19.
+//
+
 import UIKit
 import AVFoundation
 
@@ -337,3 +344,4 @@ extension BarcodeScannerViewController: CameraViewControllerDelegate {
         animateFlash(whenProcessing: isOneTimeSearch)
     }
 }
+
