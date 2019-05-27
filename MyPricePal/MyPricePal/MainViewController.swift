@@ -15,6 +15,7 @@ import AVFoundation
 import SafariServices
 
 
+
 //The MainViewController handles switching between the other view controllers. It does
 //not have any views of its own as it is a UINavigationController.
 class MainViewController: UINavigationController {
@@ -273,7 +274,9 @@ class MainViewController: UINavigationController {
         pushViewController(searchVC!, animated: true)
     }
     
-    @objc func analyticsAction(_ sender: Any) {
+    @objc func analyticsAction(_ sender: Any) {     
+       let swiftcharts = SwiftsChartsViewController()
+        present(swiftcharts, animated: true, completion: nil)
         
     }
   

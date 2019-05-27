@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:/Users/saikathika/Documents/new/Food-Reader/MyPricePal/Pods/BarcodeScanner/BarcodeScannerViewController.swift">
+   </FileRef>
+   <FileRef
       location = "group:MyPricePal.xcodeproj">
    </FileRef>
    <FileRef
