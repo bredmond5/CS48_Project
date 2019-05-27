@@ -75,7 +75,6 @@ class MainViewController: UINavigationController {
     }
     func truncateNameThenSetVCs(_ itemN: String, _ barcodeString: String) {
         //DispatchQueue.main.async {
-        print(itemN)
             let urlString = "https://api.textrazor.com/"
             let headers = [
                 "x-textrazor-key" : "55864c94efce2b09deef214d17c8de7f0eeb73573655571c5ca9125b"

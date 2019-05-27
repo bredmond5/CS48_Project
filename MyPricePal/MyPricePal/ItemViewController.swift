@@ -78,7 +78,8 @@ class ItemViewController: UITableViewController {
         }
         
         for i in 1..<array.count {
-            array[i].changePrice(price: String(format: "$%.02f", array[i].price!))
+            let num = Double(array[i].price!)
+            array[i].price = String(format: "$%.02f", num!)
         }
         
         return array
@@ -395,12 +396,14 @@ class ItemViewItemCell: UITableViewCell {
         addSubview(price)
         
         activate(
-            price.anchor.right.constant(5)
+            company.anchor.left.constant(5),
+            price.anchor.right.constant(-5),
+            price.anchor.centerY
         )
         
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[v0]-8-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": company]))
+//        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[v0]-8-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": company]))
         
         NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[v0]-20-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": company]))
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[v0]-20-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": price]))
+//        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[v0]-20-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": price]))
     }
 }
