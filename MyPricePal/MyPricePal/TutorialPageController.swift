@@ -26,12 +26,6 @@ class TutorialPageController: UIPageViewController, UIPageViewControllerDataSour
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc func donePressed(_ sender: Any) {
-        let barcodeVC = BarcodeScannerViewController()
-        present(MainViewController(rootViewController: barcodeVC), animated: true)
-    }
-
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -70,8 +64,6 @@ class TutorialPageController: UIPageViewController, UIPageViewControllerDataSour
         self.pageControl.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -20).isActive = true
         self.pageControl.heightAnchor.constraint(equalToConstant: 20).isActive = true
         self.pageControl.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        
-         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(donePressed(_:)))
         
         navigationItem.titleView = titleLabel
     }
