@@ -22,17 +22,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIBarButtonItem.appearance().tintColor = UIColor.white
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         UINavigationBar.appearance().isTranslucent = false
-        let defaults = UserDefaults.standard
-        if defaults.object(forKey: "isFirstTime") == nil {
-            defaults.set("No", forKey: "isFirstTime")
-            defaults.synchronize()
-            
-            let tutorialVC = TutorialPageController()
-            window?.rootViewController = UINavigationController(rootViewController: tutorialVC)
-        }else{
+        
+//        let defaults = UserDefaults.standard
+//        if defaults.object(forKey: "isFirstTime") == nil {
+//            defaults.set("No", forKey: "isFirstTime")
+//            defaults.synchronize()
+//
+//            let tutorialVC = TutorialPageController()
+//            window?.rootViewController = MainViewController(rootViewController: tutorialVC)
+//        }else{
             let barcodeVC = BarcodeScannerViewController()
             window?.rootViewController = MainViewController(rootViewController: barcodeVC)
-        }
+       // }
         
         //Sets the window and mainviewcontroller programatically.
         FirebaseApp.configure();

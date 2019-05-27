@@ -20,10 +20,20 @@ protocol ItemViewURLDelegate: class {
     func showSafariVC(_ url: String)
 }
 
-struct InfoStruct {
-    let company: String?
-    let price: String?
-    let url: String?
+class InfoStruct {
+    var company: String? = nil
+    var price: String? = nil
+    var url: String? = nil
+    
+    init(company: String, price: String, url: String) {
+        self.company = company
+        self.price = price
+        self.url = url
+    }
+    
+    func changePrice(price: String) {
+        self.price = price
+    }
 }
 
 class ItemViewController: UITableViewController {
@@ -39,11 +49,12 @@ class ItemViewController: UITableViewController {
                 maxItems = (priceArray.count / 3)
             }
             while i < 1 + maxItems*3 {
-                let infoStruct = InfoStruct(company: priceArray[i] + ": ", price: "$" + priceArray[i + 1], url: priceArray[i + 2])
+                let infoStruct = InfoStruct(company: priceArray[i] + ": ", price:  priceArray[i + 1], url: priceArray[i + 2])
                 firstSet.append(infoStruct)
                 i = i + 3
             }
-            items.append(firstSet)
+
+            items.append(sort(firstSet))
 //            print(keywordString!)
             var keywordArray = [InfoStruct]()
             for x in keywordString! {
@@ -54,7 +65,27 @@ class ItemViewController: UITableViewController {
         }
     }
     
-    let sections = ["Cheapest Deals By Exact Item", "Select Keywords then Search by Shop"]
+    func sort(_ arrayGiven: [InfoStruct]) -> [InfoStruct]{
+        var array = arrayGiven
+        for _ in 1..<array.count {
+            for j in 2..<array.count {
+                if Double(array[j].price!)! < Double(array[j-1].price!)! {
+                    let tmp = array[j-1]
+                    array[j-1] = array[j]
+                    array[j] = tmp
+                }
+            }
+        }
+        
+        for i in 1..<array.count {
+            let num = Double(array[i].price!)
+            array[i].price = String(format: "$%.02f", num!)
+        }
+        
+        return array
+    }
+    
+    let sections = ["Cheapest Deals For Your Item: ", "Select Keywords then Search by Shop: "]
     
     var items = [[InfoStruct]]()
     
@@ -165,11 +196,14 @@ class ItemViewController: UITableViewController {
             let indexPath = IndexPath(row: i, section: 1)
             let cell = tableView.cellForRow(at: indexPath)
             if(cell?.isSelected == true){
-                if(i==0){
-                    fin = keywordString![i]
-                }else{
-                    fin+="+"
-                    fin += keywordString![i]
+                let str = keywordString![i].split(separator: " ")
+                for j in 0..<str.count {
+                    if(i==0 && j == 0){
+                        fin = String(str[j])
+                    }else{
+                        fin+="+"
+                        fin += String(str[j])
+                    }
                 }
             }
         }
@@ -361,9 +395,15 @@ class ItemViewItemCell: UITableViewCell {
         addSubview(company)
         addSubview(price)
         
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[v0]-8-[v1(60)]-8-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": company, "v1": price]))
+        activate(
+            company.anchor.left.constant(5),
+            price.anchor.right.constant(-5),
+            price.anchor.centerY
+        )
+        
+//        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[v0]-8-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": company]))
         
         NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[v0]-20-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": company]))
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[v0]-20-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": price]))
+//        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[v0]-20-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": price]))
     }
 }
