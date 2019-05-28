@@ -29,6 +29,8 @@ class MainViewController: UINavigationController {
     //The controller that handles scanning the barcode.
     var barcodeVC: BarcodeScannerViewController?
     
+    var curPriceFinder: PriceFinder?
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
@@ -58,8 +60,7 @@ class MainViewController: UINavigationController {
         barcodeVC.cameraViewController.showsCameraButton = true //for front facing camera
         
         //Give the barcodeVC the search button
-        setLeftBarcodeVCButtons(barcodeVC)
-        barcodeVC.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Tutorial", style: .plain, target: self, action: #selector(tutorialAction(_:)))
+        setBarcodeVCButtons(barcodeVC)
         
     }
     struct responseJSON: Decodable{
@@ -238,8 +239,10 @@ class MainViewController: UINavigationController {
         let priceFinder = PriceFinder()
         priceFinder.priceDelegate = self
         priceFinder.getBestPrices(barcodeString, itemName: itemN)
-        initializeItemVC(itemN, barcodeString, keywordString, shouldPush: false)
         
+        curPriceFinder = priceFinder
+        
+        initializeItemVC(itemN, barcodeString, keywordString, shouldPush: false)
         self.searchVC?.giveItemScanned(barcodeString, itemN, keywordString)
     }
     
@@ -280,23 +283,23 @@ class MainViewController: UINavigationController {
     }
   
     @objc func stopScanning(_ sender: Any) {
-        flag = false
         resetBarcodeVC(topViewController as! BarcodeScannerViewController)
     }
     
-    var flag = true
+    func resetBarcodeVC(_ barcodeVC: BarcodeScannerViewController) {
+        print(curPriceFinder?.flag)
+        
+        curPriceFinder?.flag = false
+        setBarcodeVCButtons(barcodeVC)
+        barcodeVC.reset(animated: true)
+    }
     
-    func setLeftBarcodeVCButtons(_ controller: BarcodeScannerViewController) {
+    func setBarcodeVCButtons(_ controller: BarcodeScannerViewController) {
         let searchBarButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchAction(sender:)))
         let analyticsBarButton = UIBarButtonItem(title: "Graph", style: .plain, target: self, action: #selector(analyticsAction(_:)))
         
         controller.navigationItem.leftBarButtonItems = [searchBarButton, analyticsBarButton]
-    }
-    
-    func resetBarcodeVC(_ barcodeVC: BarcodeScannerViewController) {
-        setLeftBarcodeVCButtons(barcodeVC)
-        barcodeVC.reset(animated: true)
-        barcodeVC.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Tutorial", style: .plain, target: self, action: #selector(tutorialAction(_:)))
+         controller.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Tutorial", style: .plain, target: self, action: #selector(tutorialAction(_:)))
     }
 }
 
@@ -392,13 +395,13 @@ extension MainViewController: SFSafariViewControllerDelegate {
 extension MainViewController: PriceFinderDelegate {
     func returnPrices(_ prices: [String]) {
         DispatchQueue.main.async {
-            print(self.flag)
-            if(self.flag){
+           // print("Flag status: \(self.flag)")
+//            if(self.flag){
                 self.itemVC?.priceArray = prices
                 self.showAlertButtonTapped(self.itemVC!.itemN!, self.itemVC!.barcodeNum!, self.barcodeVC!)
-            }
+         //   }
             //else{
-                self.flag = true
+          //      self.flag = true
                 
             //}
         }
