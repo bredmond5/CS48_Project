@@ -14,6 +14,7 @@ class PriceFinder: NSObject {
     weak var priceDelegate: PriceFinderDelegate?
     
     var sent = false
+    var flag = true
     
     struct initialRequestJSON: Decodable{ //struct for the initial JSON parsing
         let job_id: String
@@ -71,17 +72,20 @@ class PriceFinder: NSObject {
         let token = "?token=VPGBCERPAARKAURMZUOFVFSJCADQPRRKYXVXJDPHWRNKKRKUEZMMCHAWILLPGMVQ"
         let statusURL = URL(string: baseUrl + id + token)
         let statusSession = URLSession.shared
-        let statusTask = statusSession.dataTask(with: statusURL!) { (data, response, error) in
+        let statusTask = statusSession.dataTask(with: statusURL!) { (data, response, error)
+            in
             if let data = data{
                 do{
                     let checkJSON = try JSONDecoder().decode(checkingRequest.self, from: data)
                     print(checkJSON.status)
+                
                     if(checkJSON.status != "finished"){
                         self.checkStatus(id, baseUrl: baseUrl, barcode: barcode, itemName: itemName)
                     }
                     else{
                         self.getJSON(id, baseUrl: baseUrl, barcode: barcode, checkSuccess: checkJSON.successful, itemName: itemName)
                     }
+                    
                 }catch{
                     print("Error checkStatus")
                     self.checkStatus(id, baseUrl: baseUrl, barcode: barcode, itemName: itemName)
@@ -124,7 +128,7 @@ class PriceFinder: NSObject {
                         self.prices.append(responseJSON.results[0].content.offers[i].url)
                     }
                     
-                    if !self.sent {
+                    if !self.sent && self.flag {
                         self.priceDelegate?.returnPrices(self.prices)
                         self.sent = true
                     }

@@ -141,6 +141,7 @@ class ItemViewController: UITableViewController {
         let cell = tableView.cellForRow(at: indexPath) as! ItemViewItemCell
         if(indexPath.section == 0){
             urlDelegate?.showSafariVC(cell.url!)
+            cell.backgroundColor = .white
         }
         else{
             let selectedCell:ItemViewItemCell = tableView.cellForRow(at: indexPath)! as! ItemViewItemCell
@@ -396,8 +397,8 @@ class ItemViewItemCell: UITableViewCell {
         addSubview(price)
         
         activate(
-            company.anchor.left.constant(5),
-            price.anchor.right.constant(-5),
+            company.anchor.left.constant(8),
+            price.anchor.right.constant(-8),
             price.anchor.centerY
         )
         

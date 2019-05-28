@@ -21,7 +21,7 @@ protocol SearchRequestedDelegate: class {
 //SearchViewController handles showing the user their recent searches and sending items
 //to the itemVC if they are pressed.
 
-class SearchViewController: UITableViewController, UISearchBarDelegate {
+class SearchViewController: UITableViewController {
     public weak var dismissalDelegate: SearchViewControllerDismissalDelegate?
     public weak var searchRequestedDelegate: SearchRequestedDelegate?
     
@@ -92,14 +92,14 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
         tableView.register(SearchViewItemCell.self, forCellReuseIdentifier: "cellId")
         tableView.register(SearchViewHeader.self, forHeaderFooterViewReuseIdentifier: "headerId")
         
-        tableView.sectionHeaderHeight = 50
+        tableView.sectionHeaderHeight = 0
     }
     
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
- //       searchRequestedDelegate?.searchRequested(searchBar.text!, "", [])
-   //     giveItemScanned(searchBar.text!, "")
-        searchBar.text = ""
-    }
+//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+// //       searchRequestedDelegate?.searchRequested(searchBar.text!, "", [])
+//   //     giveItemScanned(searchBar.text!, "")
+//        searchBar.text = ""
+//    }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
@@ -115,7 +115,7 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "headerId") as! SearchViewHeader
-        header.searchBar.delegate = self
+//        header.searchBar.delegate = self
         return header
     }
     
@@ -151,21 +151,21 @@ class SearchViewHeader: UITableViewHeaderFooterView {
 //        return label
 //    }()
     
-    let searchBar: UISearchBar = {
-        let textField = UISearchBar(frame: .zero)
-        textField.placeholder = "Search Item"
-        textField.translatesAutoresizingMaskIntoConstraints = false
-//        textField.font = UIFont.boldSystemFont(ofSize: 14)
-        textField.showsBookmarkButton = false
-        textField.showsScopeBar = false
-        return textField
-    }()
+//    let searchBar: UISearchBar = {
+//        let textField = UISearchBar(frame: .zero)
+//        textField.placeholder = "Search Item"
+//        textField.translatesAutoresizingMaskIntoConstraints = false
+////        textField.font = UIFont.boldSystemFont(ofSize: 14)
+//        textField.showsBookmarkButton = false
+//        textField.showsScopeBar = false
+//        return textField
+//    }()
     
     func setupViews() {
-        addSubview(searchBar)
+  //      addSubview(searchBar)
 
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[v0]|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": searchBar]))
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-12-[v0]-12-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": searchBar]))
+//        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[v0]|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": searchBar]))
+//        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-12-[v0]-12-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": searchBar]))
     }
 }
 
