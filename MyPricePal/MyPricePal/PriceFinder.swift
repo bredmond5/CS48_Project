@@ -13,7 +13,7 @@ class PriceFinder: NSObject {
     
     weak var priceDelegate: PriceFinderDelegate?
     
-    var sent = false
+    var finished = false
     var flag = true
     
     struct initialRequestJSON: Decodable{ //struct for the initial JSON parsing
@@ -103,9 +103,9 @@ class PriceFinder: NSObject {
         let fixedSearchName = itemName.replacingOccurrences(of: " ", with: "+")
         if(checkSuccess == 0){ //if the API fails to retrieve a JSON (potentially because barcode is not the appropriate length meaning it cannot search), then we will simply create a link to the item based off of the item name so that way we avoid not showing anything or having an infinite search loop
             self.prices.append("https://www.google.com/search?tbm=shop&hl=en&source=hp&biw=&bih=&q=" + fixedSearchName + "&oq=" + fixedSearchName + "&gs_l=products-cc.3...1173.1173.0.1942.1.1.0.0.0.0.7.7.1.1.0....0...1ac.2.34.products-cc..1.0.0.az1Q1kQyBq8")
-            if !self.sent {
+            if !self.finished {
                 self.priceDelegate?.returnPrices(self.prices)
-                self.sent = true
+                self.finished = true
             }
         }else{
             let token = "?token=VPGBCERPAARKAURMZUOFVFSJCADQPRRKYXVXJDPHWRNKKRKUEZMMCHAWILLPGMVQ"
@@ -128,9 +128,9 @@ class PriceFinder: NSObject {
                         self.prices.append(responseJSON.results[0].content.offers[i].url)
                     }
                     
-                    if !self.sent && self.flag {
+                    if !self.finished && self.flag {
                         self.priceDelegate?.returnPrices(self.prices)
-                        self.sent = true
+                        self.finished = true
                     }
                     
                 }catch{

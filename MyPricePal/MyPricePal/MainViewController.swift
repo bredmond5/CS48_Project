@@ -14,8 +14,6 @@ import Foundation
 import AVFoundation
 import SafariServices
 
-
-
 //The MainViewController handles switching between the other view controllers. It does
 //not have any views of its own as it is a UINavigationController.
 class MainViewController: UINavigationController {
@@ -30,6 +28,7 @@ class MainViewController: UINavigationController {
     var barcodeVC: BarcodeScannerViewController?
     
     var curPriceFinder: PriceFinder?
+    var curKeywordFinder: KeywordFinder?
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -41,7 +40,6 @@ class MainViewController: UINavigationController {
         
         //Initialize searchVC and set the delegates.
         searchVC = SearchViewController()
-        searchVC?.dismissalDelegate = self
         searchVC?.searchRequestedDelegate = self
         
         //initialize barcodeVC and send delegates.
@@ -63,55 +61,6 @@ class MainViewController: UINavigationController {
         setBarcodeVCButtons(barcodeVC)
         
     }
-    struct responseJSON: Decodable{
-        let response: responseType
-    }
-    
-    struct responseType: Decodable{
-        let entities: [Content]
-    }
-    
-    struct Content: Decodable{
-        let entityId: String
-    }
-    func truncateNameThenSetVCs(_ itemN: String, _ barcodeString: String) {
-        //DispatchQueue.main.async {
-            let urlString = "https://api.textrazor.com/"
-            let headers = [
-                "x-textrazor-key" : "55864c94efce2b09deef214d17c8de7f0eeb73573655571c5ca9125b"
-            ]
-            var z : [String] = []
-            let x : String = "text=" + itemN
-            let y : String = x + "&extractors=entities"
-            let postData = NSMutableData(data: y.data(using: String.Encoding.utf8)!)
-            let request = NSMutableURLRequest(url: NSURL(string: urlString)! as URL, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 1.0)
-            request.httpMethod = "POST"
-            request.allHTTPHeaderFields = headers
-            request.httpBody = postData as Data
-            print("Before Session")
-            let task = URLSession.shared.dataTask(with: request as URLRequest){ (data, response, error) in
-                if let data = data{
-                    do{
-                        print("INSIDE SESSION")
-                        let JSONinfo = try JSONDecoder().decode(responseJSON.self, from: data)
-                        for i in (JSONinfo.response.entities).indices{
-                            if  !(z.contains(JSONinfo.response.entities[i].entityId)) && (JSONinfo.response.entities[i].entityId != ""){
-                                z.append(JSONinfo.response.entities[i].entityId)
-                                print(z)
-                            }
-                        }
-                        DispatchQueue.main.async {
-                            self.setPriceFinderAndVCs(itemN, barcodeString, z)
-                        }
-                    }catch{
-                        print("truncate Name error")
-                        print(error)
-                    }
-                }
-            }
-            task.resume()
-        //}
-    }
     
     func getItemName(_ barcodeString: String,  _ barcodeVC: BarcodeScannerViewController){
         
@@ -119,7 +68,8 @@ class MainViewController: UINavigationController {
     
         ref.child(barcodeString).observeSingleEvent(of: .value, with: {(snapShot) in
             if let val = snapShot.value as? String{
-                self.truncateNameThenSetVCs(val, barcodeString)
+                self.setVCs(val, barcodeString)
+                self.setKeywordFinder(val)
             }else{
                 let urlBase = "https://api.upcitemdb.com/prod/trial/lookup?upc=" //barcodeString and urlBase combine to create the url
                 let url = URL(string: urlBase + barcodeString)!
@@ -152,7 +102,10 @@ class MainViewController: UINavigationController {
                     }//Creates right side range
                     let rangeOfTheValue = leftRange.upperBound..<rightRange.lowerBound //Appends the ranges together
                  //   self.showAlertButtonTapped(String(htmlString[rangeOfTheValue]), barcodeString,barcodeVC) //Displays the product name
-                    self.truncateNameThenSetVCs(String(htmlString[rangeOfTheValue]), barcodeString)
+                    
+                    let itemN = String(htmlString[rangeOfTheValue])
+                    self.setVCs(itemN, barcodeString)
+                    self.setKeywordFinder(itemN)
                     
                     let ref2 = Database.database().reference()
                     ref2.child("Barcodes").child(barcodeString).setValue(String(htmlString[rangeOfTheValue]))
@@ -214,7 +167,8 @@ class MainViewController: UINavigationController {
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
             let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
             if let text = textField!.text {
-                self.truncateNameThenSetVCs(text, barcode)
+                self.setVCs(text, barcode)
+                self.setKeywordFinder(text)
             }
             let ref3 = Database.database().reference()
             ref3.child("Barcodes").child(barcode).setValue(textField?.text)
@@ -232,39 +186,46 @@ class MainViewController: UINavigationController {
         }))
         
         barcodeVC.present(alert, animated: true)
-
     }
     
-    func setPriceFinderAndVCs(_ itemN: String, _ barcodeString: String, _ keywordString: [String]) {
+    func alertGeneralError(_ barcodeVC: BarcodeScannerViewController) {
+          let alert = UIAlertController(title: "Error", message: "", preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "Try Again", style: UIAlertAction.Style.default, handler: {action in
+            self.resetBarcodeVC(barcodeVC)
+        }))
+        
+        barcodeVC.present(alert, animated: true)
+    }
+    
+    func setVCs(_ itemN: String, _ barcodeString: String) {
         let priceFinder = PriceFinder()
         priceFinder.priceDelegate = self
         priceFinder.getBestPrices(barcodeString, itemName: itemN)
-        
         curPriceFinder = priceFinder
         
-        initializeItemVC(itemN, barcodeString, keywordString, shouldPush: false)
-        self.searchVC?.giveItemScanned(barcodeString, itemN, keywordString)
+        
+        initializeItemVC(itemN, barcodeString)
+    }
+    
+    func setKeywordFinder(_ itemN: String) {
+        let keywordFinder = KeywordFinder()
+        keywordFinder.keywordDelegate = self
+        keywordFinder.errorDelegate = self
+        keywordFinder.truncateName(itemN)
+        curKeywordFinder = keywordFinder
     }
     
     //In order to update the name of the item for the itemVC, we have to reset the itemVC.
     //This function initializes everything needed, and if wanted will also push the itemVC
     //controller to the navigation stack. You wouldnt want to push it if you are doing a call
     //to get the prices because you have to wait for pricefinder to return.
-    func initializeItemVC(_ itemN: String, _ barcodeNum: String = "", _ keywordString: [String], shouldPush: Bool) {
+    func initializeItemVC(_ itemN: String, _ barcodeNum: String = "") {
         itemVC = nil
         itemVC = ItemViewController()
-//        if(barcodeNum == "") {
-//            itemVC?.exact = false
-//        }
         itemVC?.itemN = itemN
-        itemVC?.keywordString = keywordString
         itemVC?.barcodeNum = barcodeNum
         itemVC?.dismissalDelegate = self
         itemVC?.urlDelegate = self
-        
-        if(shouldPush) {
-            pushViewController(itemVC!, animated: true)
-        }
     }
     
     //Function for if the user presses the search button on the barcodeVC
@@ -287,9 +248,8 @@ class MainViewController: UINavigationController {
     }
     
     func resetBarcodeVC(_ barcodeVC: BarcodeScannerViewController) {
-        print(curPriceFinder?.flag)
-        
         curPriceFinder?.flag = false
+        curKeywordFinder?.flag = false
         setBarcodeVCButtons(barcodeVC)
         barcodeVC.reset(animated: true)
     }
@@ -353,21 +313,14 @@ extension MainViewController: ItemViewDismissalDelegate {
             self.barcodeVC = topViewController as? BarcodeScannerViewController
             resetBarcodeVC(barcodeVC!)
         }
-        
-    }
-}
-
-//Function for handling when the searchVC dismisses itself.
-extension MainViewController: SearchViewControllerDismissalDelegate {
-    func searchViewDidDismiss(_ controller: SearchViewController) {
-        popViewController(animated: true)
     }
 }
 
 //Function for handling when the barcodeVC presses the search button in the top right.
 extension MainViewController: SearchRequestedDelegate {
     @objc func searchRequested(_ barcodeString: String, _ itemN: String, _ keywordString: [String]) {
-        setPriceFinderAndVCs(itemN, barcodeString, keywordString)
+        setVCs(itemN, barcodeString)
+        itemVC?.keywordString = keywordString
     }
 }
 
@@ -395,15 +348,37 @@ extension MainViewController: SFSafariViewControllerDelegate {
 extension MainViewController: PriceFinderDelegate {
     func returnPrices(_ prices: [String]) {
         DispatchQueue.main.async {
-           // print("Flag status: \(self.flag)")
-//            if(self.flag){
-                self.itemVC?.priceArray = prices
-                self.showAlertButtonTapped(self.itemVC!.itemN!, self.itemVC!.barcodeNum!, self.barcodeVC!)
-         //   }
-            //else{
-          //      self.flag = true
-                
-            //}
+            self.itemVC?.priceArray = prices
+    
+            if(self.curKeywordFinder!.finished) {
+               self.showItem()
+            }
+        }
+    }
+    
+    func showItem() {
+        self.itemVC?.createItems()
+        self.searchVC?.giveItemScanned(self.itemVC!.itemN!, self.itemVC!.barcodeNum!, self.itemVC!.keywordString!)
+        self.showAlertButtonTapped(self.itemVC!.itemN!, self.itemVC!.barcodeNum!, self.barcodeVC!)
+    }
+}
+
+extension MainViewController: KeywordFinderDelegate {
+    func returnKeywords(_ keywords: [String]) {
+        DispatchQueue.main.async {
+            self.itemVC?.keywordString = keywords
+            
+            if(self.curPriceFinder!.finished) {
+               self.showItem()
+            }
+        }
+    }
+}
+
+extension MainViewController: KeywordErrorDelegate {
+    func error() {
+        DispatchQueue.main.async {
+            self.alertGeneralError(self.topViewController as! BarcodeScannerViewController)
         }
     }
 }

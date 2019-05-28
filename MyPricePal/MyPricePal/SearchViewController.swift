@@ -10,10 +10,6 @@ import Foundation
 import UIKit
 import Anchors
 
-protocol SearchViewControllerDismissalDelegate: class {
-    func searchViewDidDismiss(_ controller: SearchViewController)
-}
-
 protocol SearchRequestedDelegate: class {
     func searchRequested(_ barcodeString: String, _ itemN: String, _ keywordString: [String])
 }
@@ -22,7 +18,6 @@ protocol SearchRequestedDelegate: class {
 //to the itemVC if they are pressed.
 
 class SearchViewController: UITableViewController {
-    public weak var dismissalDelegate: SearchViewControllerDismissalDelegate?
     public weak var searchRequestedDelegate: SearchRequestedDelegate?
     
     //These are shown as the items in the table. Defaults to zero items.
@@ -44,10 +39,6 @@ class SearchViewController: UITableViewController {
     
     func returnNumItems() -> Int{return items.count}
     
-    @objc func dismissalAction(sender: Any) {
-        dismissalDelegate?.searchViewDidDismiss(self)
-    }
-    
     override func loadView() {
         super.loadView()
         view.backgroundColor = .white
@@ -56,7 +47,8 @@ class SearchViewController: UITableViewController {
     }
     
     //Function called by MainViewController to give the scanned item.
-    public func giveItemScanned(_ barcodeString: String, _ itemN: String, _ keywordString: [String]) {
+    public func giveItemScanned(_ itemN: String, _ barcodeString: String, _ keywordString: [String]) {
+        
         var index = -1
         for i in 0..<items.count {
             if items[i].barcodeString == barcodeString {
@@ -90,16 +82,8 @@ class SearchViewController: UITableViewController {
     //Sets up all the cell stuff for the tableView so that we see rows.
     override func viewDidLoad() {
         tableView.register(SearchViewItemCell.self, forCellReuseIdentifier: "cellId")
-        tableView.register(SearchViewHeader.self, forHeaderFooterViewReuseIdentifier: "headerId")
-        
         tableView.sectionHeaderHeight = 0
     }
-    
-//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-// //       searchRequestedDelegate?.searchRequested(searchBar.text!, "", [])
-//   //     giveItemScanned(searchBar.text!, "")
-//        searchBar.text = ""
-//    }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
@@ -114,9 +98,7 @@ class SearchViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "headerId") as! SearchViewHeader
-//        header.searchBar.delegate = self
-        return header
+        return tableView.dequeueReusableHeaderFooterView(withIdentifier: "headerId")
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -128,44 +110,6 @@ class SearchViewController: UITableViewController {
             items.remove(at: deletionIndexPath.row)
             tableView.deleteRows(at: [deletionIndexPath], with: .automatic)
         }
-    }
-}
-
-class SearchViewHeader: UITableViewHeaderFooterView {
-    
-    override init(reuseIdentifier: String?) {
-        super.init(reuseIdentifier: reuseIdentifier)
-        setupViews()
-        
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been initialized")
-    }
-    
-//    let nameLabel: UILabel = {
-//        let label = UILabel()
-//        label.text = "Items"
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        label.font = UIFont.boldSystemFont(ofSize: 14)
-//        return label
-//    }()
-    
-//    let searchBar: UISearchBar = {
-//        let textField = UISearchBar(frame: .zero)
-//        textField.placeholder = "Search Item"
-//        textField.translatesAutoresizingMaskIntoConstraints = false
-////        textField.font = UIFont.boldSystemFont(ofSize: 14)
-//        textField.showsBookmarkButton = false
-//        textField.showsScopeBar = false
-//        return textField
-//    }()
-    
-    func setupViews() {
-  //      addSubview(searchBar)
-
-//        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[v0]|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": searchBar]))
-//        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-12-[v0]-12-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": searchBar]))
     }
 }
 
