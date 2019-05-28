@@ -13,9 +13,7 @@ class SwiftsChartsViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-
-        
+    
         let average = (return_products_scanned()+return_products_searched()+return_products_added()+6/3)
         let chartConfig = BarsChartConfig(valsAxisConfig: ChartAxisConfig(from:0,to:average,by:1))
         

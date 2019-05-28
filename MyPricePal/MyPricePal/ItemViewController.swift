@@ -38,31 +38,32 @@ class InfoStruct {
 
 class ItemViewController: UITableViewController {
 
-    var priceArray: [String] = [String]() {
-        didSet {
-            var firstSet = [InfoStruct]()
-            let google = InfoStruct(company: "Google Shopping", price: "", url: priceArray[0])
-            firstSet.append(google)
-            var maxItems = 6
-            var i = 1
-            if(priceArray.count < 1 + maxItems*3) {
-                maxItems = (priceArray.count / 3)
-            }
-            while i < 1 + maxItems*3 {
-                let infoStruct = InfoStruct(company: priceArray[i] + ": ", price:  priceArray[i + 1], url: priceArray[i + 2])
-                firstSet.append(infoStruct)
-                i = i + 3
-            }
-
-            items.append(sort(firstSet))
-//            print(keywordString!)
-            var keywordArray = [InfoStruct]()
-            for x in keywordString! {
-                let keywordStruct = InfoStruct(company: x, price: "", url: "")
-                keywordArray.append(keywordStruct)
-            }
-            items.append(keywordArray)
+    var priceArray: [String] = [String]()
+    
+    func createItems() {
+        var firstSet = [InfoStruct]()
+        let google = InfoStruct(company: "Google Shopping", price: "", url: priceArray[0])
+        firstSet.append(google)
+        var maxItems = 6
+        var i = 1
+        if(priceArray.count < 1 + maxItems*3) {
+            maxItems = (priceArray.count / 3)
         }
+        
+        while i < 1 + maxItems*3 {
+            let infoStruct = InfoStruct(company: priceArray[i] + ": ", price:  priceArray[i + 1], url: priceArray[i + 2])
+            firstSet.append(infoStruct)
+            i = i + 3
+        }
+        
+        items.append(sort(firstSet))
+        var keywordArray = [InfoStruct]()
+        for x in keywordString! {
+            let keywordStruct = InfoStruct(company: x, price: "", url: "")
+            keywordArray.append(keywordStruct)
+        }
+        
+        items.append(keywordArray)
     }
     
     func sort(_ arrayGiven: [InfoStruct]) -> [InfoStruct]{
@@ -397,8 +398,8 @@ class ItemViewItemCell: UITableViewCell {
         addSubview(price)
         
         activate(
-            company.anchor.left.constant(8),
-            price.anchor.right.constant(-8),
+            company.anchor.left.constant(12),
+            price.anchor.right.constant(-12),
             price.anchor.centerY
         )
         

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		05ABD7E6B8C140FE06C792E8 /* Pods_MyPricePalTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 404BFE2759315F3B80A5533B /* Pods_MyPricePalTests.framework */; };
+		3503F036229CB69200863FB1 /* KeywordFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3503F035229CB69200863FB1 /* KeywordFinder.swift */; };
 		3513A58A2290C79D005E2A7B /* TutorialPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3513A5892290C79D005E2A7B /* TutorialPageController.swift */; };
 		3513A58C2290C7C3005E2A7B /* TutorialVC1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3513A58B2290C7C3005E2A7B /* TutorialVC1.swift */; };
 		358AB524226590FA00E9C1E7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358AB523226590FA00E9C1E7 /* AppDelegate.swift */; };
@@ -41,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3503F035229CB69200863FB1 /* KeywordFinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeywordFinder.swift; sourceTree = "<group>"; };
 		3513A5892290C79D005E2A7B /* TutorialPageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialPageController.swift; sourceTree = "<group>"; };
 		3513A58B2290C7C3005E2A7B /* TutorialVC1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialVC1.swift; sourceTree = "<group>"; };
 		358AB520226590FA00E9C1E7 /* MyPricePal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyPricePal.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -129,6 +131,7 @@
 				3513A5892290C79D005E2A7B /* TutorialPageController.swift */,
 				3513A58B2290C7C3005E2A7B /* TutorialVC1.swift */,
 				36A593D62273F250009C4F18 /* ItemViewController.swift */,
+				3503F035229CB69200863FB1 /* KeywordFinder.swift */,
 				6379BA43228E22640067900A /* PriceFinder.swift */,
 				36A593DA2273F27E009C4F18 /* customButton.swift */,
 				358AB52A226590FB00E9C1E7 /* Assets.xcassets */,
@@ -368,6 +371,7 @@
 				35E42FB1228E168C00BD9EB4 /* NetworkManager.swift in Sources */,
 				358AB526226590FA00E9C1E7 /* MainViewController.swift in Sources */,
 				3513A58C2290C7C3005E2A7B /* TutorialVC1.swift in Sources */,
+				3503F036229CB69200863FB1 /* KeywordFinder.swift in Sources */,
 				9A0556A0229884E200925630 /* SwiftChartsViewController.swift in Sources */,
 				358AB524226590FA00E9C1E7 /* AppDelegate.swift in Sources */,
 				9A0556A7229886AC00925630 /* Analytics.cpp in Sources */,
