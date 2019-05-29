@@ -46,7 +46,6 @@ class PriceFinder: NSObject {
     }
     
     func getBestPrices(_ barcode: String, itemName: String){
-        print(itemName)
         let base = "https://api.priceapi.com/v2/jobs/"
         
         let url = URL(string: base)
@@ -99,7 +98,6 @@ class PriceFinder: NSObject {
     
     //this function gets the JSON with the data
     func getJSON(_ id: String, baseUrl: String, barcode: String, checkSuccess: Int, itemName: String){
-        print(barcode)
         let fixedSearchName = itemName.replacingOccurrences(of: " ", with: "+")
         if(checkSuccess == 0){ //if the API fails to retrieve a JSON (potentially because barcode is not the appropriate length meaning it cannot search), then we will simply create a link to the item based off of the item name so that way we avoid not showing anything or having an infinite search loop
             self.prices.append("https://www.google.com/search?tbm=shop&hl=en&source=hp&biw=&bih=&q=" + fixedSearchName + "&oq=" + fixedSearchName + "&gs_l=products-cc.3...1173.1173.0.1942.1.1.0.0.0.0.7.7.1.1.0....0...1ac.2.34.products-cc..1.0.0.az1Q1kQyBq8")
@@ -115,7 +113,6 @@ class PriceFinder: NSObject {
                 guard let data = data else {return}
                 do {
                     let responseJSON = try JSONDecoder().decode(returnJSON.self, from: data)
-                    print(responseJSON)
                     if((responseJSON.results[0].content.url!) != ""){
                         self.prices.append(responseJSON.results[0].content.url!)
                     }else{
