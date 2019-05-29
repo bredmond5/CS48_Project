@@ -70,7 +70,7 @@ class MainViewController: UINavigationController {
     
             ref.child(barcodeString).observeSingleEvent(of: .value, with: {(snapShot) in
                 if let val = snapShot.value as? String{
-                    self.setVCs(val, barcodeString)
+                    self.setItemVCAndPriceFinder(val, barcodeString)
                     self.setKeywordFinder(val)
                 }else{
                     let urlBase = "https://api.upcitemdb.com/prod/trial/lookup?upc=" //barcodeString and urlBase combine to create the url
@@ -106,7 +106,7 @@ class MainViewController: UINavigationController {
                      //   self.showAlertButtonTapped(String(htmlString[rangeOfTheValue]), barcodeString,barcodeVC) //Displays the product name
                         
                         let itemN = String(htmlString[rangeOfTheValue])
-                        self.setVCs(itemN, barcodeString)
+                        self.setItemVCAndPriceFinder(itemN, barcodeString)
                         self.setKeywordFinder(itemN)
                         
                         let ref2 = Database.database().reference()
@@ -170,7 +170,7 @@ class MainViewController: UINavigationController {
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
             let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
             if let text = textField!.text {
-                self.setVCs(text, barcode)
+                self.setItemVCAndPriceFinder(text, barcode)
                 self.setKeywordFinder(text)
             }
             let ref3 = Database.database().reference()
@@ -200,13 +200,13 @@ class MainViewController: UINavigationController {
         barcodeVC.present(alert, animated: true)
     }
     
-    func setVCs(_ itemN: String, _ barcodeString: String) {
+    func setItemVCAndPriceFinder(_ itemN: String, _ barcodeString: String, _ keywordString: [String] = []) {
         let priceFinder = PriceFinder()
         priceFinder.priceDelegate = self
         priceFinder.getBestPrices(barcodeString, itemName: itemN)
         curPriceFinder = priceFinder
 
-        initializeItemVC(itemN, barcodeString)
+        initializeItemVC(itemN, barcodeString, keywordString)
     }
     
     func setKeywordFinder(_ itemN: String) {
@@ -221,7 +221,7 @@ class MainViewController: UINavigationController {
     //This function initializes everything needed, and if wanted will also push the itemVC
     //controller to the navigation stack. You wouldnt want to push it if you are doing a call
     //to get the prices because you have to wait for pricefinder to return.
-    func initializeItemVC(_ itemN: String, _ barcodeNum: String = "") {
+    func initializeItemVC(_ itemN: String, _ barcodeNum: String = "", _ keywordString: [String] = []) {
         DispatchQueue.main.async {
             self.itemVC = nil
             self.itemVC = ItemViewController()
@@ -229,6 +229,12 @@ class MainViewController: UINavigationController {
             self.itemVC?.barcodeNum = barcodeNum
             self.itemVC?.dismissalDelegate = self
             self.itemVC?.urlDelegate = self
+            
+            //If we get it from the searchVC we have already figured out the keyword string,
+            //if not the keywordfinder will run and add it.
+            if(keywordString.count != 0) {
+                self.itemVC?.keywordString = keywordString
+            }
         }
     }
     
@@ -332,9 +338,9 @@ extension MainViewController: ItemViewDismissalDelegate {
 
 //Function for handling when the barcodeVC presses the search button in the top right.
 extension MainViewController: SearchRequestedDelegate {
-    @objc func searchRequested(_ barcodeString: String, _ itemN: String, _ keywordString: [String]) {
-        setVCs(itemN, barcodeString)
-        itemVC?.keywordString = keywordString
+    @objc func searchRequested(_ barcodeString: String, _ itemN: String, _ keywordString: [String], _ searchID: String) {
+        //gonna need to do something different here to just search by ID.
+        setItemVCAndPriceFinder(itemN, barcodeString, keywordString)
     }
 }
 
@@ -364,9 +370,10 @@ extension MainViewController: SFSafariViewControllerDelegate {
 }
 
 extension MainViewController: PriceFinderDelegate {
-    func returnPrices(_ prices: [String]) {
+    func returnPrices(_ prices: [String], _ job_id: String) {
         DispatchQueue.main.async {
             self.itemVC?.priceArray = prices
+            self.itemVC?.job_id = job_id
     
             if(self.curKeywordFinder!.finished) {
                self.showItem()
@@ -376,7 +383,7 @@ extension MainViewController: PriceFinderDelegate {
     
     func showItem() {
         self.itemVC?.createItems()
-        self.searchVC?.giveItemScanned(self.itemVC!.itemN!, self.itemVC!.barcodeNum!, self.itemVC!.keywordString!)
+        self.searchVC?.giveItemScanned(self.itemVC!.itemN!, self.itemVC!.barcodeNum!, self.itemVC!.keywordString!, self.itemVC!.job_id!)
         self.showAlertButtonTapped(self.itemVC!.itemN!, self.itemVC!.barcodeNum!, self.barcodeVC!)
     }
 }
@@ -385,6 +392,7 @@ extension MainViewController: KeywordFinderDelegate {
     func returnKeywords(_ keywords: [String]) {
         DispatchQueue.main.async {
             self.itemVC?.keywordString = keywords
+ //           print(self.itemVC?.keywordString)
             
             if(self.curPriceFinder!.finished) {
                self.showItem()

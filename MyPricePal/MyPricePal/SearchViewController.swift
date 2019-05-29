@@ -11,7 +11,7 @@ import UIKit
 import Anchors
 
 protocol SearchRequestedDelegate: class {
-    func searchRequested(_ barcodeString: String, _ itemN: String, _ keywordString: [String])
+    func searchRequested(_ barcodeString: String, _ itemN: String, _ keywordString: [String], _ searchID: String)
 }
 
 //SearchViewController handles showing the user their recent searches and sending items
@@ -21,7 +21,7 @@ class SearchViewController: UITableViewController {
     public weak var searchRequestedDelegate: SearchRequestedDelegate?
     
     //These are shown as the items in the table. Defaults to zero items.
-    var items: [(barcodeString: String, itemN: String, keyWordString: [String])] = []
+    var items: [(barcodeString: String, itemN: String, keyWordString: [String], searchID: String)] = []
     
     var maxItems = 11 //Maximum amount of items shown
     
@@ -47,7 +47,7 @@ class SearchViewController: UITableViewController {
     }
     
     //Function called by MainViewController to give the scanned item.
-    public func giveItemScanned(_ itemN: String, _ barcodeString: String, _ keywordString: [String]) {
+    public func giveItemScanned(_ itemN: String, _ barcodeString: String, _ keywordString: [String], _ searchID: String) {
         
         var index = -1
         for i in 0..<items.count {
@@ -62,7 +62,7 @@ class SearchViewController: UITableViewController {
             tableView.deleteRows(at: [deletionIndexPath], with: .automatic)
         }
         
-        items.insert((barcodeString, itemN, keywordString), at: 0)
+        items.insert((barcodeString, itemN, keywordString, searchID), at: 0)
         resizeTable()
        
         if(items.count == maxItems + 1) {
@@ -102,7 +102,7 @@ class SearchViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        searchRequestedDelegate?.searchRequested(items[indexPath.row].barcodeString, items[indexPath.row].itemN, items[indexPath.row].keyWordString)
+        searchRequestedDelegate?.searchRequested(items[indexPath.row].barcodeString, items[indexPath.row].itemN, items[indexPath.row].keyWordString, items[indexPath.row].searchID)
     }
     
     func deleteCell(cell: UITableViewCell) {

@@ -4,7 +4,7 @@ import UIKit
 import Foundation
 
 protocol PriceFinderDelegate : class {
-    func returnPrices(_ prices: [String])
+    func returnPrices(_ prices: [String], _ job_id: String)
 }
 
 class PriceFinder: NSObject {
@@ -76,7 +76,7 @@ class PriceFinder: NSObject {
             if let data = data{
                 do{
                     let checkJSON = try JSONDecoder().decode(checkingRequest.self, from: data)
-                    print(checkJSON.status)
+                    print("PriceFinder: \(checkJSON.status)")
                 
                     if(checkJSON.status != "finished"){
                         self.checkStatus(id, baseUrl: baseUrl, barcode: barcode, itemName: itemName)
@@ -102,7 +102,7 @@ class PriceFinder: NSObject {
         if(checkSuccess == 0){ //if the API fails to retrieve a JSON (potentially because barcode is not the appropriate length meaning it cannot search), then we will simply create a link to the item based off of the item name so that way we avoid not showing anything or having an infinite search loop
             self.prices.append("https://www.google.com/search?tbm=shop&hl=en&source=hp&biw=&bih=&q=" + fixedSearchName + "&oq=" + fixedSearchName + "&gs_l=products-cc.3...1173.1173.0.1942.1.1.0.0.0.0.7.7.1.1.0....0...1ac.2.34.products-cc..1.0.0.az1Q1kQyBq8")
             if !self.finished {
-                self.priceDelegate?.returnPrices(self.prices)
+                self.priceDelegate?.returnPrices(self.prices, id)
                 self.finished = true
             }
         }else{
@@ -126,7 +126,7 @@ class PriceFinder: NSObject {
                     }
                     
                     if !self.finished && self.flag {
-                        self.priceDelegate?.returnPrices(self.prices)
+                        self.priceDelegate?.returnPrices(self.prices, id)
                         self.finished = true
                     }
                     

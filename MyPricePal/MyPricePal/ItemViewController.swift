@@ -92,6 +92,8 @@ class ItemViewController: UITableViewController {
     
     public weak var dismissalDelegate: ItemViewDismissalDelegate?
     public weak var urlDelegate: ItemViewURLDelegate?
+    
+    var job_id: String?
 //    public let textView = UITextView(frame: .zero)
 
     public var barcodeNum: String?
@@ -225,6 +227,7 @@ class ItemViewController: UITableViewController {
             let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
             if let text = textField!.text {
                 self.insert(text)
+                self.keywordString?.append(text)
             }
         }))
         present(alert, animated: true)
