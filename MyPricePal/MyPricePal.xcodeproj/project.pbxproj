@@ -52,6 +52,7 @@
 		358AB52A226590FB00E9C1E7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		358AB52D226590FB00E9C1E7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		358AB52F226590FB00E9C1E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		358C2EF3229E1C0700E844E7 /* Anchors.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Anchors.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		35D2C4E522659336009EA490 /* BarcodeScanner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BarcodeScanner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		35D2C4E72265933C009EA490 /* libc++.1.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.1.tbd"; path = "usr/lib/libc++.1.tbd"; sourceTree = SDKROOT; };
 		35E42FB0228E168C00BD9EB4 /* NetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
@@ -157,6 +158,7 @@
 		5B2FCF19BE8E4B0CC4F334F1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				358C2EF3229E1C0700E844E7 /* Anchors.framework */,
 				35D2C4E72265933C009EA490 /* libc++.1.tbd */,
 				35D2C4E522659336009EA490 /* BarcodeScanner.framework */,
 				902B3D5B3841F2C2786D54E2 /* Pods_MyPricePal.framework */,

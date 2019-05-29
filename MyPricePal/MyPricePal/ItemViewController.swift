@@ -196,15 +196,15 @@ class ItemViewController: UITableViewController {
         var fin: String = ""
         for i in 0..<items[1].count{
             let indexPath = IndexPath(row: i, section: 1)
-            let cell = tableView.cellForRow(at: indexPath)
-            if(cell?.isSelected == true){
-                let str = keywordString![i].split(separator: " ")
-                for j in 0..<str.count {
+            let cell = tableView.cellForRow(at: indexPath) as! ItemViewItemCell
+            if(cell.isSelected == true){
+                let str = cell.company.text?.split(separator: " ")
+                for j in 0..<str!.count {
                     if(i==0 && j == 0){
-                        fin = String(str[j])
+                        fin = String(str![j])
                     }else{
                         fin+="+"
-                        fin += String(str[j])
+                        fin += String(str![j])
                     }
                 }
             }
@@ -215,6 +215,28 @@ class ItemViewController: UITableViewController {
         return sections.count
     }
     
+    //If the user chooses to add in the item, this alert is called that asks for user input.
+    func presentInsertAlert() {
+        let alert = UIAlertController(title: "Enter Keyword", message: "", preferredStyle: UIAlertController.Style.alert)
+        alert.addTextField { (textField) in
+            textField.placeholder = "Name"
+        }
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
+            let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
+            if let text = textField!.text {
+                self.insert(text)
+            }
+        }))
+        present(alert, animated: true)
+    }
+    
+    func insert(_ text: String) {
+        let infoStruct = InfoStruct(company: text, price: "", url: "")
+        items[1].append(infoStruct)
+        let insertionIndexPath = IndexPath(item: items[1].count - 1, section: 1)
+        tableView.insertRows(at: [insertionIndexPath], with: .automatic)
+        tableView.reloadData()
+    }
 }
 
 class ItemViewHeader: UITableViewHeaderFooterView {
@@ -321,16 +343,24 @@ class SecondHeader: UITableViewHeaderFooterView {
         return button
     }()
     
+    let insertionButton: UIButton = {
+        let button = UIButton(type: .contactAdd)
+        button.addTarget(self, action: #selector(insertAction(_:)), for: .touchUpInside)
+        return button
+    }()
+    
+    @objc func insertAction(_ sender: Any) {
+        itemVC?.presentInsertAlert()
+    }
+    
     func layoutViews() {
         addSubview(nameLabel)
         addSubview(shopsLabel)
         addSubview(amazonButton)
         addSubview(googleShoppingButton)
-        
-//        let layoutGuide = UILayoutGuide()
+        addSubview(insertionButton)
         
         activate(
-            
             nameLabel.anchor.top.constant(5),
             nameLabel.anchor.left.constant(16),
             nameLabel.anchor.right.constant(16),
@@ -344,7 +374,10 @@ class SecondHeader: UITableViewHeaderFooterView {
 //           amazonButton.anchor.size.equal.to(shopsLabel.anchor.size),
            
            googleShoppingButton.anchor.centerY.equal.to(shopsLabel.anchor.centerY),
-           googleShoppingButton.anchor.left.equal.to(amazonButton.anchor.right).constant(16)
+           googleShoppingButton.anchor.left.equal.to(amazonButton.anchor.right).constant(16),
+           
+           insertionButton.anchor.top.equal.to(nameLabel.anchor.top),
+           insertionButton.anchor.right.constant(-10)
 //           googleShoppingButton.anchor.size.equal.to(amazonButton.anchor.size)
         )
     }

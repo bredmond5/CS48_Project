@@ -43,31 +43,30 @@ class KeywordFinder {
         request.httpMethod = "POST"
         request.allHTTPHeaderFields = headers
         request.httpBody = postData as Data
-        print("Before Session")
+        print("Getting keywords")
         let task = URLSession.shared.dataTask(with: request as URLRequest){ (data, response, error) in
             if let data = data{
                 do{
-                    print("INSIDE SESSION")
                     let JSONinfo = try JSONDecoder().decode(responseJSON.self, from: data)
                     for i in (JSONinfo.response.entities).indices{
                         if  !(z.contains(JSONinfo.response.entities[i].entityId)) && (JSONinfo.response.entities[i].entityId != ""){
                             z.append(JSONinfo.response.entities[i].entityId)
-                            print(z)
                         }
                     }
                     DispatchQueue.main.async {
+                        print("Keywords: \(z)")
                         if(self.flag) {
                             self.finished = true
                             self.keywordDelegate?.returnKeywords(z)
                         }
                     }
                 }catch{
-                    print("truncate Name error")
+                    print("Could not get JSON info")
                     print(error)
                     self.errorDelegate?.error()
                 }
             }else{
-                print("truncate name error")
+                print("No data")
                 self.errorDelegate?.error()
             }
         }

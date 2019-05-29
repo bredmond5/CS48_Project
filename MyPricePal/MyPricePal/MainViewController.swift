@@ -65,55 +65,58 @@ class MainViewController: UINavigationController {
     func getItemName(_ barcodeString: String,  _ barcodeVC: BarcodeScannerViewController){
         
         let ref = Database.database().reference().child("Barcodes")
+        
+        DispatchQueue.main.async {
     
-        ref.child(barcodeString).observeSingleEvent(of: .value, with: {(snapShot) in
-            if let val = snapShot.value as? String{
-                self.setVCs(val, barcodeString)
-                self.setKeywordFinder(val)
-            }else{
-                let urlBase = "https://api.upcitemdb.com/prod/trial/lookup?upc=" //barcodeString and urlBase combine to create the url
-                let url = URL(string: urlBase + barcodeString)!
-                let task = URLSession.shared.dataTask(with: url){(data, resp, error) in //Creates the url connection to the API
-                    guard let data = data else{
-                        print("data was nil")
-                        return
-                    }
-                    guard let htmlString = String(data: data, encoding: String.Encoding.utf8)else{//Saves the html with the JSON into a string
-                        print("cannot cast data into string")
-                        return
+            ref.child(barcodeString).observeSingleEvent(of: .value, with: {(snapShot) in
+                if let val = snapShot.value as? String{
+                    self.setVCs(val, barcodeString)
+                    self.setKeywordFinder(val)
+                }else{
+                    let urlBase = "https://api.upcitemdb.com/prod/trial/lookup?upc=" //barcodeString and urlBase combine to create the url
+                    let url = URL(string: urlBase + barcodeString)!
+                    let task = URLSession.shared.dataTask(with: url){(data, resp, error) in //Creates the url connection to the API
+                        guard let data = data else{
+                            print("data was nil")
+                            return
+                        }
+                        guard let htmlString = String(data: data, encoding: String.Encoding.utf8)else{//Saves the html with the JSON into a string
+                            print("cannot cast data into string")
+                            return
+                            
+                        }
+                        let leftSideOfTheValue = """
+                title":"
+                """
+                        //Left side before the desired value in the JSON portion of the HTML
+                        let rightSideOfTheValue = """
+                ","description
+                """
+                        //right side after the desired value in the JSON portion of the HTML
+                        guard let leftRange = htmlString.range(of: leftSideOfTheValue)else{
+                            self.alertButtonError(barcodeString, barcodeVC)
+                            print("cannot find left range")
+                            return
+                        }//Creates left side range
+                        guard let rightRange = htmlString.range(of: rightSideOfTheValue)else{
+                            print("cannot find right range")
+                            return
+                        }//Creates right side range
+                        let rangeOfTheValue = leftRange.upperBound..<rightRange.lowerBound //Appends the ranges together
+                     //   self.showAlertButtonTapped(String(htmlString[rangeOfTheValue]), barcodeString,barcodeVC) //Displays the product name
                         
+                        let itemN = String(htmlString[rangeOfTheValue])
+                        self.setVCs(itemN, barcodeString)
+                        self.setKeywordFinder(itemN)
+                        
+                        let ref2 = Database.database().reference()
+                        ref2.child("Barcodes").child(barcodeString).setValue(String(htmlString[rangeOfTheValue]))
                     }
-                    let leftSideOfTheValue = """
-            title":"
-            """
-                    //Left side before the desired value in the JSON portion of the HTML
-                    let rightSideOfTheValue = """
-            ","description
-            """
-                    //right side after the desired value in the JSON portion of the HTML
-                    guard let leftRange = htmlString.range(of: leftSideOfTheValue)else{
-                        self.alertButtonError(barcodeString, barcodeVC)
-                        print("cannot find left range")
-                        return
-                    }//Creates left side range
-                    guard let rightRange = htmlString.range(of: rightSideOfTheValue)else{
-                        print("cannot find right range")
-                        return
-                    }//Creates right side range
-                    let rangeOfTheValue = leftRange.upperBound..<rightRange.lowerBound //Appends the ranges together
-                 //   self.showAlertButtonTapped(String(htmlString[rangeOfTheValue]), barcodeString,barcodeVC) //Displays the product name
                     
-                    let itemN = String(htmlString[rangeOfTheValue])
-                    self.setVCs(itemN, barcodeString)
-                    self.setKeywordFinder(itemN)
-                    
-                    let ref2 = Database.database().reference()
-                    ref2.child("Barcodes").child(barcodeString).setValue(String(htmlString[rangeOfTheValue]))
+                    task.resume()
                 }
-                
-                task.resume()
-            }
-        })
+            })
+        }
     }
 
 
@@ -202,8 +205,7 @@ class MainViewController: UINavigationController {
         priceFinder.priceDelegate = self
         priceFinder.getBestPrices(barcodeString, itemName: itemN)
         curPriceFinder = priceFinder
-        
-        
+
         initializeItemVC(itemN, barcodeString)
     }
     
@@ -220,12 +222,14 @@ class MainViewController: UINavigationController {
     //controller to the navigation stack. You wouldnt want to push it if you are doing a call
     //to get the prices because you have to wait for pricefinder to return.
     func initializeItemVC(_ itemN: String, _ barcodeNum: String = "") {
-        itemVC = nil
-        itemVC = ItemViewController()
-        itemVC?.itemN = itemN
-        itemVC?.barcodeNum = barcodeNum
-        itemVC?.dismissalDelegate = self
-        itemVC?.urlDelegate = self
+        DispatchQueue.main.async {
+            self.itemVC = nil
+            self.itemVC = ItemViewController()
+            self.itemVC?.itemN = itemN
+            self.itemVC?.barcodeNum = barcodeNum
+            self.itemVC?.dismissalDelegate = self
+            self.itemVC?.urlDelegate = self
+        }
     }
     
     //Function for if the user presses the search button on the barcodeVC
@@ -248,18 +252,22 @@ class MainViewController: UINavigationController {
     }
     
     func resetBarcodeVC(_ barcodeVC: BarcodeScannerViewController) {
-        curPriceFinder?.flag = false
-        curKeywordFinder?.flag = false
-        setBarcodeVCButtons(barcodeVC)
-        barcodeVC.reset(animated: true)
+        DispatchQueue.main.async {
+            self.curPriceFinder?.flag = false
+            self.curKeywordFinder?.flag = false
+            self.setBarcodeVCButtons(barcodeVC)
+            barcodeVC.reset(animated: true)
+        }
     }
     
     func setBarcodeVCButtons(_ controller: BarcodeScannerViewController) {
-        let searchBarButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchAction(sender:)))
-        let analyticsBarButton = UIBarButtonItem(title: "Graph", style: .plain, target: self, action: #selector(analyticsAction(_:)))
-        
-        controller.navigationItem.leftBarButtonItems = [searchBarButton, analyticsBarButton]
-         controller.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Tutorial", style: .plain, target: self, action: #selector(tutorialAction(_:)))
+        DispatchQueue.main.async {
+            let searchBarButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(self.searchAction(sender:)))
+            let analyticsBarButton = UIBarButtonItem(title: "Graph", style: .plain, target: self, action: #selector(self.analyticsAction(_:)))
+            
+            controller.navigationItem.leftBarButtonItems = [searchBarButton, analyticsBarButton]
+             controller.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Tutorial", style: .plain, target: self, action: #selector(self.tutorialAction(_:)))
+        }
     }
 }
 
@@ -290,28 +298,34 @@ extension MainViewController: BarcodeScannerCodeDelegate {
 //Function for if the BarcodeScannerViewController encounters an error scanning.
 extension MainViewController: BarcodeScannerErrorDelegate {
     func scanner(_ controller: BarcodeScannerViewController, didReceiveError error: Error) {
-        controller.resetWithError(message: error.localizedDescription)
+        DispatchQueue.main.async {
+            controller.resetWithError(message: error.localizedDescription)
+        }
     }
 }
 
 //Function for if the BarcodeScannerViewController dismisses itself
 extension MainViewController: BarcodeScannerDismissalDelegate {
     func scannerDidDismiss(_ controller: BarcodeScannerViewController) {
-        popViewController(animated: true)
+        DispatchQueue.main.async {
+            self.popViewController(animated: true)
+        }
     }
 }
 
 //Function for if the ItemViewController dismisses itself.
 extension MainViewController: ItemViewDismissalDelegate {
     func itemViewDidDismiss(_ controller: ItemViewController) {
-        popViewController(animated: true)
-        
-        //Either the BarcodeVC or the searchVC can send an item to the ItemVC, so
-        //we have to check if the barcodeVC sent it and if so reset the barcodeVC
-        if topViewController is BarcodeScannerViewController
-        {
-            self.barcodeVC = topViewController as? BarcodeScannerViewController
-            resetBarcodeVC(barcodeVC!)
+        DispatchQueue.main.async {
+            self.popViewController(animated: true)
+            
+            //Either the BarcodeVC or the searchVC can send an item to the ItemVC, so
+            //we have to check if the barcodeVC sent it and if so reset the barcodeVC
+            if self.topViewController is BarcodeScannerViewController
+            {
+                self.barcodeVC = self.topViewController as? BarcodeScannerViewController
+                self.resetBarcodeVC(self.barcodeVC!)
+            }
         }
     }
 }
@@ -326,22 +340,26 @@ extension MainViewController: SearchRequestedDelegate {
 
 extension MainViewController: ItemViewURLDelegate {
     func showSafariVC(_ url: String) {
-        update_url()
-        guard let url = URL(string: url)else{
-            return
+        DispatchQueue.main.async {
+            update_url()
+            guard let url = URL(string: url)else{
+                return
+            }
+            let safariVC = SFSafariViewController(url: url)
+            safariVC.delegate = self
+            self.isNavigationBarHidden = true
+            self.pushViewController(safariVC, animated: true)
         }
-        let safariVC = SFSafariViewController(url: url)
-        safariVC.delegate = self
-        isNavigationBarHidden = true
-        pushViewController(safariVC, animated: true)
     }
 }
 
 extension MainViewController: SFSafariViewControllerDelegate {
     func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
         // pop safari view controller and display navigation bar again
-        popViewController(animated: true)
-        isNavigationBarHidden = false
+        DispatchQueue.main.async {
+            self.popViewController(animated: true)
+            self.isNavigationBarHidden = false
+        }
     }
 }
 
