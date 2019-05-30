@@ -94,7 +94,6 @@ class ItemViewController: UITableViewController {
     public weak var urlDelegate: ItemViewURLDelegate?
     
     var job_id: String?
-//    public let textView = UITextView(frame: .zero)
 
     public var barcodeNum: String?
     public var keywordString: [String]?
@@ -122,10 +121,7 @@ class ItemViewController: UITableViewController {
         tableView.register(ItemViewItemCell.self, forCellReuseIdentifier: "itemCellId")
         tableView.register(ItemViewHeader.self, forHeaderFooterViewReuseIdentifier: "itemHeaderId")
         tableView.register(SecondHeader.self, forHeaderFooterViewReuseIdentifier: "secondHeaderId")
-        
-//        tableView.estimatedSectionHeaderHeight = 75
-//        tableView.sectionHeaderHeight = UITableView.automaticDimension
-//
+    
         tableView.sectionHeaderHeight = 60
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissalAction(sender:)))
@@ -166,7 +162,6 @@ class ItemViewController: UITableViewController {
         itemCell.price.text = items[indexPath.section][indexPath.row].price
         itemCell.url = items[indexPath.section][indexPath.row].url
         itemCell.contentMode = .scaleAspectFit
-//        itemCell.backgroundColor = .black
         itemCell.itemViewController = self
         
         itemCell.setupViews()
@@ -374,14 +369,12 @@ class SecondHeader: UITableViewHeaderFooterView {
            
            amazonButton.anchor.centerY.equal.to(shopsLabel.anchor.centerY),
            amazonButton.anchor.left.equal.to(shopsLabel.anchor.right).constant(16),
-//           amazonButton.anchor.size.equal.to(shopsLabel.anchor.size),
            
            googleShoppingButton.anchor.centerY.equal.to(shopsLabel.anchor.centerY),
            googleShoppingButton.anchor.left.equal.to(amazonButton.anchor.right).constant(16),
            
            insertionButton.anchor.top.equal.to(nameLabel.anchor.top),
            insertionButton.anchor.right.constant(-10)
-//           googleShoppingButton.anchor.size.equal.to(amazonButton.anchor.size)
         )
     }
     
@@ -402,12 +395,6 @@ class ItemViewItemCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
-    
-//    var logo: UIImageView = {
-//        let logo = UIImageView(frame: .zero)
-//        logo.translatesAutoresizingMaskIntoConstraints = false
-//        return logo
-//    }()
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been initialized")
@@ -439,9 +426,6 @@ class ItemViewItemCell: UITableViewCell {
             price.anchor.centerY
         )
         
-//        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[v0]-8-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": company]))
-        
         NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[v0]-20-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": company]))
-//        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[v0]-20-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": price]))
     }
 }

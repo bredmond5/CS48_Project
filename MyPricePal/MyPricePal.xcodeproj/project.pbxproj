@@ -15,6 +15,9 @@
 		358AB526226590FA00E9C1E7 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358AB525226590FA00E9C1E7 /* MainViewController.swift */; };
 		358AB529226590FA00E9C1E7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 358AB527226590FA00E9C1E7 /* Main.storyboard */; };
 		358AB52E226590FB00E9C1E7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 358AB52C226590FB00E9C1E7 /* LaunchScreen.storyboard */; };
+		358C2EF6229F0E1C00E844E7 /* ItemFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358C2EF5229F0E1C00E844E7 /* ItemFinder.swift */; };
+		358C2EF9229F14D900E844E7 /* CoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 358C2EF7229F14D900E844E7 /* CoreData.xcdatamodeld */; };
+		358C2EFB229F1FE200E844E7 /* SaveData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358C2EFA229F1FE200E844E7 /* SaveData.swift */; };
 		35D2C4E622659336009EA490 /* BarcodeScanner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35D2C4E522659336009EA490 /* BarcodeScanner.framework */; };
 		35D2C4E82265933C009EA490 /* libc++.1.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 35D2C4E72265933C009EA490 /* libc++.1.tbd */; };
 		35E42FB1228E168C00BD9EB4 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E42FB0228E168C00BD9EB4 /* NetworkManager.swift */; };
@@ -53,6 +56,9 @@
 		358AB52D226590FB00E9C1E7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		358AB52F226590FB00E9C1E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		358C2EF3229E1C0700E844E7 /* Anchors.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Anchors.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		358C2EF5229F0E1C00E844E7 /* ItemFinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemFinder.swift; sourceTree = "<group>"; };
+		358C2EF8229F14D900E844E7 /* CoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreData.xcdatamodel; sourceTree = "<group>"; };
+		358C2EFA229F1FE200E844E7 /* SaveData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveData.swift; sourceTree = "<group>"; };
 		35D2C4E522659336009EA490 /* BarcodeScanner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BarcodeScanner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		35D2C4E72265933C009EA490 /* libc++.1.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.1.tbd"; path = "usr/lib/libc++.1.tbd"; sourceTree = SDKROOT; };
 		35E42FB0228E168C00BD9EB4 /* NetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
@@ -124,20 +130,23 @@
 			children = (
 				358AB523226590FA00E9C1E7 /* AppDelegate.swift */,
 				358AB525226590FA00E9C1E7 /* MainViewController.swift */,
-				9A05569F229884E200925630 /* SwiftChartsViewController.swift */,
-				35E42FB0228E168C00BD9EB4 /* NetworkManager.swift */,
-				36085820228E4ACB00DFF9B9 /* GoogleService-Info.plist */,
-				358AB527226590FA00E9C1E7 /* Main.storyboard */,
+				36A593D62273F250009C4F18 /* ItemViewController.swift */,
 				36A593D82273F26F009C4F18 /* SearchViewController.swift */,
 				3513A5892290C79D005E2A7B /* TutorialPageController.swift */,
 				3513A58B2290C7C3005E2A7B /* TutorialVC1.swift */,
-				36A593D62273F250009C4F18 /* ItemViewController.swift */,
+				9A05569F229884E200925630 /* SwiftChartsViewController.swift */,
+				358C2EFA229F1FE200E844E7 /* SaveData.swift */,
+				358C2EF5229F0E1C00E844E7 /* ItemFinder.swift */,
 				3503F035229CB69200863FB1 /* KeywordFinder.swift */,
 				6379BA43228E22640067900A /* PriceFinder.swift */,
+				35E42FB0228E168C00BD9EB4 /* NetworkManager.swift */,
 				36A593DA2273F27E009C4F18 /* customButton.swift */,
 				358AB52A226590FB00E9C1E7 /* Assets.xcassets */,
+				358C2EF7229F14D900E844E7 /* CoreData.xcdatamodeld */,
+				358AB527226590FA00E9C1E7 /* Main.storyboard */,
 				358AB52C226590FB00E9C1E7 /* LaunchScreen.storyboard */,
 				358AB52F226590FB00E9C1E7 /* Info.plist */,
+				36085820228E4ACB00DFF9B9 /* GoogleService-Info.plist */,
 				9A0556A12298863400925630 /* MyPricePal-Bridging-Header.h */,
 				9A0556A5229886AC00925630 /* Analytics.cpp */,
 				9A0556A6229886AC00925630 /* Analytics.hpp */,
@@ -376,12 +385,15 @@
 				3503F036229CB69200863FB1 /* KeywordFinder.swift in Sources */,
 				9A0556A0229884E200925630 /* SwiftChartsViewController.swift in Sources */,
 				358AB524226590FA00E9C1E7 /* AppDelegate.swift in Sources */,
+				358C2EF9229F14D900E844E7 /* CoreData.xcdatamodeld in Sources */,
 				9A0556A7229886AC00925630 /* Analytics.cpp in Sources */,
+				358C2EF6229F0E1C00E844E7 /* ItemFinder.swift in Sources */,
 				36A593D92273F26F009C4F18 /* SearchViewController.swift in Sources */,
 				3513A58A2290C79D005E2A7B /* TutorialPageController.swift in Sources */,
 				36A593D72273F250009C4F18 /* ItemViewController.swift in Sources */,
 				36A593DB2273F27E009C4F18 /* customButton.swift in Sources */,
 				6379BA44228E22640067900A /* PriceFinder.swift in Sources */,
+				358C2EFB229F1FE200E844E7 /* SaveData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -549,7 +561,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9UKERABREW;
 				INFOPLIST_FILE = MyPricePal/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -572,7 +584,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9UKERABREW;
 				INFOPLIST_FILE = MyPricePal/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -660,6 +672,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		358C2EF7229F14D900E844E7 /* CoreData.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				358C2EF8229F14D900E844E7 /* CoreData.xcdatamodel */,
+			);
+			currentVersion = 358C2EF8229F14D900E844E7 /* CoreData.xcdatamodel */;
+			path = CoreData.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 358AB518226590FA00E9C1E7 /* Project object */;
 }
