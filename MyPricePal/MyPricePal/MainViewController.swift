@@ -81,7 +81,7 @@ class MainViewController: UINavigationController {
         searchVC = SearchViewController(style: .plain)
         searchVC?.searchRequestedDelegate = self
         
-        let arr = SaveData.getData()
+        let arr = SaveData.getSearchData()
         for s in arr {
             searchVC?.giveItemScanned(itemN: s.itemN, barcodeString: s.barcodeString, keywordString: s.keywordString, priceArray: s.priceArray)
         }
@@ -173,6 +173,9 @@ class MainViewController: UINavigationController {
     
     func generalError() {
         DispatchQueue.main.async {
+            self.curKeywordFinder?.flag = false
+            self.curPriceFinder?.flag = false
+            
             self.alertGeneralError(self.topViewController as! BarcodeScannerViewController)
         }
     }
@@ -251,10 +254,7 @@ class MainViewController: UINavigationController {
             self.alertItemFound(curItem.itemN, curItem.barcodeString, self.viewControllers[0] as! BarcodeScannerViewController, itemVC)
         }
         
-        curItem.barcodeString = ""
-        curItem.itemN = ""
-        curItem.keywordString = []
-        curItem.priceArray = []
+        curItem = SearchStruct(barcodeString: "", itemN: "", keywordString: [], priceArray: [])
     }
     
     //In order to update the name of the item for the itemVC, we have to reset the itemVC.

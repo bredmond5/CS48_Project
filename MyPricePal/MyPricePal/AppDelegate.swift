@@ -28,6 +28,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
+        SaveData.getChartsData()
+        
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
         UINavigationBar.appearance().barTintColor = .black
@@ -40,13 +42,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //Sets the window and mainviewcontroller programatically.
         FirebaseApp.configure();
+        
         return true
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
-        SaveData.deleteAllData2("Items")
+        SaveData.deleteAllData("Items")
+        SaveData.deleteAllData("ChartStats")
+        
         let searchVC = (window?.rootViewController as! MainViewController).searchVC
-        SaveData.saveData(searchVC!.items)
+        SaveData.saveSearchData(searchVC!.items)
+        
+        SaveData.saveChartsData(productsSearched: return_products_searched(), productsScanned: return_products_scanned(), productsAdded: return_products_added())
+        
         return
     }
 }

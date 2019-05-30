@@ -47,6 +47,7 @@ void update_products_added(){
     // call in swift and print updated stats
     products_added++;
 }
+
 void set_searched(double s){
     products_searched = s;
 }
@@ -56,6 +57,7 @@ void set_scanned(double s){
 void set_added(double s){
     products_added = s;
 }
+
 double return_url(){
     return url;
 }

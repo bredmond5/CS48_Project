@@ -125,7 +125,7 @@ class SearchViewController: UITableViewController {
     
     func deleteCell(cell: UITableViewCell) {
         if let deletionIndexPath = tableView.indexPath(for: cell) {
-            SaveData.deleteData(items[deletionIndexPath.row].barcodeString)
+            SaveData.deleteSearchData(items[deletionIndexPath.row].barcodeString)
             items.remove(at: deletionIndexPath.row)
             tableView.deleteRows(at: [deletionIndexPath], with: .automatic)
         }

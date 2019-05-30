@@ -3,7 +3,7 @@ import CoreData
 import UIKit
 
 class SaveData {
-    static func getData() -> [SearchStruct] {
+    static func getSearchData() -> [SearchStruct] {
         var arr = [SearchStruct]()
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -23,7 +23,25 @@ class SaveData {
         return arr
     }
     
-    static func saveData(_ items: [SearchStruct]) {
+    static func getChartsData() {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "ChartStats")
+        request.returnsObjectsAsFaults = false
+        do {
+            let result = try context.fetch(request)
+            for data in result as! [NSManagedObject] {
+                set_scanned(data.value(forKey: "productsScanned") as! Double)
+                set_searched(data.value(forKey: "productsSearched") as! Double)
+                set_added(data.value(forKey: "productsAdded") as! Double)
+            }
+        } catch {
+            print("Failed getting data")
+        }
+    }
+    
+    static func saveSearchData(_ items: [SearchStruct]) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
         let entity = NSEntityDescription.entity(forEntityName: "Items", in: context)
@@ -44,7 +62,25 @@ class SaveData {
         }
     }
     
-    static func deleteData(_ barcodeString: String) {
+    static func saveChartsData(productsSearched: Double, productsScanned: Double, productsAdded: Double) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        let entity = NSEntityDescription.entity(forEntityName: "ChartStats", in: context)
+        
+        let newItem = NSManagedObject(entity: entity!, insertInto: context)
+        
+        newItem.setValue(productsSearched, forKey: "productsSearched")
+        newItem.setValue(productsScanned, forKey: "productsScanned")
+        newItem.setValue(productsAdded, forKey: "productsAdded")
+        
+        do {
+            try context.save()
+        } catch {
+            print("Failed saving")
+        }
+    }
+    
+    static func deleteSearchData(_ barcodeString: String) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
         
@@ -62,23 +98,7 @@ class SaveData {
         }
     }
     
-    static func deleteAllData(_ entity:String) {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
-        
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Items")
-        request.returnsObjectsAsFaults = false
-        do {
-            let result = try context.fetch(request)
-            for data in result as! [NSManagedObject] {
-               context.delete(data)
-            }
-        } catch {
-            print("Failed getting data")
-        }
-    }
-    
-    static func deleteAllData2(_ entity: String) {
+    static func deleteAllData(_ entity: String) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let ReqVar = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
         let DelAllReqVar = NSBatchDeleteRequest(fetchRequest: ReqVar)
