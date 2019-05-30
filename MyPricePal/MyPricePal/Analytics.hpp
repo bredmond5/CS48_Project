@@ -15,6 +15,7 @@ extern "C" {
     void setData(double products_scanned, double items_inputed, double products_searched);
     void set_searched(double s);
     void set_scanned(double s);
+    void set_added(double s);
     void update_products_searched();
     void update_products_scanned();
     void update_products_added();

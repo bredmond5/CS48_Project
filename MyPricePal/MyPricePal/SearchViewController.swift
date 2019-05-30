@@ -11,7 +11,18 @@ import UIKit
 import Anchors
 
 protocol SearchRequestedDelegate: class {
-    func searchRequested(_ barcodeString: String, _ itemN: String, _ keywordString: [String], _ searchID: String)
+    func searchRequested(_ barcodeString: String, _ itemN: String, _ keywordString: [String], _ priceArray: [String])
+}
+
+struct SearchStruct {
+    var barcodeString: String
+    var itemN: String
+    var keywordString: [String]
+    var priceArray: [String]
+    
+    func filled() -> Bool {
+         return (barcodeString != "" && itemN != "" && keywordString != [] && priceArray != [])
+    }
 }
 
 //SearchViewController handles showing the user their recent searches and sending items
@@ -21,7 +32,7 @@ class SearchViewController: UITableViewController {
     public weak var searchRequestedDelegate: SearchRequestedDelegate?
     
     //These are shown as the items in the table. Defaults to zero items.
-    var items: [(barcodeString: String, itemN: String, keyWordString: [String], searchID: String)] = []
+    var items: [SearchStruct] = []
     
     var maxItems = 11 //Maximum amount of items shown
     
@@ -44,10 +55,11 @@ class SearchViewController: UITableViewController {
         view.backgroundColor = .white
         navigationItem.titleView = titleLabel
         tableView.isScrollEnabled = false
+        
     }
     
     //Function called by MainViewController to give the scanned item.
-    public func giveItemScanned(_ itemN: String, _ barcodeString: String, _ keywordString: [String], _ searchID: String) {
+    public func giveItemScanned(itemN: String, barcodeString: String, keywordString: [String], priceArray: [String]) {
         
         var index = -1
         for i in 0..<items.count {
@@ -62,7 +74,9 @@ class SearchViewController: UITableViewController {
             tableView.deleteRows(at: [deletionIndexPath], with: .automatic)
         }
         
-        items.insert((barcodeString, itemN, keywordString, searchID), at: 0)
+        let searchStruct = SearchStruct(barcodeString: barcodeString, itemN: itemN, keywordString: keywordString, priceArray: priceArray)
+                
+        items.insert(searchStruct, at: 0)
         resizeTable()
        
         if(items.count == maxItems + 1) {
@@ -77,10 +91,10 @@ class SearchViewController: UITableViewController {
         let insertionIndexPath = IndexPath(item: items.count - 1, section: 0)
         tableView.insertRows(at: [insertionIndexPath], with: .automatic)
     }
-    
-    
-    //Sets up all the cell stuff for the tableView so that we see rows.
+
+    //Sets up all the cell stuff for the tableView so that we see rows
     override func viewDidLoad() {
+        super.viewDidLoad()
         tableView.register(SearchViewItemCell.self, forCellReuseIdentifier: "cellId")
         tableView.sectionHeaderHeight = 0
     }
@@ -101,12 +115,17 @@ class SearchViewController: UITableViewController {
         return tableView.dequeueReusableHeaderFooterView(withIdentifier: "headerId")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        searchRequestedDelegate?.searchRequested(items[indexPath.row].barcodeString, items[indexPath.row].itemN, items[indexPath.row].keyWordString, items[indexPath.row].searchID)
+        searchRequestedDelegate?.searchRequested(items[indexPath.row].barcodeString, items[indexPath.row].itemN, items[indexPath.row].keywordString, items[indexPath.row].priceArray)
     }
     
     func deleteCell(cell: UITableViewCell) {
         if let deletionIndexPath = tableView.indexPath(for: cell) {
+            SaveData.deleteSearchData(items[deletionIndexPath.row].barcodeString)
             items.remove(at: deletionIndexPath.row)
             tableView.deleteRows(at: [deletionIndexPath], with: .automatic)
         }
@@ -119,6 +138,7 @@ class SearchViewItemCell: UITableViewCell {
     
     var barcodeString: String?
     var keywordString: [String]?
+    var priceArray: [String]?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -132,6 +152,7 @@ class SearchViewItemCell: UITableViewCell {
     let nameLabel: UILabel = {
         let label = UILabel()
         label.text = "Sample Item"
+        label.numberOfLines = 2
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.boldSystemFont(ofSize: 14)
         return label
@@ -152,10 +173,10 @@ class SearchViewItemCell: UITableViewCell {
         
         actionButton.addTarget(self, action: #selector(handleAction(sender:)), for: .touchUpInside)
         
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[v0]-8-[v1(80)]-8-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": nameLabel, "v1": actionButton]))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[v0]-4-[v1(80)]-8-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": nameLabel, "v1": actionButton]))
         
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-12-[v0]-12-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": nameLabel]))
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-12-[v0]-12-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": actionButton]))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-16-[v0]-16-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": nameLabel]))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-16-[v0]-16-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": actionButton]))
     }
     
     @objc func handleAction(sender: UIButton) {

@@ -3,15 +3,11 @@
 import UIKit
 import Foundation
 
-protocol PriceFinderDelegate : class {
-    func returnPrices(_ prices: [String], _ job_id: String)
-}
-
 class PriceFinder: NSObject {
     
     var prices: [String] = [String]()
     
-    weak var priceDelegate: PriceFinderDelegate?
+    weak var mainVC: MainViewController?
     
     var finished = false
     var flag = true
@@ -45,20 +41,20 @@ class PriceFinder: NSObject {
         let url: String
     }
     
-    func getBestPrices(_ barcode: String, itemName: String){
+    func getBestPrices(barcodeString: String, itemName: String){
         let base = "https://api.priceapi.com/v2/jobs/"
         
         let url = URL(string: base)
         let initialRequest = NSMutableURLRequest(url: url!)
         let initialSession = URLSession.shared
-        let fields = "token=VPGBCERPAARKAURMZUOFVFSJCADQPRRKYXVXJDPHWRNKKRKUEZMMCHAWILLPGMVQ&source=google_shopping&country=us&topic=product_and_offers&key=gtin&values=" + barcode
+        let fields = "token=VPGBCERPAARKAURMZUOFVFSJCADQPRRKYXVXJDPHWRNKKRKUEZMMCHAWILLPGMVQ&source=google_shopping&country=us&topic=product_and_offers&key=gtin&values=" + barcodeString
         initialRequest.httpBody = fields.data(using: String.Encoding.utf8)
         initialRequest.httpMethod = "POST"
         let initialTask = initialSession.dataTask(with: initialRequest as URLRequest) { (data, response, error) in
             guard let data = data else {return}
             do{
                 let requestJSON = try JSONDecoder().decode(initialRequestJSON.self, from: data) //make json parsing easy
-                self.checkStatus(requestJSON.job_id, baseUrl: base, barcode: barcode, itemName: itemName)
+                self.checkStatus(requestJSON.job_id, baseUrl: base, barcode: barcodeString, itemName: itemName)
             }catch{
                 print("Error getBestPrice")
             }
@@ -71,6 +67,7 @@ class PriceFinder: NSObject {
         let token = "?token=VPGBCERPAARKAURMZUOFVFSJCADQPRRKYXVXJDPHWRNKKRKUEZMMCHAWILLPGMVQ"
         let statusURL = URL(string: baseUrl + id + token)
         let statusSession = URLSession.shared
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
         let statusTask = statusSession.dataTask(with: statusURL!) { (data, response, error)
             in
             if let data = data{
@@ -93,6 +90,7 @@ class PriceFinder: NSObject {
             }
         }
         statusTask.resume()
+        }
         
     }
     
@@ -102,7 +100,7 @@ class PriceFinder: NSObject {
         if(checkSuccess == 0){ //if the API fails to retrieve a JSON (potentially because barcode is not the appropriate length meaning it cannot search), then we will simply create a link to the item based off of the item name so that way we avoid not showing anything or having an infinite search loop
             self.prices.append("https://www.google.com/search?tbm=shop&hl=en&source=hp&biw=&bih=&q=" + fixedSearchName + "&oq=" + fixedSearchName + "&gs_l=products-cc.3...1173.1173.0.1942.1.1.0.0.0.0.7.7.1.1.0....0...1ac.2.34.products-cc..1.0.0.az1Q1kQyBq8")
             if !self.finished {
-                self.priceDelegate?.returnPrices(self.prices, id)
+                self.mainVC?.returnPrices(self.prices)
                 self.finished = true
             }
         }else{
@@ -126,13 +124,13 @@ class PriceFinder: NSObject {
                     }
                     
                     if !self.finished && self.flag {
-                        self.priceDelegate?.returnPrices(self.prices, id)
+                        self.mainVC?.returnPrices(self.prices)
                         self.finished = true
                     }
                     
                 }catch{
                     print("Error getJSON")
-                    self.getBestPrices(barcode, itemName: itemName)
+                    self.getBestPrices(barcodeString: barcode, itemName: itemName)
                 }
             }
             jsonTask.resume()

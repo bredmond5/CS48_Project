@@ -1,18 +1,9 @@
 import AVFoundation
 import Foundation
 
-protocol KeywordFinderDelegate : class {
-    func returnKeywords(_ keywords: [String])
-}
-
-protocol KeywordErrorDelegate: class {
-    func error() 
-}
-
 class KeywordFinder {
     
-    weak var keywordDelegate: KeywordFinderDelegate?
-    weak var errorDelegate: KeywordErrorDelegate?
+    public weak var mainVC: MainViewController?
     
     struct responseJSON: Decodable{
         let response: responseType
@@ -57,17 +48,17 @@ class KeywordFinder {
                         print("Keywords: \(z)")
                         if(self.flag) {
                             self.finished = true
-                            self.keywordDelegate?.returnKeywords(z)
+                            self.mainVC?.returnKeywords(z)
                         }
                     }
                 }catch{
                     print("Could not get JSON info")
                     print(error)
-                    self.errorDelegate?.error()
+                    self.mainVC?.generalError()
                 }
             }else{
                 print("No data")
-                self.errorDelegate?.error()
+                self.mainVC?.generalError()
             }
         }
         task.resume()
