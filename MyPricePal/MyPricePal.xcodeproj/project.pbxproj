@@ -603,7 +603,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 46LJ792MXB;
+				DEVELOPMENT_TEAM = 9UKERABREW;
 				"HEADER_SEARCH_PATHS[arch=*]" = "${PODS_ROOT}/Firebase/CoreOnly/Sources";
 				INFOPLIST_FILE = MyPricePalTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -625,7 +625,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 46LJ792MXB;
+				DEVELOPMENT_TEAM = 9UKERABREW;
 				"HEADER_SEARCH_PATHS[arch=*]" = "${PODS_ROOT}/Firebase/CoreOnly/Sources";
 				INFOPLIST_FILE = MyPricePalTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
