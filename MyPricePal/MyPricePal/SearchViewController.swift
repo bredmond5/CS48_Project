@@ -54,7 +54,7 @@ class SearchViewController: UITableViewController {
         super.loadView()
         view.backgroundColor = .white
         navigationItem.titleView = titleLabel
-        tableView.isScrollEnabled = false
+//        tableView.isScrollEnabled = false
         
     }
     
@@ -87,6 +87,15 @@ class SearchViewController: UITableViewController {
         tableView.reloadData()
     }
     
+    func changeKeywordString(_ barcodeString: String, _ keywordString: [String]) {
+        for i in 0..<items.count {
+            if items[i].barcodeString == barcodeString {
+                items[i].keywordString = keywordString
+                return
+            }
+        }
+    }
+    
     func resizeTable() {
         let insertionIndexPath = IndexPath(item: items.count - 1, section: 0)
         tableView.insertRows(at: [insertionIndexPath], with: .automatic)
@@ -97,6 +106,9 @@ class SearchViewController: UITableViewController {
         super.viewDidLoad()
         tableView.register(SearchViewItemCell.self, forCellReuseIdentifier: "cellId")
         tableView.sectionHeaderHeight = 0
+        
+        view.backgroundColor = .white
+        tableView.separatorColor = .black
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -108,6 +120,9 @@ class SearchViewController: UITableViewController {
         itemCell.nameLabel.text = items[indexPath.row].itemN
         itemCell.barcodeString = items[indexPath.row].barcodeString
         itemCell.searchViewController = self
+        itemCell.backgroundColor = .white
+        itemCell.nameLabel.textColor = .black
+
         return itemCell
     }
     
@@ -160,8 +175,10 @@ class SearchViewItemCell: UITableViewCell {
     
     let actionButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitleColor(UIColor(red: 189/255.0, green: 66/255.0, blue: 74/255.0, alpha: 1), for: .normal)
-        button.setTitle("Delete", for: .normal)
+//        button.setTitleColor(UIColor(red: 189/255.0, green: 66/255.0, blue: 74/255.0, alpha: 1), for: .normal)
+        button.setTitleColor(.red, for: .normal)
+        button.setTitle("X", for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -173,7 +190,7 @@ class SearchViewItemCell: UITableViewCell {
         
         actionButton.addTarget(self, action: #selector(handleAction(sender:)), for: .touchUpInside)
         
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[v0]-4-[v1(80)]-8-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": nameLabel, "v1": actionButton]))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[v0]-4-[v1(20)]-8-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": nameLabel, "v1": actionButton]))
         
         NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-16-[v0]-16-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": nameLabel]))
         NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-16-[v0]-16-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": actionButton]))

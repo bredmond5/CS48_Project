@@ -13,7 +13,7 @@ import SafariServices
 
 
 protocol ItemViewDismissalDelegate : class {
-    func itemViewDidDismiss(_ controller: ItemViewController)
+    func itemViewDidDismiss(_ controller: ItemViewController, _ barcodeNum: String, _ keywordString: [String])
 }
 
 protocol ItemViewURLDelegate: class {
@@ -93,10 +93,10 @@ class ItemViewController: UITableViewController {
     public weak var dismissalDelegate: ItemViewDismissalDelegate?
     public weak var urlDelegate: ItemViewURLDelegate?
     
-    var job_id: String?
-
     public var barcodeNum: String?
     public var keywordString: [String]?
+    
+    
     var itemN: String?
     var titleLabel: UILabel = {
         let label = UILabel()
@@ -104,32 +104,33 @@ class ItemViewController: UITableViewController {
         label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 1
         label.textAlignment = .center
-        label.textColor = .white
+        label.textColor = .black
         label.numberOfLines = 2
         label.sizeToFit()
         return label
     }()
 
     @objc func dismissalAction(sender: Any) {
-        dismissalDelegate?.itemViewDidDismiss(self)
+        dismissalDelegate?.itemViewDidDismiss(self, barcodeNum!, keywordString!)
     }
     
     override func loadView() {
         super.loadView()
-        view.backgroundColor = .white
 
         tableView.register(ItemViewItemCell.self, forCellReuseIdentifier: "itemCellId")
         tableView.register(ItemViewHeader.self, forHeaderFooterViewReuseIdentifier: "itemHeaderId")
         tableView.register(SecondHeader.self, forHeaderFooterViewReuseIdentifier: "secondHeaderId")
     
-        tableView.sectionHeaderHeight = 60
-        
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissalAction(sender:)))
       
         tableView.allowsMultipleSelection = true
         
         titleLabel.text = itemN
         navigationItem.titleView = titleLabel
+        
+        view.backgroundColor = .white
+        tableView.backgroundColor = .white
+        tableView.separatorColor = .black
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -140,7 +141,7 @@ class ItemViewController: UITableViewController {
         let cell = tableView.cellForRow(at: indexPath) as! ItemViewItemCell
         if(indexPath.section == 0){
             urlDelegate?.showSafariVC(cell.url!)
-            cell.backgroundColor = .white
+            cell.contentView.backgroundColor = .white
         }
         else{
             let selectedCell:ItemViewItemCell = tableView.cellForRow(at: indexPath)! as! ItemViewItemCell
@@ -151,8 +152,13 @@ class ItemViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath){
         let cellToDeselect = tableView.cellForRow(at: indexPath)! as! ItemViewItemCell
-        cellToDeselect.contentView.backgroundColor = UIColor.white
-        cellToDeselect.select = false
+      
+        if(indexPath.section == 1) {
+            cellToDeselect.contentView.backgroundColor = .white
+            cellToDeselect.select = false
+        }else{
+            urlDelegate?.showSafariVC(cellToDeselect.url!)
+        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -163,6 +169,9 @@ class ItemViewController: UITableViewController {
         itemCell.url = items[indexPath.section][indexPath.row].url
         itemCell.contentMode = .scaleAspectFit
         itemCell.itemViewController = self
+        itemCell.contentView.backgroundColor = .white
+        itemCell.company.textColor = .black
+        itemCell.price.textColor = .black
         
         itemCell.setupViews()
         return itemCell
@@ -180,6 +189,7 @@ class ItemViewController: UITableViewController {
         if(section == 0) {
             let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "itemHeaderId") as! ItemViewHeader
             header.nameLabel.text = sections[0]
+            
             return header
         }else{
             let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "secondHeaderId") as! SecondHeader
@@ -221,8 +231,10 @@ class ItemViewController: UITableViewController {
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
             let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
             if let text = textField!.text {
-                self.insert(text)
-                self.keywordString?.append(text)
+                if(text != "") {
+                    self.insert(text)
+                    self.keywordString?.append(text)
+                }
             }
         }))
         present(alert, animated: true)
@@ -251,6 +263,7 @@ class ItemViewHeader: UITableViewHeaderFooterView {
     let nameLabel: UILabel = {
         let label = UILabel()
         label.text = ""
+        label.textColor = .black
         label.sizeToFit()
         label.font = UIFont.boldSystemFont(ofSize: 15)
         label.adjustsFontSizeToFitWidth = true
@@ -264,9 +277,8 @@ class ItemViewHeader: UITableViewHeaderFooterView {
         activate(
            nameLabel.anchor.left.constant(16),
            nameLabel.anchor.right.constant(16),
-           nameLabel.anchor.size,
-           nameLabel.anchor.bottom.constant(5),
-           nameLabel.anchor.top.constant(5)
+           nameLabel.anchor.top.constant(20),
+           nameLabel.anchor.bottom.constant(-20)
         )
     }
 }
@@ -305,10 +317,10 @@ class SecondHeader: UITableViewHeaderFooterView {
     let nameLabel: UILabel = {
         let label = UILabel()
         label.text = ""
+        label.textColor = .black
         label.sizeToFit()
         label.font = UIFont.boldSystemFont(ofSize: 15)
         label.adjustsFontSizeToFitWidth = true
-        
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -316,6 +328,7 @@ class SecondHeader: UITableViewHeaderFooterView {
     let shopsLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.text = "Shops: "
+        label.textColor = .black
         label.sizeToFit()
         label.font = UIFont.boldSystemFont(ofSize: 15)
         label.adjustsFontSizeToFitWidth = true
@@ -359,13 +372,12 @@ class SecondHeader: UITableViewHeaderFooterView {
         addSubview(insertionButton)
         
         activate(
-            nameLabel.anchor.top.constant(5),
+            nameLabel.anchor.top.constant(15),
             nameLabel.anchor.left.constant(16),
-            nameLabel.anchor.right.constant(16),
-            nameLabel.anchor.bottom.equal.to(shopsLabel.anchor.top).constant(5),
+            nameLabel.anchor.bottom.equal.to(shopsLabel.anchor.top).constant(-10),
             
            shopsLabel.anchor.left.equal.to(nameLabel.anchor.left),
-           shopsLabel.anchor.bottom.constant(5),
+           shopsLabel.anchor.bottom.constant(-15),
            
            amazonButton.anchor.centerY.equal.to(shopsLabel.anchor.centerY),
            amazonButton.anchor.left.equal.to(shopsLabel.anchor.right).constant(16),
@@ -374,7 +386,7 @@ class SecondHeader: UITableViewHeaderFooterView {
            googleShoppingButton.anchor.left.equal.to(amazonButton.anchor.right).constant(16),
            
            insertionButton.anchor.top.equal.to(nameLabel.anchor.top),
-           insertionButton.anchor.right.constant(-10)
+           insertionButton.anchor.right.constant(-16)
         )
     }
     
@@ -412,7 +424,7 @@ class ItemViewItemCell: UITableViewCell {
         let label = UILabel()
         label.text = ""
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.font = UIFont.boldSystemFont(ofSize: 16)
         return label
     }()
     

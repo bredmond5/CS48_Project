@@ -322,9 +322,11 @@ extension MainViewController: BarcodeScannerDismissalDelegate {
 
 //Function for if the ItemViewController dismisses itself.
 extension MainViewController: ItemViewDismissalDelegate {
-    func itemViewDidDismiss(_ controller: ItemViewController) {
+    func itemViewDidDismiss(_ controller: ItemViewController, _ barcodeString: String, _ keywordString: [String]) {
         DispatchQueue.main.async {
             self.popViewController(animated: true)
+            
+            self.searchVC?.changeKeywordString(barcodeString, keywordString)
             
             //Either the BarcodeVC or the searchVC can send an item to the ItemVC, so
             //we have to check if the barcodeVC sent it and if so reset the barcodeVC
