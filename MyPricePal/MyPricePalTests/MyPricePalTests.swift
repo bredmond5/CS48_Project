@@ -14,8 +14,8 @@ class MyPricePalTests: XCTestCase {
     var searchVC: SearchViewController?
     
     override func setUp() {
-        mainVC = MainViewController()
-        searchVC = SearchViewController()
+       // mainVC = MainViewController()
+       // searchVC = SearchViewController()
     }
     
     override func tearDown() {
