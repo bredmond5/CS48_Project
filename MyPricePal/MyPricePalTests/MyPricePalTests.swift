@@ -10,8 +10,8 @@ import XCTest
 @testable import MyPricePal
 class MyPricePalTests: XCTestCase {
     
-    var mainVC: MainViewController?
-    var searchVC: SearchViewController?
+  //  var mainVC: MainViewController?
+  //  var searchVC: SearchViewController?
     
     override func setUp() {
        // mainVC = MainViewController()
