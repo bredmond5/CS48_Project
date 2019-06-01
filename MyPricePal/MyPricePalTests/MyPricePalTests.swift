@@ -34,7 +34,7 @@ class MyPricePalTests: XCTestCase {
         XCTAssert(searchVC?.returnNumItems() == 1, "SearchVC does not have the correct amount of items")
     }
     
-   func testAddMaxItems() {
+  /* func testAddMaxItems() {
         
         for i in 0...searchVC!.maxItems {
             searchVC?.giveItemScanned(itemN: "Deodorant", barcodeString: "083078113131", keywordString: ["Deodorant"], priceArray: ["10"])
@@ -162,5 +162,5 @@ class MyPricePalTests: XCTestCase {
     //        task.resume()
     //    }
     
-    
+    */
 }
