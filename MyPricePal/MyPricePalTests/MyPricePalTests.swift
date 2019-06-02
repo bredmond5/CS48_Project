@@ -10,12 +10,12 @@ import XCTest
 @testable import MyPricePal
 class MyPricePalTests: XCTestCase {
     
-  var mainVC: MainViewController?
-  var searchVC: SearchViewController?
+    var mainVC: MainViewController?
+    var searchVC: SearchViewController?
     
     override func setUp() {
-       mainVC = MainViewController()
-       searchVC = SearchViewController()
+        mainVC = MainViewController()
+        searchVC = SearchViewController()
     }
     
     override func tearDown() {
@@ -34,31 +34,32 @@ class MyPricePalTests: XCTestCase {
         XCTAssert(searchVC?.returnNumItems() == 1, "SearchVC does not have the correct amount of items")
     }
     
-  /* func testAddMaxItems() {
+    func testAddMaxItems() {
         
         for i in 0...searchVC!.maxItems {
-            searchVC?.giveItemScanned(itemN: "Deodorant", barcodeString: "083078113131", keywordString: ["Deodorant"], priceArray: ["10"])
+            searchVC?.giveItemScanned(itemN: "Deodorant\(i)", barcodeString: "08307811313\(i)", keywordString: ["Deodorant"], priceArray: ["10"])
         }
         
         XCTAssert(searchVC?.returnNumItems() == searchVC?.maxItems, "SearchVC added \(String(describing: searchVC?.returnNumItems())) items")
-        XCTAssert(searchVC!.items[0].itemN == "Deodorant \(searchVC!.maxItems)", "\(searchVC!.items[0]) != Deodorant \(searchVC!.maxItems)")
-        XCTAssert(searchVC?.items[(searchVC?.maxItems)! - 1].itemN == "Deodorant \(1)", "not Deodorant 1")
+        XCTAssert(searchVC!.items[0].itemN == "Deodorant\(searchVC!.maxItems)", "\(searchVC!.items[0].itemN) != Deodorant\(searchVC!.maxItems)")
+        XCTAssert(searchVC?.items[(searchVC?.maxItems)! - 1].itemN == "Deodorant\(1)", "not Deodorant 1")
     }
     
     func testShiftItems() {
         searchVC?.giveItemScanned(itemN: "Deodorant", barcodeString: "083078113131", keywordString: ["Deodorant"], priceArray: ["10"])
-        searchVC?.giveItemScanned(itemN: "Carmex Lip Balm", barcodeString: "083078113131", keywordString: ["Lip"], priceArray: ["10"])
-        searchVC?.giveItemScanned(itemN: "popcorn", barcodeString: "083078113131", keywordString: ["Lip"], priceArray: ["10"])
+        searchVC?.giveItemScanned(itemN: "Carmex Lip Balm", barcodeString: "083078113132", keywordString: ["Lip"], priceArray: ["10"])
+        searchVC?.giveItemScanned(itemN: "popcorn", barcodeString: "083078113133", keywordString: ["Lip"], priceArray: ["10"])
         searchVC?.giveItemScanned(itemN: "Deodorant", barcodeString: "083078113131", keywordString: ["Deodorant"], priceArray: ["10"])
         
         XCTAssert(searchVC?.items[0].itemN == "Deodorant", "Deodorant != \(searchVC!.items[0])")
-        XCTAssert(searchVC?.items[1].itemN == "Carmex Lip Balm", "Carmex Lip Balm != \(searchVC!.items[1])")
-        XCTAssert(searchVC?.items[2].itemN == "popcorn", "popcorn != \(searchVC!.items[2])")
+        XCTAssert(searchVC?.items[1].itemN == "popcorn", "popcorn != \(searchVC!.items[1])")
+        XCTAssert(searchVC?.items[2].itemN == "Carmex Lip Balm", "Carmex Lip Balm != \(searchVC!.items[2])")
+        
     }
     func testDeleteCell() {
         searchVC?.giveItemScanned(itemN: "Deodorant", barcodeString: "083078113131", keywordString: ["Deodorant"], priceArray: ["10"])
-        searchVC?.giveItemScanned(itemN: "Carmex Lip Balm", barcodeString: "083078113131", keywordString: ["Lip"], priceArray: ["10"])
-        searchVC?.giveItemScanned(itemN: "popcorn", barcodeString: "083078113131", keywordString: ["Lip"], priceArray: ["10"])
+        searchVC?.giveItemScanned(itemN: "Carmex Lip Balm", barcodeString: "083078113132", keywordString: ["Lip"], priceArray: ["10"])
+        searchVC?.giveItemScanned(itemN: "popcorn", barcodeString: "083078113133", keywordString: ["Lip"], priceArray: ["10"])
         let tableView = searchVC?.tableView
         let deletionIndexPath = IndexPath(item: 0, section: 0)
         let cell = tableView?.cellForRow(at: deletionIndexPath)
@@ -74,50 +75,6 @@ class MyPricePalTests: XCTestCase {
         itemVC.viewDidLoad()
     }
     
-    func testSearchViewControllerLeak() {
-        
-        var controller:SearchViewController? = SearchViewController()
-        
-        weak var leakReferance = controller
-        controller = nil
-        XCTAssertNil(leakReferance)
-    }
-    
-    func testItemViewControllerLeak() {
-        
-        var controller:ItemViewController? = ItemViewController()
-        
-        weak var leakReferance = controller
-        controller = nil
-        XCTAssertNil(leakReferance)
-    }
-    
-    /*func testCustomButtonLeak() {
-        
-        var controller:customButton? = customButton()
-        
-        weak var leakReferance = controller
-        controller = nil
-        XCTAssertNil(leakReferance)
-    }*/
-    
-    func testMainViewControllerLeak() {
-        
-        var controller:MainViewController? = MainViewController()
-        
-        weak var leakReferance = controller
-        controller = nil
-        XCTAssertNil(leakReferance)
-    }
-    
-    func testAppDelegateLeak() {
-        
-        var controller:AppDelegate? = AppDelegate()
-        
-        weak var leakReferance = controller
-        controller = nil
-        XCTAssertNil(leakReferance)
-    }
     
     
     //   func testGetItem() {
@@ -162,5 +119,5 @@ class MyPricePalTests: XCTestCase {
     //        task.resume()
     //    }
     
-    */
+    
 }
