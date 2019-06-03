@@ -32,6 +32,7 @@ class MyPricePalTests: XCTestCase {
     
     func testAddItem(){
         searchVC?.giveItemScanned(itemN: "Carmex Lip Balm", barcodeString: "083078113131", keywordString: [], priceArray: [])
+
         XCTAssert(searchVC?.returnNumItems() == 1, "SearchVC does not have the correct amount of items")
     }
     
@@ -55,12 +56,13 @@ class MyPricePalTests: XCTestCase {
         XCTAssert((searchVC?.items[0])!.itemN == "Deodorant", "Deodorant != \(searchVC!.items[0].itemN)")
         XCTAssert((searchVC?.items[1])!.itemN == "Binder", "Binder != \(searchVC!.items[1])")
         XCTAssert((searchVC?.items[2])!.itemN == "Gum", "Gum != \(searchVC!.items[2])")
+
     }
-    
     func testDeleteCell() {
         searchVC?.giveItemScanned(itemN: "Deodorant", barcodeString: "0830781131312", keywordString: [], priceArray: [])
         searchVC?.giveItemScanned(itemN: "Gum", barcodeString: "0830781131313", keywordString: [], priceArray: [])
         searchVC?.giveItemScanned(itemN: "Binder", barcodeString: "0830781131314", keywordString: [], priceArray: [])
+
         let tableView = searchVC?.tableView
         let deletionIndexPath = IndexPath(item: 0, section: 0)
         let cell = tableView?.cellForRow(at: deletionIndexPath)
@@ -68,6 +70,7 @@ class MyPricePalTests: XCTestCase {
         
         XCTAssert((searchVC?.items[0])!.itemN == "Gum", "items[0] = \(String(describing: searchVC?.items[0]))")
         XCTAssert((searchVC?.items[1])!.itemN == "Deodorant", "items[1] = \(String(describing: searchVC?.items[1]))")
+
     }
     
     func testLoadViewItemVC() {
