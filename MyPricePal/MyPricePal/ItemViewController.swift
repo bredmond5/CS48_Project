@@ -104,7 +104,7 @@ class ItemViewController: UITableViewController {
         label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 1
         label.textAlignment = .center
-        label.textColor = .black
+        label.textColor = .white
         label.numberOfLines = 2
         label.sizeToFit()
         return label
@@ -276,7 +276,6 @@ class ItemViewHeader: UITableViewHeaderFooterView {
         addSubview(nameLabel)
         activate(
            nameLabel.anchor.left.constant(16),
-           nameLabel.anchor.right.constant(16),
            nameLabel.anchor.top.constant(20),
            nameLabel.anchor.bottom.constant(-20)
         )
