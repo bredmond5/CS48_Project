@@ -61,27 +61,25 @@ class SearchViewController: UITableViewController {
     //Function called by MainViewController to give the scanned item.
     public func giveItemScanned(itemN: String, barcodeString: String, keywordString: [String], priceArray: [String]) {
         
-        var index = -1
         for i in 0..<items.count {
             if items[i].barcodeString == barcodeString {
-                index = i
+                tableView.moveRow(at: IndexPath(item: i, section: 0), to: IndexPath(item: 0, section: 0))
+                let tmp = items[i]
+                items.remove(at: i)
+                items.insert(tmp, at: 0)
+                tableView.reloadData()
+                return
             }
         }
         
-        if index != -1 {
-            items.remove(at: index)
-            let deletionIndexPath = IndexPath(item: index, section: 0)
-            tableView.deleteRows(at: [deletionIndexPath], with: .automatic)
-        }
-        
         let searchStruct = SearchStruct(barcodeString: barcodeString, itemN: itemN, keywordString: keywordString, priceArray: priceArray)
-                
+        
         items.insert(searchStruct, at: 0)
-        resizeTable()
-       
+        let insertionIndexPath = IndexPath(item: items.count - 1, section: 0)
+        tableView.insertRows(at: [insertionIndexPath], with: .automatic)
+        
         if(items.count == maxItems + 1) {
-            let deletionIndexPath = IndexPath(item: items.count - 1, section: 0)
-            deleteCell(cell: tableView.cellForRow(at: deletionIndexPath)!)
+            deleteCell(IndexPath(item: maxItems, section: 0))
         }
         
         tableView.reloadData()
@@ -94,11 +92,6 @@ class SearchViewController: UITableViewController {
                 return
             }
         }
-    }
-    
-    func resizeTable() {
-        let insertionIndexPath = IndexPath(item: items.count - 1, section: 0)
-        tableView.insertRows(at: [insertionIndexPath], with: .automatic)
     }
 
     //Sets up all the cell stuff for the tableView so that we see rows
@@ -138,11 +131,16 @@ class SearchViewController: UITableViewController {
         searchRequestedDelegate?.searchRequested(items[indexPath.row].barcodeString, items[indexPath.row].itemN, items[indexPath.row].keywordString, items[indexPath.row].priceArray)
     }
     
+    func deleteCell(_ deletionIndexPath: IndexPath) {
+        SaveData.deleteSearchData(items[deletionIndexPath.row].barcodeString)
+        items.remove(at: deletionIndexPath.row)
+        tableView.deleteRows(at: [deletionIndexPath], with: .automatic)
+        
+    }
+    
     func deleteCell(cell: UITableViewCell) {
-        if let deletionIndexPath = tableView.indexPath(for: cell) {
-            SaveData.deleteSearchData(items[deletionIndexPath.row].barcodeString)
-            items.remove(at: deletionIndexPath.row)
-            tableView.deleteRows(at: [deletionIndexPath], with: .automatic)
+        if let deletionIndexPath = tableView.indexPath(for: cell){
+            deleteCell(deletionIndexPath)
         }
     }
 }
