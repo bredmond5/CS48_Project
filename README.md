@@ -1,21 +1,21 @@
 # MyPricePal
-Authored by Justin Lee, Sam Pettus, Sai Kathika, Brice Redmond, Ramon Verdin for CS48 at UCSB.
+by Justin Lee, Sam Pettus, Sai Kathika, Brice Redmond, Ramon Verdin for UCSB's CS48
 
 ## Description: 
-- IOS Application that scans barcodes and lists competitive prices at online retailers for the same or similar product.
+- MyPricePal is an IOS application that scans barcodes and lists competitive prices at online retailers for the same or similar product.
 
 ## Key Technologies and Languages
-# Technologies & API Calls:
+### Technologies & API Calls:
 - Text Razor
 - UPCitemdb
 - PriceAPI
 - Firebase
-# POD Files:
+### POD Files:
 - Barcode Scanner
 - SwiftCharts 
 - Firebase 
 - Reachability
-# Languages:
+### Languages:
 - C++: Stored Users Actions within app 
 - Java : Web Scraping (Barcodes)
 - Python : Web Scraping (Prices)
