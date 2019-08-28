@@ -1,7 +1,6 @@
 # Food Reader
 
-## Project Summary
-- Application that can read a product's barcodes, then procedes to list competitive prices at online retailers for the same product.
+## Application that scans barcodes and lists competitive prices at online retailers for the same or similar product.
 - Project Overview:
 IOS Application
 Database of all barcodes on server
