@@ -1,7 +1,7 @@
 # Food Reader
 
 ## Project Summary
-- One Sentence Description: Application that can read a product's barcodes, then procedes to list competitive prices at online retailers for the same product.
+- Application that can read a product's barcodes, then procedes to list competitive prices at online retailers for the same product.
 - Project Overview:
 IOS Application
 Database of all barcodes on server
